@@ -1,0 +1,204 @@
+.modern-card-layout {
+  flex: 1;
+  padding: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.card-carousel {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  min-height: 500px;
+}
+
+.bonus-card {
+  flex: 0 0 320px;
+  background: rgba(20, 20, 50, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(0, 225, 255, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.bonus-card.opened {
+  border-color: rgba(0, 255, 136, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+}
+
+.bonus-card.unopened {
+  border-color: rgba(255, 107, 107, 0.6);
+  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.2);
+}
+
+.bonus-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 225, 255, 0.4);
+}
+
+.card-image-section {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
+.card-slot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-super-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+}
+
+.card-status-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-details-section {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-slot-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: white;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.card-provider {
+  font-size: 0.9rem;
+  color: #9346ff;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.card-stat {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 225, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+}
+
+.stat-value.positive {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.stat-value.negative {
+  color: #ff4757;
+  text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+
+.no-bonuses-card {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 50, 0.5);
+  border: 2px dashed rgba(0, 225, 255, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.no-bonuses-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.no-bonuses-card p {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Scrollbar styling */
+.modern-card-layout::-webkit-scrollbar {
+  height: 12px;
+}
+
+.modern-card-layout::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  margin: 0 1rem;
+}
+
+.modern-card-layout::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #00e1ff, #9346ff);
+  border-radius: 6px;
+}
+
+.modern-card-layout::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #9346ff, #00e1ff);
+}
+
+@media (max-width: 768px) {
+  .bonus-card {
+    flex: 0 0 280px;
+  }
+
+  .card-image-section {
+    height: 280px;
+  }
+
+  .card-slot-name {
+    font-size: 1.25rem;
+  }
+}

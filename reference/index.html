@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Streamer Overlay Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;600;700&family=Orbitron:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Slot Database -->
+  <script src="slotdatabase.js"></script>
+  
+  <!-- Modular JavaScript Files -->
+  <script src="js/utils.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/bonusHuntCalculator.js"></script>
+  <script src="js/bonusHuntIntegration.js"></script>
+  <script src="js/tournament.js"></script>
+  <script src="js/bonushunt.js"></script>
+  <script src="js/randomslot.js"></script>
+  <script src="js/tutorial.js"></script>
+  <script src="js/giveaway.js"></script>
+  
+  <!-- Main Script -->
+  <script defer src="script-new.js"></script>
+</head>
+<body>
+  <div class="overlay-container">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <img src="https://static.twitchcdn.net/assets/favicon-32-e29e246c157142c94346.png" alt="Logo" class="navbar-logo" id="navbar-logo" style="cursor: pointer;" title="Click to change logo"/>
+        <input type="file" id="logo-upload-input" accept="image/*" style="display: none;">
+        <!-- Replace Twitch login with static username -->
+        <span class="streamer-name osecaadegas95-name" id="streamer-name" style="cursor: pointer;" title="Click to edit streamer name">Streamer</span>
+        <input type="text" id="streamer-name-input" style="display: none; background: rgba(0,0,0,0.7); color: white; border: 1px solid #00e1ff; border-radius: 4px; padding: 2px 6px; font-size: inherit; font-family: inherit;">
+        <!-- Image Switcher Start (right after login button) -->
+        <div id="navbar-image-switcher" class="navbar-switcher-container" style="display:inline-block; margin-left: 10px; cursor: pointer;">
+          <img id="switcher-image" src="assets/content.png" alt="Content" class="navbar-switcher-img" style="display: block; width: 148px; height: 60px; object-fit: cover;"/>
+        </div>
+        <!-- Image Switcher End -->
+      </div>
+      <div class="navbar-center">
+        <span id="current-time" class="current-time"></span>
+      </div>
+      <div class="navbar-right">
+         <a href="#" target="_blank" class="navbar-website-btn" id="website-link">
+          <span class="website-btn-icon">🌐</span>
+          <span id="website-text" style="cursor: pointer;" title="Click to edit website URL">Your Website</span>
+        </a>
+        <input type="url" id="website-input" style="display: none; background: rgba(0,0,0,0.7); color: white; border: 1px solid #00e1ff; border-radius: 4px; padding: 2px 6px; font-size: inherit; font-family: inherit; width: 200px;">
+        <a href="https://www.begambleaware.org/" target="_blank" class="aware-link">Be Gamble Aware|+🔞</a>
+        <!-- Image switcher removed from here -->
+      </div>
+    </nav>
+
+    <!-- Spotify Now Playing Widget -->
+    <div class="spotify-widget" id="spotify-widget" style="display: none;">
+      <div class="spotify-content">
+        <img id="spotify-album-art" src="" alt="Album Art" class="spotify-album-art">
+        <div class="spotify-info">
+          <div class="spotify-track" id="spotify-track">No track playing</div>
+          <div class="spotify-artist" id="spotify-artist">Connect to Spotify</div>
+        </div>
+        <div class="spotify-controls">
+          <button id="spotify-auth-btn" class="spotify-auth-btn">Connect Spotify</button>
+          <button id="spotify-toggle" class="spotify-toggle-btn" style="display: none;">Hide</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="main-layout">
+      <!-- Tournament Bracket Left Panel -->
+      <aside class="tournament-left-panel" id="tournament-left-panel" style="display: none;">
+        <div class="info-section tournament-bracket" id="tournament-bracket" style="display: block;">
+          <div class="tournament-bracket-header">
+            <div class="bracket-title-row" style="justify-content: center;">
+              <h4 id="tournament-phase-title">Tournament Bracket</h4>
+            </div>
+            <div class="tournament-overview">
+              <div class="overview-stat">
+                <span class="stat-label">Format:</span>
+                <span class="stat-value" id="tournament-format-display">Single Elimination</span>
+              </div>
+              <div class="overview-stat">
+                <span class="stat-label">Players:</span>
+                <span class="stat-value" id="tournament-players-count">8</span>
+              </div>
+              <div class="overview-stat">
+                <span class="stat-label">Current Phase:</span>
+                <span class="stat-value" id="tournament-current-phase">Quarter-Finals</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tournament-bracket-container">
+            <div class="tournament-bracket-content" id="tournament-bracket-content">
+              <!-- Bracket visualization will be dynamically generated here -->
+            </div>
+          </div>
+          
+          <!-- Tournament History/Stats -->
+          <div class="tournament-history" id="tournament-history" style="display: none;">
+            <div class="history-header">
+              <h5>Match History</h5>
+              <button class="history-toggle" id="toggle-history">📊</button>
+            </div>
+            <div class="history-content" id="history-content">
+              <!-- Match history will be populated here -->
+            </div>
+          </div>
+        </div>
+      </aside>
+      
+      <!-- Modern Circular Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-main-btn" id="sidebar-toggle"></div>
+        <div class="sidebar-fan">
+          <button class="sidebar-btn" id="customization-btn">
+            <img src="./assets/palet.png" alt="Customization" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="bh-btn">
+            <img src="./assets/crossair.png" alt="Bonus Hunt" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="bo-btn">
+            <img src="./assets/info.png" alt="Tutorial" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="random-slot-btn">
+            <img src="./assets/randomslot.png" alt="Random" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="tournament-btn">
+            <img src="./assets/tornament.png" alt="Tournament" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="giveaway-btn">
+            <img src="./assets/giveaway.png" alt="Giveaway" class="sidebar-icon-img">
+          </button>
+          <button class="sidebar-btn" id="ad-btn">
+            <label for="ad-image-input" style="cursor: pointer; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+              <img src="./assets/art.png" alt="Art" class="sidebar-icon-img">
+            </label>
+            <input type="file" id="ad-image-input" accept="image/*,video/*" style="display:none;">
+          </button>
+          <button class="sidebar-btn" id="lock-btn">
+            <img id="lock-icon" src="./assets/unlock.png" alt="Lock/Unlock" class="sidebar-icon-img" style="width: 100%; height: 100%; object-fit: contain;">
+          </button>
+        </div>
+      </aside>
+
+      <!-- Middle Panel (hidden by default, shown when BH is clicked) -->
+      <section class="middle-panel" id="middle-panel" style="display:none;">
+        <div class="middle-panel-title">BH Panel</div>
+
+        <div class="middle-panel-row">
+          <label class="middle-input-label left">
+            Start Money
+            <input type="number" id="start-money-input" class="middle-input" placeholder="Start Money" min="0" step="any" />
+          </label>
+          <label class="middle-input-label right">
+            Stop Money
+            <input type="number" id="stop-money-input" class="middle-input" placeholder="Stop Money" min="0" step="any" />
+          </label>
+        </div>
+        <div class="middle-panel-row">
+          <label class="middle-input-label left">
+            Actual Balance
+            <input type="number" id="actual-balance-input" class="middle-input" placeholder="Current balance" min="0" step="any" />
+          </label>
+          <label class="middle-input-label right">
+            Total Spent
+            <input type="number" id="total-spent-input" class="middle-input" placeholder="Auto calculated" min="0" step="any" readonly />
+          </label>
+        </div>
+        <div class="middle-panel-row">
+          <label class="middle-input-label left">
+            Slot Name
+            <div style="position: relative;">
+              <input type="text" id="slot-name-input" class="middle-input" placeholder="Slot Name" />
+              <div class="slot-suggestion-box" style="display: none;"></div>
+            </div>
+          </label>
+          <label class="middle-input-label right">
+            Bet Size
+            <input type="number" id="bet-size-input" class="middle-input" placeholder="Enter bet size" min="0" step="any" />
+            <button class="add-slot-btn" id="add-slot-btn" type="button">
+              <span>➕</span>
+              <span>Slot</span>
+            </button>
+          </label>
+        </div>
+        <div class="middle-panel-row" id="slot-img-url-row" style="display: none;">
+          <label class="middle-input-label" style="width: 100%;">
+            Slot Image URL
+            <input type="url" id="slot-img-url-input" class="middle-input" placeholder="Paste image URL here" />
+          </label>
+        </div>
+        <div class="middle-panel-actions">
+          <div class="middle-checkbox-row">
+            <label class="middle-checkbox">
+              <input type="checkbox" id="super-checkbox" />
+              <span>Super</span>
+            </label>
+          </div>
+          <div class="middle-actions-row">
+            <button class="middle-btn small-btn" id="slot-img-url-btn" type="button">
+              <span class="middle-icon">🖼️</span>
+              <span>Slot Image</span>
+            </button>
+            <button class="middle-btn small-btn" id="edit-slots-btn">
+              <span class="middle-icon">✏️</span>
+              <span>Edit Slots</span>
+            </button>
+            <button class="middle-btn small-btn" id="bonus-opening-btn">
+              <span class="middle-icon">▶️</span>
+              <span>Bonus Opening</span>
+            </button>
+          </div>        </div>
+      </section>
+
+      <!-- Modern BH Panel (for modern sidebar layout) -->
+      <section class="modern-bh-panel" id="modern-bh-panel" style="display:none;">
+        <button class="modern-close-btn" id="close-modern-bh-panel" type="button">
+          <span>✕</span>
+        </button>
+        <div class="modern-panel-header">
+          <h3>BH Panel</h3>
+        </div>
+        
+        <div class="modern-grid-container">
+          <!-- Row 1 -->
+          <div class="modern-field-row">
+            <div class="modern-field">
+              <label class="modern-field-label">Start Money</label>
+              <input type="number" id="modern-start-money-input" class="modern-field-input" placeholder="Start Money" min="0" step="any" />
+            </div>
+            <div class="modern-field">
+              <label class="modern-field-label">Stop Money</label>
+              <input type="number" id="modern-stop-money-input" class="modern-field-input" placeholder="Stop Money" min="0" step="any" />
+            </div>
+          </div>
+          
+          <!-- Row 2 -->
+          <div class="modern-field-row">
+            <div class="modern-field">
+              <label class="modern-field-label">Actual Balance</label>
+              <input type="number" id="modern-actual-balance-input" class="modern-field-input" placeholder="Current balance" min="0" step="any" />
+            </div>
+            <div class="modern-field">
+              <label class="modern-field-label">Total Spent</label>
+              <input type="number" id="modern-total-spent-input" class="modern-field-input" placeholder="0.00" min="0" step="any" readonly />
+            </div>
+          </div>
+          
+          <!-- Row 3 -->
+          <div class="modern-field-row">
+            <div class="modern-field">
+              <label class="modern-field-label">Slot Name</label>
+              <div style="position: relative;">
+                <input type="text" id="modern-slot-name-input" class="modern-field-input" placeholder="Slot Name" />
+                <div class="slot-suggestion-box" style="display: none;"></div>
+              </div>
+            </div>
+            <div class="modern-field">
+              <label class="modern-field-label">Bet Size</label>
+              <input type="number" id="modern-bet-size-input" class="modern-field-input" placeholder="Enter bet size" min="0" step="any" />
+            </div>
+          </div>
+          
+          <!-- Add Slot Button -->
+          <div class="modern-add-slot-row">
+            <button class="modern-add-slot-btn" id="modern-add-slot-btn" type="button">
+              ➕ Slot
+            </button>
+          </div>
+          
+          <!-- Super Bonus -->
+          <div class="modern-super-row">
+            <label class="modern-super-checkbox">
+              <input type="checkbox" id="modern-super-checkbox" />
+              <span class="modern-checkbox-custom"></span>
+              <span class="modern-super-text">Super</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="modern-panel-row" id="modern-slot-img-url-row" style="display: none;">
+          <label class="modern-input-label">Slot Image URL</label>
+          <input type="url" id="modern-slot-img-url-input" class="modern-input" placeholder="Paste image URL here" />
+        </div>
+        
+        <div class="modern-panel-actions">
+          <div class="action-buttons-grid">
+            <button class="modern-action-btn slot-image-btn" id="modern-slot-img-url-btn" type="button">
+              🖼️ Slot Image
+            </button>
+            <button class="modern-action-btn edit-slots-btn" id="modern-edit-slots-btn">
+              ✏️ Edit Slots
+            </button>
+            <button class="modern-action-btn bonus-opening-btn" id="modern-bonus-opening-btn">
+              ▶️ Bonus Opening
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bonus Opening Panel (hidden by default, shown when Bonus Opening is clicked) -->
+      <section class="middle-panel" id="bonus-opening-panel" style="display:none;">
+        <div class="middle-panel-title">Bonus Opening</div>
+        <div id="bonus-opening-list" class="bonus-opening-list">
+          <!-- Bonus items will be dynamically populated here -->
+        </div>
+        <div class="bonus-opening-actions">
+          <button class="middle-btn" id="close-bonus-opening-btn">Close</button>
+        </div>
+      </section>
+
+      <!-- Modern Bonus Opening Panel -->
+      <section class="modern-bonus-opening-panel" id="modern-bonus-opening-panel" style="display:none;">
+        <div class="modern-panel-header">
+          <div class="panel-icon">▶️</div>
+          <h3>Modern Bonus Opening</h3>
+        </div>
+        <div id="modern-bonus-opening-list" class="modern-bonus-opening-list">
+          <!-- Modern bonus opening items will be dynamically populated here -->
+        </div>
+        <div class="modern-bonus-opening-actions">
+          <button class="modern-action-btn" id="close-modern-bonus-opening-btn">Close</button>
+        </div>
+      </section>
+
+      <!-- Random Slot Panel (hidden by default, shown when Random Slot is clicked) -->
+      <section class="middle-panel" id="random-slot-panel" style="display:none;">
+        <div class="middle-panel-title">Random Slot Picker</div>
+        
+        <!-- Provider Filters -->
+        <div class="provider-filters">
+          <div class="filter-title">Filter by Provider:</div>
+          <div class="provider-checkboxes">
+            <label class="provider-checkbox">
+              <input type="checkbox" value="Pragmatic Play" checked />
+              <span>Pragmatic Play</span>
+            </label>
+            <label class="provider-checkbox">
+              <input type="checkbox" value="Hacksaw" checked />
+              <span>Hacksaw</span>
+            </label>
+            <label class="provider-checkbox">
+              <input type="checkbox" value="No Limit" checked />
+              <span>No Limit</span>
+            </label>
+                      <label class="provider-checkbox">
+              <input type="checkbox" value="Bgaming" checked />
+              <span>Bgaming</span>
+            </label>
+                      <label class="provider-checkbox">
+              <input type="checkbox" value="3Oaks" checked />
+              <span>3Oaks</span>
+            </label>
+                      <label class="provider-checkbox">
+              <input type="checkbox" value="Belatra" checked />
+              <span>Belatra</span>
+            </label>
+                      <label class="provider-checkbox">
+              <input type="checkbox" value="Play'n GO" checked />
+              <span>Play'n GO</span>
+            </label>
+                      <label class="provider-checkbox">
+              <input type="checkbox" value="Play'n GO" checked />
+              <span>Play'n GO</span>
+            </label>
+            <label class="provider-checkbox">
+              <input type="checkbox" value="Big Time Gaming" checked />
+              <span>Big Time Gaming</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Slot Display Card -->
+        <div class="random-slot-display">
+          <div class="slot-card-container">
+            <div class="slot-card shuffle-card" id="random-slot-card">
+              <img src="https://i.imgur.com/8E3ucNx.png" alt="Slot" class="slot-image" />
+              <div class="slot-info">
+                <div class="slot-name">Click Shuffle to Pick!</div>
+                <div class="slot-provider">Ready to spin?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="random-slot-actions">
+          <button class="middle-btn shuffle-btn" id="shuffle-slot-btn">
+            <span class="middle-icon">🎲</span>
+            <span>Shuffle Slot</span>
+          </button>
+          <button class="middle-btn use-slot-btn" id="use-random-slot-btn">
+            <span class="middle-icon">✅</span>
+            <span>Use This Slot</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Tournament Setup Panel -->
+      <section class="middle-panel" id="tournament-panel" style="display:none;">
+        <div class="tournament-header">
+          <div class="middle-panel-title">Tournament Setup</div>
+          <div class="tournament-settings">
+            <label class="tournament-setting">
+              <span>Tournament Size:</span>
+              <select id="tournament-size" class="tournament-select">
+                <option value="4">4 Players</option>
+                <option value="8" selected>8 Players</option>
+                <option value="16">16 Players</option>
+              </select>
+            </label>
+            <label class="tournament-setting">
+              <span>Format:</span>
+              <select id="tournament-format" class="tournament-select">
+                <option value="single-elimination" selected>Single Elimination</option>
+                <option value="double-elimination">Double Elimination</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Tournament Configuration -->
+        <div class="tournament-config">
+          <div class="config-section">
+            <h4 class="config-title">
+              <span>Players & Slots</span>
+              <span class="participant-count" id="participant-count">(0/8)</span>
+            </h4>
+            
+            <!-- Quick Fill Options -->
+            <div class="quick-fill-options">
+              <button class="quick-fill-btn" id="fill-random-slots">
+                <span>🎲</span> Random Slots
+              </button>
+              <button class="quick-fill-btn" id="clear-all-participants">
+                <span>🗑️</span> Clear All
+              </button>
+              <button class="quick-fill-btn" id="import-participants">
+                <span>📥</span> Import
+              </button>
+              <button class="quick-fill-btn" id="debug-generate-inputs" style="background: #ff6b6b;">
+                <span>🔧</span> Debug Generate
+              </button>
+            </div>
+            
+            <!-- Participants Grid -->
+            <div class="participants-grid" id="participants-grid">
+              <!-- Dynamically generated participant inputs -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tournament Actions -->
+        <div class="tournament-actions">
+          <button class="tournament-action-btn primary" id="start-tournament-btn" disabled>
+            <span class="btn-icon">🚀</span>
+            <span>Start Tournament</span>
+          </button>
+          <button class="tournament-action-btn secondary" id="validate-tournament-btn">
+            <span class="btn-icon">✅</span>
+            <span>Validate Setup</span>
+          </button>
+          <button class="tournament-action-btn secondary" id="save-template-btn">
+            <span class="btn-icon">💾</span>
+            <span>Save Template</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Tournament Control Panel -->
+      <section class="middle-panel tournament-control-panel" id="tournament-control-panel" style="display:none;">
+        <div class="tournament-control-header">
+          <div class="control-title">Tournament Control</div>
+          <div class="tournament-status" id="tournament-status">
+            <span class="status-phase" id="status-phase">Quarter-Finals</span>
+            <span class="status-progress" id="status-progress">Match 1 of 4</span>
+          </div>
+        </div>
+        
+        <!-- Current Match Display -->
+        <div class="current-match-container">
+          <div class="match-header">
+            <h3 class="match-title" id="match-title">Quarter-Final Match 1</h3>
+            <div class="match-controls-mini">
+              <button class="mini-control-btn" id="prev-match-btn" title="Previous Match">
+                <span>⏮️</span>
+              </button>
+              <button class="mini-control-btn" id="next-match-btn" title="Next Match">
+                <span>⏭️</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="match-contestants">
+            <div class="contestant-card" id="contestant-1-card">
+              <div class="contestant-header">
+                <img id="contestant-1-img" class="contestant-avatar" src="" alt="">
+                <div class="contestant-info">
+                  <span id="contestant-1-name" class="contestant-name">Player 1</span>
+                  <span id="contestant-1-slot" class="contestant-slot">Slot Name</span>
+                </div>
+              </div>
+              
+              <div class="contestant-betting">
+                <div class="betting-row">
+                  <label class="betting-label">Bet Amount:</label>
+                  <div class="betting-input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="contestant-1-bet" class="betting-input" placeholder="0.00" min="0" step="0.01">
+                  </div>
+                </div>
+                <div class="betting-row">
+                  <label class="betting-label">Payout:</label>
+                  <div class="betting-input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="contestant-1-payout" class="betting-input" placeholder="0.00" min="0" step="0.01">
+                  </div>
+                </div>
+                <div class="multiplier-display">
+                  <span class="multiplier-label">Multiplier:</span>
+                  <span id="contestant-1-multiplier" class="multiplier-value">0.00x</span>
+                </div>
+              </div>
+              
+              <div class="winner-indicator" id="winner-indicator-1">
+                <span class="winner-crown">👑</span>
+                <span class="winner-text">WINNER</span>
+              </div>
+            </div>
+            
+            <div class="vs-divider">
+              <span class="vs-text">VS</span>
+            </div>
+            
+            <div class="contestant-card" id="contestant-2-card">
+              <div class="contestant-header">
+                <img id="contestant-2-img" class="contestant-avatar" src="" alt="">
+                <div class="contestant-info">
+                  <span id="contestant-2-name" class="contestant-name">Player 2</span>
+                  <span id="contestant-2-slot" class="contestant-slot">Slot Name</span>
+                </div>
+              </div>
+              
+              <div class="contestant-betting">
+                <div class="betting-row">
+                  <label class="betting-label">Bet Amount:</label>
+                  <div class="betting-input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="contestant-2-bet" class="betting-input" placeholder="0.00" min="0" step="0.01">
+                  </div>
+                </div>
+                <div class="betting-row">
+                  <label class="betting-label">Payout:</label>
+                  <div class="betting-input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="contestant-2-payout" class="betting-input" placeholder="0.00" min="0" step="0.01">
+                  </div>
+                </div>
+                <div class="multiplier-display">
+                  <span class="multiplier-label">Multiplier:</span>
+                  <span id="contestant-2-multiplier" class="multiplier-value">0.00x</span>
+                </div>
+              </div>
+              
+              <div class="winner-indicator" id="winner-indicator-2">
+                <span class="winner-crown">👑</span>
+                <span class="winner-text">WINNER</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tournament Controls -->
+        <div class="tournament-controls">
+          <div class="control-group">
+            <button class="control-btn secondary" id="determine-winner-btn">
+              <span>🏆</span> Determine Winner
+            </button>
+            <button class="control-btn secondary" id="reset-match-btn">
+              <span>🔄</span> Reset Match
+            </button>
+          </div>
+          
+          <div class="control-group">
+            <button class="control-btn primary" id="advance-phase-btn" disabled>
+              <span>⚡</span> Advance to Next Phase
+            </button>
+            <button class="control-btn danger" id="end-tournament-btn">
+              <span>🏁</span> End Tournament
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content Placeholder -->
+      <main class="main-content">
+        <!-- Add your main overlay content here -->
+      </main>
+
+      <!-- Right Info Panel -->
+      <aside class="info-panel">
+        <!-- Bonus Hunt Stats integrated into info panel -->
+        <div class="bonus-stats-panel-inline" id="bonus-stats-panel" style="display: none;">
+          <div class="stats-panel-header">
+            <h3>📊 Bonus Hunt Statistics</h3>
+          </div>
+          <div class="stats-panel-content">
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <div class="stat-label">Start Money</div>
+                <div class="stat-value" id="bh-stat-start">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-info">
+                <div class="stat-label">Target Money</div>
+                <div class="stat-value" id="bh-stat-target">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💵</div>
+              <div class="stat-info">
+                <div class="stat-label">Current Balance</div>
+                <div class="stat-value" id="bh-stat-current">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💸</div>
+              <div class="stat-info">
+                <div class="stat-label">Total Spent</div>
+                <div class="stat-value" id="bh-stat-spent">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📈</div>
+              <div class="stat-info">
+                <div class="stat-label">Total Profit/Loss</div>
+                <div class="stat-value" id="bh-stat-profit">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🎲</div>
+              <div class="stat-info">
+                <div class="stat-label">Total Bonuses</div>
+                <div class="stat-value" id="bh-stat-total-bonuses">0</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📊</div>
+              <div class="stat-info">
+                <div class="stat-label">Average Multiplier</div>
+                <div class="stat-value" id="bh-stat-avg-multi">0.00x</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🚀</div>
+              <div class="stat-info">
+                <div class="stat-label">Required Multiplier</div>
+                <div class="stat-value" id="bh-stat-req-multi">0.00x</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🎰</div>
+              <div class="stat-info">
+                <div class="stat-label">Best Slot</div>
+                <div class="stat-value" id="bh-stat-best">--</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💀</div>
+              <div class="stat-info">
+                <div class="stat-label">Worst Slot</div>
+                <div class="stat-value" id="bh-stat-worst">--</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Classic Bonus List -->
+        <div class="info-section bonus-list classic-layout" id="bonus-list-classic">
+          <div class="bonus-list-inner-container">
+            <div class="bonus-list-header">
+              <h4>Bonus List</h4>
+            </div>
+            <div class="carousel-container">
+              <div class="gradient-overlay-top"></div>
+              <ul></ul> <!-- Enhanced carousel will be applied to this list -->
+              <div class="empty-state" id="bonus-list-empty-classic" style="display: none;">
+                <div class="empty-state-icon">🎰</div>
+                <div class="empty-state-text">No bonuses yet</div>
+                <div class="empty-state-subtext">Add a slot to get started</div>
+              </div>
+              <div class="gradient-overlay-bottom"></div>
+            </div>
+          </div>
+          <div class="carousel-indicators">
+            <div class="progress-bar">
+              <div class="progress-fill" id="carousel-progress-classic"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modern Bonus List -->
+        <div class="info-section bonus-list modern-layout" id="bonus-list-modern" style="display: none;">
+          <div class="bonus-list-inner-container">
+            <div class="bonus-list-header">
+              <h4>🎠 Modern Bonus List</h4>
+            </div>
+            <div class="carousel-container">
+              <div class="gradient-overlay-top"></div>
+              <ul></ul>
+              <div class="empty-state" id="bonus-list-empty-modern" style="display: none;">
+                <div class="empty-state-icon">🎰</div>
+                <div class="empty-state-text">No bonuses yet</div>
+                <div class="empty-state-subtext">Add a slot to get started</div>
+              </div>
+              <div class="gradient-overlay-bottom"></div>
+            </div>
+          </div>
+          <div class="carousel-indicators">
+            <div class="progress-bar">
+              <div class="progress-fill" id="carousel-progress-modern"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Twitch Chat Embed at the bottom of the right sidebar -->
+        <div class="info-twitch-chat">
+          <div class="twitch-chat-container" id="twitch-chat-container">
+            <div class="empty-chat-card" id="empty-chat-card"></div>
+            <iframe id="twitch-chat-iframe" style="display: none;" width="100%" height="340" frameborder="0" scrolling="no"></iframe>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Modern Bonus Hunt Sidebar -->
+      <aside class="modern-bonus-sidebar" id="modern-bonus-sidebar" style="display: none;">
+        <!-- Statistics Card -->
+        <div class="stats-card">
+          <div class="stats-header">
+            <div class="stats-icon">📊</div>
+            <h3>Bonus Hunt Statistics</h3>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-icon">💰</div>
+              <div class="stat-content">
+                <div class="stat-label">START MONEY</div>
+                <div class="stat-value" id="modern-stat-start">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-content">
+                <div class="stat-label">TARGET MONEY</div>
+                <div class="stat-value" id="modern-stat-target">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">💵</div>
+              <div class="stat-content">
+                <div class="stat-label">CURRENT BALANCE</div>
+                <div class="stat-value" id="modern-stat-current">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">💸</div>
+              <div class="stat-content">
+                <div class="stat-label">TOTAL SPENT</div>
+                <div class="stat-value" id="modern-stat-spent">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">📈</div>
+              <div class="stat-content">
+                <div class="stat-label">TOTAL PROFIT/LOSS</div>
+                <div class="stat-value" id="modern-stat-profit">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🎲</div>
+              <div class="stat-content">
+                <div class="stat-label">TOTAL BONUSES</div>
+                <div class="stat-value" id="modern-stat-bonuses">0</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">📉</div>
+              <div class="stat-content">
+                <div class="stat-label">AVERAGE MULTIPLIER</div>
+                <div class="stat-value" id="modern-stat-avg-mult">0.00x</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🚀</div>
+              <div class="stat-content">
+                <div class="stat-label">REQUIRED MULTIPLIER</div>
+                <div class="stat-value" id="modern-stat-req-mult">0.00x</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🎰</div>
+              <div class="stat-content">
+                <div class="stat-label">BEST SLOT</div>
+                <div class="stat-value" id="modern-stat-best">--</div>
+                <div class="stat-subvalue" id="modern-stat-best-value">€0.00</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">💀</div>
+              <div class="stat-content">
+                <div class="stat-label">WORST SLOT</div>
+                <div class="stat-value" id="modern-stat-worst">--</div>
+                <div class="stat-subvalue" id="modern-stat-worst-value">€0.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modern Bonus List Card -->
+        <div class="modern-bonus-card">
+          <div class="bonus-card-header">
+            <div class="bonus-header-icon">🎠</div>
+            <h3>Bonus List</h3>
+          </div>
+          <div class="modern-slot-preview" id="modern-slot-preview" style="display: none;">
+            <div class="preview-header">
+              <span class="preview-icon">🎯</span>
+              <span class="preview-title">Current Opening</span>
+            </div>
+            <div class="preview-content">
+              <div class="preview-slot-card">
+                <img id="preview-slot-image" class="preview-image" src="" alt="Current Slot">
+                <div class="preview-overlay">
+                  <div class="preview-name" id="preview-slot-name">Slot Name</div>
+                  <div class="preview-stats">
+                    <span class="preview-bet" id="preview-slot-bet">€0.00</span>
+                    <span class="preview-counter" id="preview-slot-counter">1/1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modern-bonus-carousel">
+            <div class="modern-bonus-items" id="modern-bonus-items">
+              <!-- Bonus items will be rendered here -->
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Tutorial Overlay -->
+  <div class="tutorial-overlay" id="tutorial-overlay" style="display: none;">
+    <div class="tutorial-container">
+      <button class="tutorial-close" id="close-tutorial-btn">×</button>
+      <div class="tutorial-header">
+        <h2 class="tutorial-title">Tutorial - Como Funciona</h2>
+        <div class="tutorial-progress">
+          <span class="tutorial-step-counter"><span id="current-step">1</span> / <span id="total-steps">11</span></span>
+        </div>
+      </div>
+      <div class="tutorial-content" id="tutorial-content">
+        <!-- Tutorial steps will be dynamically inserted here -->
+      </div>
+      <div class="tutorial-navigation">
+        <button class="tutorial-btn tutorial-prev" id="tutorial-prev">← Anterior</button>
+        <button class="tutorial-btn tutorial-skip" id="tutorial-skip">Saltar Tutorial</button>
+        <button class="tutorial-btn tutorial-next" id="tutorial-next">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customization Panel -->
+  <div id="customization-panel" class="customization-panel" style="display: none;">
+    <div class="customization-content">
+      <div class="customization-header">
+        <h2>🎨 Customization Panel</h2>
+        <button class="customization-close" id="close-customization-btn">×</button>
+      </div>
+      
+      <!-- Tab Navigation -->
+      <div class="customization-tabs">
+        <button class="tab-btn active" data-tab="general-tab">📱 General</button>
+        <button class="tab-btn" data-tab="colors-tab">🎨 Colors</button>
+        <button class="tab-btn" data-tab="gradients-tab">🌈 Gradients</button>
+        <button class="tab-btn" data-tab="effects-tab">✨ Effects</button>
+        <button class="tab-btn" data-tab="chat-tab">💬 Chat</button>
+        <button class="tab-btn" data-tab="themes-tab">🌈 Themes</button>
+      </div>
+      
+      <div class="customization-body">
+        <!-- General Tab -->
+        <div class="tab-content" id="general-tab" style="display: block;">
+          <div class="customization-section">
+            <h3>📱 Navbar Settings</h3>
+            <div class="customization-row">
+              <label>Streamer Name:</label>
+              <input type="text" id="custom-streamer-name" placeholder="Enter streamer name">
+            </div>
+            <div class="customization-row">
+              <label>Website URL:</label>
+              <input type="url" id="custom-website-url" placeholder="https://your-website.com">
+            </div>
+            <div class="customization-row">
+              <label>Logo:</label>
+              <button class="custom-file-btn" id="custom-logo-btn">Choose Logo</button>
+              <input type="file" id="custom-logo-file" accept="image/*" style="display: none;">
+              <button class="custom-reset-btn" id="reset-logo-btn">Reset</button>
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>🖼️ Background Settings</h3>
+            <div class="customization-row">
+              <label>Background Type:</label>
+              <select id="background-type">
+                <option value="color">Solid Color</option>
+                <option value="gradient">Gradient</option>
+                <option value="image">Image</option>
+              </select>
+            </div>
+            <div class="customization-row" id="gradient-controls" style="display: none;">
+              <label>Gradient Color 2:</label>
+              <input type="color" id="gradient-color" value="#2d2e4a">
+            </div>
+            <div class="customization-row" id="image-controls" style="display: none;">
+              <label>Background Image:</label>
+              <button class="custom-file-btn" id="custom-bg-btn">Choose Image</button>
+              <input type="file" id="custom-bg-file" accept="image/*" style="display: none;">
+              <button class="custom-reset-btn" id="reset-bg-btn">Reset</button>
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>📍 Bonus List Panel Position</h3>
+            <div class="customization-row">
+              <label>Panel Position:</label>
+              <select id="info-panel-position">
+                <option value="upper-right">Upper Right</option>
+                <option value="lower-right">Lower Right</option>
+                <option value="upper-left">Upper Left</option>
+                <option value="lower-left">Lower Left</option>
+                <option value="center-right">Center Right (Default)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>📐 Layout Tools</h3>
+            <div class="customization-row">
+              <label>Enable Drag/Resize:</label>
+              <input type="checkbox" id="enable-drag-resize">
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>🏆 Tournament Bracket Position</h3>
+            <div class="customization-row">
+              <label>Bracket Position:</label>
+              <select id="tournament-bracket-position">
+                <option value="upper-right">Upper Right</option>
+                <option value="lower-right">Lower Right</option>
+                <option value="upper-left">Upper Left</option>
+                <option value="lower-left">Lower Left</option>
+                <option value="center-right">Center Right (Default)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>🎠 Bonus List Settings</h3>
+            <div class="customization-row">
+              <label>Layout Style:</label>
+              <select id="bonus-list-layout-select">
+                <option value="classic">📋 Classic Layout</option>
+                <option value="modern-card">🎠 Modern Card Layout</option>
+                <option value="modern-sidebar">🎆 Modern Sidebar</option>
+              </select>
+            </div>
+            <div class="customization-row">
+              <label>Carousel Control:</label>
+              <div class="carousel-controls">
+                <button class="carousel-control pause-btn" id="carousel-pause" title="Pause/Play">⏸️</button>
+                <button class="carousel-control speed-btn" id="carousel-speed" title="Speed: Normal">🏃</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colors Tab -->
+        <div class="tab-content" id="colors-tab" style="display: none;">
+          <div class="customization-section">
+            <h3>🎨 Basic Colors</h3>
+            <div class="customization-row">
+              <label>Primary Color:</label>
+              <input type="color" id="primary-color" value="#9346ff">
+            </div>
+            <div class="customization-row">
+              <label>Accent Color:</label>
+              <input type="color" id="accent-color" value="#00e1ff">
+            </div>
+            <div class="customization-row">
+              <label>Background Color:</label>
+              <input type="color" id="background-color" value="#1a1b2e">
+            </div>
+            <div class="customization-row">
+              <label>Text Color:</label>
+              <input type="color" id="text-color" value="#ffffff">
+            </div>
+            <div class="customization-row">
+              <label>Card Background:</label>
+              <input type="color" id="card-background-color" value="#2a2b3d">
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>🏷️ Navbar Colors</h3>
+            <div class="customization-row">
+              <label>Streamer Name Color:</label>
+              <input type="color" id="streamer-name-color" value="#ffffff">
+            </div>
+            <div class="customization-row">
+              <label>Website Color:</label>
+              <input type="color" id="website-color" value="#ffffff">
+            </div>
+            <div class="customization-row">
+              <label>"Be Gamble Aware" Color:</label>
+              <input type="color" id="gamble-aware-color" value="#ffffff">
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>🎰 Content Colors</h3>
+            <div class="customization-row">
+              <label>Slot Card Title Color:</label>
+              <input type="color" id="slot-title-color" value="#ffffff">
+            </div>
+            <div class="customization-row">
+              <label>Slot Card Bet Color:</label>
+              <input type="color" id="slot-bet-color" value="#00e1ff">
+            </div>
+            <div class="customization-row">
+              <label>Slot Card Win Color:</label>
+              <input type="color" id="slot-win-color" value="#4ade80">
+            </div>
+            <div class="customization-row">
+              <label>Bonus List Header Color:</label>
+              <input type="color" id="bonus-header-color" value="#ffffff">
+            </div>
+            <div class="customization-row">
+              <label>Money Display Color:</label>
+              <input type="color" id="money-display-color" value="#00e1ff">
+            </div>
+          </div>
+        </div>
+
+        <!-- Gradients Tab -->
+        <div class="tab-content" id="gradients-tab" style="display: none;">
+          <div class="customization-section">
+            <h3>🌈 Custom Gradients</h3>
+            <div class="customization-row">
+              <label>Slot Card Gradient Start:</label>
+              <input type="color" id="slot-gradient-start" value="#9346ff">
+            </div>
+            <div class="customization-row">
+              <label>Slot Card Gradient End:</label>
+              <input type="color" id="slot-gradient-end" value="#00e1ff">
+            </div>
+            <div class="customization-row">
+              <label>Button Gradient Start:</label>
+              <input type="color" id="button-gradient-start" value="#9346ff">
+            </div>
+            <div class="customization-row">
+              <label>Button Gradient End:</label>
+              <input type="color" id="button-gradient-end" value="#7c3aed">
+            </div>
+            <div class="customization-row">
+              <label>Sidebar Gradient Start:</label>
+              <input type="color" id="sidebar-gradient-start" value="#1a1b2e">
+            </div>
+            <div class="customization-row">
+              <label>Sidebar Gradient End:</label>
+              <input type="color" id="sidebar-gradient-end" value="#16213e">
+            </div>
+            <div class="customization-row">
+              <label>Gradient Direction:</label>
+              <select id="gradient-direction">
+                <option value="135deg">Diagonal (↗)</option>
+                <option value="90deg">Vertical (↑)</option>
+                <option value="0deg">Horizontal (→)</option>
+                <option value="45deg">Diagonal (↖)</option>
+                <option value="180deg">Horizontal (←)</option>
+                <option value="270deg">Vertical (↓)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Effects Tab -->
+        <div class="tab-content" id="effects-tab" style="display: none;">
+          <div class="customization-section">
+            <h3>✨ UI Effects</h3>
+            <div class="customization-row">
+              <label>
+                <input type="checkbox" id="glass-effect-toggle"> 
+                Glass Effect for Right Sidebar Cards
+              </label>
+            </div>
+            <div class="customization-row">
+              <label>
+                <input type="checkbox" id="animated-gradients-toggle"> 
+                Animated Gradients
+              </label>
+            </div>
+            <div class="customization-row">
+              <label>
+                <input type="checkbox" id="glow-effects-toggle"> 
+                Glow Effects on Hover
+              </label>
+            </div>
+            <div class="customization-row">
+              <label>
+                <input type="checkbox" id="sidebar-backgrounds-toggle"> 
+                Sidebar Button Backgrounds
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Tab -->
+        <div class="tab-content" id="chat-tab" style="display: none;">
+          <div class="customization-section">
+            <h3>💬 Twitch Chat</h3>
+            <div class="customization-row">
+              <label>
+                <input type="checkbox" id="hide-chat-toggle" checked> 
+                Hide Chat Box
+              </label>
+            </div>
+            <div class="customization-row">
+              <label>Twitch Channel Name:</label>
+              <input type="text" id="twitch-channel-input" placeholder="Enter your Twitch channel name">
+              <small>Enter just the channel name (e.g., "yourchannelname")</small>
+            </div>
+            <div class="customization-row">
+              <label>Chat Theme:</label>
+              <select id="twitch-chat-theme">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+              </select>
+            </div>
+            <div class="customization-row">
+              <button class="custom-apply-btn" id="load-twitch-chat">Load Chat</button>
+              <button class="custom-reset-btn" id="clear-twitch-chat">Clear Chat</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Themes Tab -->
+        <div class="tab-content" id="themes-tab" style="display: none;">
+          <div class="customization-section">
+            <h3>🌈 Classic Themes</h3>
+            <div class="theme-presets">
+              <button class="theme-preset" data-theme="default">Default</button>
+              <button class="theme-preset" data-theme="purple">Purple</button>
+              <button class="theme-preset" data-theme="blue">Blue</button>
+              <button class="theme-preset" data-theme="green">Green</button>
+              <button class="theme-preset" data-theme="red">Red</button>
+              <button class="theme-preset" data-theme="dark">Dark</button>
+            </div>
+          </div>
+          
+          <div class="customization-section">
+            <h3>🔥 Heavy Themes</h3>
+            <div class="theme-presets">
+              <button class="theme-preset theme-gold" data-theme="gold">🏆 Gold Luxury</button>
+              <button class="theme-preset theme-grey-red" data-theme="grey-red">🔴 Grey & Red</button>
+              <button class="theme-preset theme-black-red" data-theme="black-red">⭕ Black & Red</button>
+              <button class="theme-preset theme-chrome" data-theme="chrome">🤈 Chrome</button>
+              <button class="theme-preset theme-neon-blue" data-theme="neon-blue">💡 Neon Blue</button>
+              <button class="theme-preset theme-neon-pink" data-theme="neon-pink">💖 Neon Pink</button>
+              <button class="theme-preset theme-neon-green" data-theme="neon-green">🟢 Neon Green</button>
+              <button class="theme-preset theme-rainbow" data-theme="rainbow">🌈 Rainbow LED</button>
+              <button class="theme-preset theme-black-sky" data-theme="black-sky">🌌 Black Sky</button>
+            </div>
+          </div>
+
+          <div class="customization-section">
+            <h3>✨ Premium Themes</h3>
+            <div class="theme-presets">
+              <button class="theme-preset theme-cyber-purple" data-theme="cyber-purple">🔮 Cyber Purple</button>
+              <button class="theme-preset theme-ocean-blue" data-theme="ocean-blue">🌊 Ocean Blue</button>
+              <button class="theme-preset theme-sunset-orange" data-theme="sunset-orange">🌅 Sunset Orange</button>
+              <button class="theme-preset theme-forest-green" data-theme="forest-green">🌲 Forest Green</button>
+              <button class="theme-preset theme-midnight-purple" data-theme="midnight-purple">🌙 Midnight Purple</button>
+              <button class="theme-preset theme-lava-red" data-theme="lava-red">🌋 Lava Red</button>
+              <button class="theme-preset theme-ice-blue" data-theme="ice-blue">❄️ Ice Blue</button>
+              <button class="theme-preset theme-toxic-green" data-theme="toxic-green">☢️ Toxic Green</button>
+              <button class="theme-preset theme-royal-gold" data-theme="royal-gold">👑 Royal Gold</button>
+              <button class="theme-preset theme-wine-lovers" data-theme="wine-lovers">🍷 Wine Lovers</button>
+              <button class="theme-preset theme-matrix-green" data-theme="matrix-green">💻 Matrix Green</button>
+              <button class="theme-preset theme-synthwave" data-theme="synthwave">🎮 Synthwave</button>
+            </div>
+          </div>
+          
+          <div class="customization-section">
+            <h3>🎅 Seasonal Themes</h3>
+            <div class="theme-presets">
+              <button class="theme-preset theme-christmas" data-theme="christmas-candy-cane">🎄 Christmas Candy Cane</button>
+              <button class="theme-preset theme-winter" data-theme="winter-wonderland">❄️ Winter Wonderland</button>
+              <button class="theme-preset theme-halloween" data-theme="halloween-spooky">🎃 Halloween Spooky</button>
+              <button class="theme-preset theme-valentine" data-theme="valentine-love">💖 Valentine Love</button>
+            </div>
+            <div style="background: rgba(220, 38, 38, 0.15); border: 2px dashed rgba(220, 38, 38, 0.5); border-radius: 8px; padding: 15px; margin-top: 15px;">
+              <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95em; margin: 5px 0; line-height: 1.4;">
+                <strong>🎄 Christmas Candy Cane:</strong> Transforms everything with red & white spiral borders, candy cane stripes, Christmas snowflakes, and festive animations!
+              </p>
+            </div>
+          </div>
+          
+          <div class="customization-section">
+            <h3>🖼️ Background Patterns</h3>
+            <div class="customization-row">
+              <label>Select Background Pattern:</label>
+              <select id="background-pattern-select">
+                <option value="none">Solid Color</option>
+                <option value="radial-purple">Radial Purple/Cyan</option>
+                <option value="stripe-purple">Purple Stripes</option>
+                <option value="grid-blue">Blue Grid</option>
+                <option value="radial-green">Radial Green</option>
+                <option value="circle-red">Red Circles</option>
+                <option value="solid-dark">Dark Gradient</option>
+                <option value="stripe-gold">Gold Stripes</option>
+                <option value="diamond-grey">Grey Diamonds</option>
+                <option value="radial-black-red">Black Red Radial</option>
+                <option value="horizontal-chrome">Chrome Horizontal</option>
+                <option value="line-neon-blue">Neon Blue Lines</option>
+                <option value="radial-neon-pink">Neon Pink Radial</option>
+                <option value="stripe-neon-green">Neon Green Stripes</option>
+                <option value="rainbow-gradient">Rainbow Gradient</option>
+                <option value="black-sky">Black Sky (Night)</option>
+                <option value="animated-waves">🌊 Animated Waves</option>
+                <option value="particle-field">✨ Particle Field</option>
+                <option value="matrix-rain">💚 Matrix Rain</option>
+                <option value="cyber-grid">🔷 Cyber Grid</option>
+                <option value="plasma-wave">🌈 Plasma Wave</option>
+                <option value="hexagon-pattern">⬡ Hexagon Pattern</option>
+                <option value="constellation">⭐ Constellation</option>
+                <option value="northern-lights">🌌 Northern Lights</option>
+                <option value="fire-gradient">🔥 Fire Gradient</option>
+                <option value="ocean-depth">🌊 Ocean Depth</option>
+                <option value="sunset-sky">🌅 Sunset Sky</option>
+                <option value="space-nebula">🪐 Space Nebula</option>
+              </select>
+            </div>
+            <div class="customization-row">
+              <button class="custom-apply-btn" id="apply-background-pattern">Apply Pattern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="customization-footer">
+        <button class="custom-apply-btn" id="apply-customization">Apply Changes</button>
+        <button class="custom-reset-btn" id="reset-all-btn">Reset All</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

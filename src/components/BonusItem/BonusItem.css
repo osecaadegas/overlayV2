@@ -1,0 +1,144 @@
+.bonus-item {
+  background: linear-gradient(135deg, 
+    rgba(147, 70, 255, 0.08) 0%, 
+    rgba(0, 225, 255, 0.05) 100%);
+  border: 1px solid rgba(147, 70, 255, 0.2);
+  border-radius: 18px;
+  margin: 0.4rem 0;
+  padding: 12px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  list-style: none;
+}
+
+.bonus-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(147, 70, 255, 0.1) 50%, 
+    transparent 100%);
+  transition: left 0.5s ease;
+}
+
+.bonus-item:hover {
+  transform: translateX(4px);
+  border-color: rgba(147, 70, 255, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(147, 70, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: 0 4px 16px rgba(147, 70, 255, 0.2);
+}
+
+.bonus-item:hover::before {
+  left: 100%;
+}
+
+.bonus-item:nth-child(odd) {
+  border-left: 3px solid rgba(147, 70, 255, 0.4);
+}
+
+.bonus-item:nth-child(even) {
+  border-left: 3px solid rgba(0, 225, 255, 0.4);
+}
+
+.bonus-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.bonus-slot-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bonus-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.bonus-slot-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #ffffff;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bonus-metrics {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 1;
+}
+
+.metric-value {
+  font-weight: 700;
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.metric-label {
+  font-size: 10px;
+  color: #b0b3b8;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.payout-value.completed {
+  color: #4ade80;
+}
+
+.payout-value.pending {
+  color: #9ca3af;
+}
+
+.super-slot {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.2) 0%, rgba(255, 165, 0, 0.15) 100%) !important;
+  border: 2px solid #ff8c00 !important;
+  box-shadow: 0 0 25px rgba(255, 140, 0, 0.5), 0 0 50px rgba(255, 165, 0, 0.3), inset 0 0 20px rgba(255, 140, 0, 0.1) !important;
+  animation: superSlotVibrate 0.3s ease-in-out infinite, superSlotGlow 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes superSlotVibrate {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, 0.5px); }
+  50% { transform: translate(0, -1px); }
+  75% { transform: translate(1px, 0.5px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes superSlotGlow {
+  0% { 
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.5), 0 0 50px rgba(255, 165, 0, 0.3), inset 0 0 20px rgba(255, 140, 0, 0.1);
+  }
+  100% { 
+    box-shadow: 0 0 35px rgba(255, 140, 0, 0.7), 0 0 70px rgba(255, 165, 0, 0.5), inset 0 0 30px rgba(255, 140, 0, 0.2);
+  }
+}
