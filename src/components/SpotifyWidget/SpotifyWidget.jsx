@@ -21,7 +21,11 @@ function SpotifyWidget() {
       const token = params.get('access_token');
       if (token) {
         setAccessToken(token);
-        localStorage.setItem('spotify-access-token', token);
+        try {
+          localStorage.setItem('spotify-access-token', token);
+        } catch (e) {
+          console.warn('localStorage not available, using session only');
+        }
         window.location.hash = '';
       }
     }
@@ -50,7 +54,11 @@ function SpotifyWidget() {
 
       if (res.status === 401) {
         console.error('Invalid Spotify token - please login again');
-        localStorage.removeItem('spotify-access-token');
+        try {
+          localStorage.removeItem('spotify-access-token');
+        } catch (e) {
+          console.warn('localStorage not available');
+        }
         setAccessToken('');
         setTrack(null);
         return;
