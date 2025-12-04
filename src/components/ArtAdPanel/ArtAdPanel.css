@@ -158,7 +158,7 @@
   position: relative;
   width: 100%;
   height: 120px;
-  background: rgba(0, 0, 0, 0.6);
+  background: transparent;
   overflow: hidden;
 }
 
@@ -166,7 +166,10 @@
 .media-card-preview video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: transparent;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .media-card-type-badge {
@@ -201,6 +204,54 @@
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: 0.3px;
+}
+
+.media-resize-controls {
+  padding: 0.5rem 0.875rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.resize-label {
+  font-size: 0.7rem;
+  color: #00e1ff;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.resize-slider {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.resize-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #00e1ff, #9147ff);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 225, 255, 0.4);
+}
+
+.resize-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #00e1ff, #9147ff);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 225, 255, 0.4);
 }
 
 .media-card-actions {
@@ -263,14 +314,25 @@
   z-index: 25000;
   cursor: move;
   animation: fadeIn 0.3s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.draggable-media-container * {
+  box-sizing: border-box;
 }
 
 .draggable-media-container img,
-.draggable-media-container video {
+.draggable-media-container video,
+.draggable-media-container iframe {
   display: block;
   user-select: none;
   pointer-events: none;
+  background: transparent;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .resize-handle {

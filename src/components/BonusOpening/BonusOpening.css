@@ -1,5 +1,7 @@
 .bonus-opening-panel {
-  width: 500px;
+  position: fixed;
+  z-index: 16000;
+  width: 350px;
   max-width: 90vw;
   height: fit-content;
   
@@ -12,7 +14,6 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   
   padding: 1rem 1.2rem;
-  position: relative;
   overflow: hidden;
 }
 
@@ -46,6 +47,18 @@
   border-bottom: 1px solid rgba(0, 225, 255, 0.15);
   position: relative;
   z-index: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.bonus-opening-header.drag-handle {
+  cursor: grab !important;
+}
+
+.bonus-opening-header.drag-handle:active {
+  cursor: grabbing !important;
 }
 
 .bonus-opening-header h3 {
@@ -103,15 +116,12 @@
   width: 100%;
   height: auto;
   display: block;
-  max-height: 180px;
+  max-height: 220px;
   object-fit: cover;
 }
 
 .compact-slot-info {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(0, 225, 255, 0.15);
-  border-radius: 8px;
-  padding: 0.75rem;
+  display: none;
 }
 
 .slot-name-row {
@@ -275,6 +285,29 @@
   padding: 0.5rem;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
+}
+
+.close-all-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(239, 68, 68, 0.2));
+  border: 1px solid rgba(255, 71, 87, 0.4);
+  border-radius: 8px;
+  color: #ff4757;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-all-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.3), rgba(239, 68, 68, 0.3));
+  border-color: rgba(255, 71, 87, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
 }
 
 .no-bonuses-compact {

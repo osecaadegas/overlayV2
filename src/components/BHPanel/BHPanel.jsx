@@ -162,7 +162,14 @@ const BHPanel = ({ onClose, onOpenBonusOpening }) => {
 
   const handleOpeningClick = () => {
     if (onOpenBonusOpening) {
-      onOpenBonusOpening();
+      // Find first unopened bonus
+      const firstUnopened = bonuses.find(b => !b.opened);
+      if (firstUnopened) {
+        onOpenBonusOpening(firstUnopened.id);
+        onClose(); // Close the BHPanel when opening the BonusOpening panel
+      } else {
+        onOpenBonusOpening(null);
+      }
     }
   };
 

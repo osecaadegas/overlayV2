@@ -1,0 +1,65 @@
+/* Currently Opening Card */
+.currently-opening-card {
+  position: fixed;
+  right: calc(480px - 50px); /* Position to overlap with the info panel */
+  top: 15%;
+  transform: translateY(-15%);
+  width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 999;
+}
+
+.currently-opening-image {
+  width: 220px;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 225, 255, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.currently-opening-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 0;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+}
+
+.opening-header-text {
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.currently-opening-bet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 0;
+  border-radius: 0 0 12px 12px;
+  text-align: center;
+}
+
+.opening-bet-text {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}

@@ -19,14 +19,14 @@ const SlotMachine = ({ onClose }) => {
   const generateWinningCombination = () => {
     const winChance = Math.random();
     
-    // 75% chance of winning - all 3 symbols match
-    if (winChance < 0.75) {
+    // 70% chance of winning - all 3 symbols match (7 out of 10)
+    if (winChance < 0.70) {
       const winningSymbol = getRandomSymbol();
       console.log('WIN GENERATED:', winningSymbol, winningSymbol, winningSymbol);
       return [winningSymbol, winningSymbol, winningSymbol];
     }
     
-    // 25% chance of losing - ensure symbols DON'T all match
+    // 30% chance of losing - ensure symbols DON'T all match (3 out of 10)
     const result = [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
     
     // If by random chance all 3 match, force a different symbol on the last reel
@@ -55,6 +55,7 @@ const SlotMachine = ({ onClose }) => {
     setResultMessage('');
     
     const finalSymbols = generateWinningCombination();
+    console.log('Target symbols:', finalSymbols);
     
     // Start all reels spinning
     setSpinningReels([true, true, true]);
@@ -68,68 +69,64 @@ const SlotMachine = ({ onClose }) => {
     
     // Animate each reel with cycling symbols
     let currentIndex = [0, 0, 0];
+    const stoppedReels = [false, false, false];
+    
     const cycleInterval = setInterval(() => {
       setReels([
-        strips[0][currentIndex[0] % strips[0].length],
-        strips[1][currentIndex[1] % strips[1].length],
-        strips[2][currentIndex[2] % strips[2].length]
+        stoppedReels[0] ? finalSymbols[0] : strips[0][currentIndex[0] % strips[0].length],
+        stoppedReels[1] ? finalSymbols[1] : strips[1][currentIndex[1] % strips[1].length],
+        stoppedReels[2] ? finalSymbols[2] : strips[2][currentIndex[2] % strips[2].length]
       ]);
       currentIndex = currentIndex.map(i => i + 1);
     }, 50);
     
-    // Stop reels one by one with easing
-    const stopTimes = [2000, 2700, 3400];
-    const stoppedReels = [false, false, false];
+    // Stop reels one by one - left, middle, right
+    const stopTimes = [1500, 2200, 2900];
     
     stopTimes.forEach((time, i) => {
       setTimeout(() => {
-        // Stop this reel from spinning animation
+        // Mark this reel as stopped
+        stoppedReels[i] = true;
+        
+        // Stop spinning animation
         setSpinningReels(prev => {
           const newSpinning = [...prev];
           newSpinning[i] = false;
           return newSpinning;
         });
         
-        stoppedReels[i] = true;
+        // Set final symbol immediately
+        setReels(prev => {
+          const newReels = [...prev];
+          newReels[i] = finalSymbols[i];
+          console.log(`Reel ${i} stopped at:`, finalSymbols[i]);
+          return newReels;
+        });
         
-        // Wait a moment before showing final symbol for smooth transition
-        setTimeout(() => {
-          setReels(prev => {
-            const newReels = [...prev];
-            newReels[i] = finalSymbols[i];
-            console.log(`Reel ${i} stopped at:`, finalSymbols[i]);
-            return newReels;
-          });
-        }, 200);
-        
-        // Clear interval after last reel
+        // Clear interval and check result after last reel stops
         if (i === 2) {
           clearInterval(cycleInterval);
           
-          // Wait for all reels to fully stop and display
           setTimeout(() => {
-            console.log('Final symbols should be:', finalSymbols);
+            const allMatch = finalSymbols[0] === finalSymbols[1] && finalSymbols[1] === finalSymbols[2];
             
-            // Force set all reels to final symbols to be absolutely sure
-            setReels([...finalSymbols]);
+            setIsSpinning(false);
             
-            // Check for win after ensuring reels are set
+            if (allMatch) {
+              const symbol = finalSymbols[0];
+              const prize = prizes[symbol];
+              setResultMessage(`🎉 CONGRATULATIONS! You won ${prize.points} POINTS! 🎉`);
+              console.log('WIN!', symbol, prize);
+            } else {
+              setResultMessage('😢 Try again!');
+              console.log('LOSE:', finalSymbols);
+            }
+            
+            // Clear result message after 10 seconds
             setTimeout(() => {
-              const allMatch = finalSymbols[0] === finalSymbols[1] && finalSymbols[1] === finalSymbols[2];
-              
-              setIsSpinning(false);
-              
-              if (allMatch) {
-                const symbol = finalSymbols[0];
-                const prize = prizes[symbol];
-                setResultMessage(`🎉 CONGRATULATIONS! You won ${prize.label}! 🎉`);
-                console.log('WIN!', symbol);
-              } else {
-                setResultMessage('😢 Try again!');
-                console.log('LOSE:', finalSymbols);
-              }
-            }, 100);
-          }, 400);
+              setResultMessage('');
+            }, 10000);
+          }, 300);
         }
       }, time);
     });

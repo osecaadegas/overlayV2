@@ -1,5 +1,6 @@
 import { useBonusHunt } from '../../context/BonusHuntContext';
 import { slotDatabase } from '../../data/slotDatabase';
+import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernCardLayout.css';
 
 const ModernCardLayout = () => {
@@ -25,15 +26,41 @@ const ModernCardLayout = () => {
           const slot = slotDatabase.find(s => s.name.toLowerCase() === bonus.slotName.toLowerCase());
           const image = getSlotImage(bonus.slotName);
           const provider = slot?.provider || 'Unknown Provider';
+          const providerLogo = getProviderLogo(provider);
           
           return (
             <div key={bonus.id} className={`bonus-card ${bonus.opened ? 'opened' : 'unopened'}`}>
               <div className="card-image-section">
-                <img 
-                  src={image} 
-                  alt={bonus.slotName}
-                  className="card-slot-image"
-                />
+                <div className="card-flipper">
+                  {/* Front side - Slot Image */}
+                  <div className="card-face card-face-front">
+                    <img 
+                      src={image} 
+                      alt={bonus.slotName}
+                      className="card-slot-image"
+                      loading="eager"
+                    />
+                  </div>
+                  
+                  {/* Back side - Provider Info */}
+                  <div className="card-face card-face-back">
+                    {providerLogo ? (
+                      <div className="provider-logo-container">
+                        <img 
+                          src={providerLogo} 
+                          alt={provider}
+                          className="provider-logo-image"
+                          loading="eager"
+                        />
+                      </div>
+                    ) : (
+                      <div className="provider-text-container">
+                        <span className="provider-text">{provider}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
                 {bonus.isSuper && <div className="card-super-badge">⭐ SUPER</div>}
                 <div className="card-status-badge">
                   {bonus.opened ? '✓ Opened' : '○ Unopened'}

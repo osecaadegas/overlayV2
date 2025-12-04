@@ -6,6 +6,7 @@ import BonusList from './components/BonusList/BonusList';
 import StatsPanel from './components/StatsPanel/StatsPanel';
 import ModernCardLayout from './components/ModernCardLayout/ModernCardLayout';
 import ModernSidebarLayout from './components/ModernSidebarLayout/ModernSidebarLayout';
+import CurrentlyOpening from './components/CurrentlyOpening/CurrentlyOpening';
 import BHPanel from './components/BHPanel/BHPanel';
 import CircularSidebar from './components/CircularSidebar/CircularSidebar';
 import BonusOpening from './components/BonusOpening/BonusOpening';
@@ -17,6 +18,7 @@ import GiveawayPanel from './components/GiveawayPanel/GiveawayPanel';
 import RandomSlotPicker from './components/RandomSlotPicker/RandomSlotPicker';
 import ArtAdPanel from './components/ArtAdPanel/ArtAdPanel';
 import SlotMachine from './components/SlotMachine/SlotMachine';
+import CoinFlip from './components/CoinFlip/CoinFlip';
 import SpotifyWidget from './components/SpotifyWidget/SpotifyWidget';
 import TwitchChat from './components/TwitchChat/TwitchChat';
 
@@ -33,7 +35,8 @@ function AppContent() {
   const [showGiveaway, setShowGiveaway] = useState(false);
   const [showRandomSlot, setShowRandomSlot] = useState(false);
   const [showArtAd, setShowArtAd] = useState(false);
-  const [showSlotMachine, setShowSlotMachine] = useState(true); // FORCE VISIBLE FOR TESTING
+  const [showSlotMachine, setShowSlotMachine] = useState(false);
+  const [showCoinFlip, setShowCoinFlip] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [showSpotify, setShowSpotify] = useState(() => localStorage.getItem('showSpotify') === 'true');
   const [showTwitchChatWidget, setShowTwitchChatWidget] = useState(() => localStorage.getItem('showTwitchChat') === 'true');
@@ -90,6 +93,10 @@ function AppContent() {
       console.log('SLOT MACHINE NEW STATE:', !showSlotMachine);
       return;
     }
+    if (menuId === 'coinFlip') {
+      setShowCoinFlip(!showCoinFlip);
+      return;
+    }
     switch(menuId) {
       case 'customization':
         setShowCustomization(!showCustomization); // Toggle instead of just opening
@@ -126,20 +133,9 @@ function AppContent() {
       <Navbar />
       
       <div className="main-layout">
-        {/* Middle Panel - Bonus Opening */}
-        <section className={`middle-panel ${showBonusOpening ? 'active' : ''}`}>
-          {showBonusOpening && (
-            <BonusOpening 
-              bonusId={selectedBonusId} 
-              onClose={() => { 
-                setShowBonusOpening(false); 
-                setSelectedBonusId(null);
-                setShowBHPanel(true);
-                setShowStatsPanel(true);
-              }} 
-            />
-          )}
-        </section>
+        {/* Currently Opening Card - Outside scroll container */}
+        {showBonusOpening && layoutMode === 'modern-sidebar' && showStatsPanel && <CurrentlyOpening selectedBonusId={selectedBonusId} />}
+        
         {/* Right Sidebar - Info Panel (Conditionally visible) */}
         <aside className={`info-panel ${showStatsPanel ? 'info-panel--visible' : ''}`} style={{ display: showStatsPanel ? 'flex' : 'none' }}>
           {/* Layout Switcher */}
@@ -176,9 +172,8 @@ function AppContent() {
           {layoutMode === 'modern-sidebar' && <ModernSidebarLayout />}
         </aside>
       </div>
-      {showBHPanel && <BHPanel onClose={() => setShowBHPanel(false)} onOpenBonusOpening={() => {
-        setShowBHPanel(false);
-        setShowStatsPanel(false);
+      {showBHPanel && <BHPanel onClose={() => setShowBHPanel(false)} onOpenBonusOpening={(bonusId) => {
+        setSelectedBonusId(bonusId);
         setShowBonusOpening(true);
       }} />}
       {showEditSlots && <EditSlots onClose={() => setShowEditSlots(false)} />}
@@ -189,7 +184,7 @@ function AppContent() {
       {showRandomSlot && <RandomSlotPicker onClose={() => setShowRandomSlot(false)} />}
       {showArtAd && <ArtAdPanel onClose={() => setShowArtAd(false)} />}
       
-      {/* Slot Machine - Debug visible */}
+      {/* Slot Machine */}
       {console.log('Rendering SlotMachine check:', showSlotMachine)}
       {showSlotMachine && (
         <>
@@ -201,11 +196,27 @@ function AppContent() {
         </>
       )}
       
+      {/* Coin Flip */}
+      {showCoinFlip && <CoinFlip onClose={() => setShowCoinFlip(false)} />}
+      
       {/* Spotify Widget (only show if enabled in customization) */}
       {showSpotify && <SpotifyWidget />}
       
       {/* Twitch Chat (only show if enabled in customization) */}
       {showTwitchChatWidget && <TwitchChat channel="" position={chatSettings.position} width={chatSettings.width} height={chatSettings.height} />}
+      
+      {/* Bonus Opening Panel */}
+      {showBonusOpening && (
+        <BonusOpening 
+          bonusId={selectedBonusId} 
+          onClose={() => { 
+            setShowBonusOpening(false); 
+            setSelectedBonusId(null);
+            setShowBHPanel(true);
+          }}
+          onBonusChange={(bonusId) => setSelectedBonusId(bonusId)}
+        />
+      )}
       
       <CircularSidebar onMenuSelect={handleMenuSelect} isLocked={isLocked} onLockToggle={() => setIsLocked(!isLocked)} />
     </div>

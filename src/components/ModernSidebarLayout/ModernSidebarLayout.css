@@ -3,7 +3,9 @@
   flex-direction: column;
   gap: 1rem;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
+  padding-top: 0.5rem;
 }
 
 /* Statistics Card */
@@ -125,19 +127,19 @@
 }
 
 .modern-stat-item .stat-label {
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #9ca3af;
-  line-height: 1;
+  color: #d1d5db;
+  line-height: 1.2;
 }
 
 .modern-stat-item .stat-value {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: #f3f4f6;
-  line-height: 1;
+  color: #ffffff;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -402,14 +404,18 @@
 
 .provider-logo-wrapper {
   margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.provider-name {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 1rem;
+.provider-logo-img {
+  max-width: 150px;
+  max-height: 80px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(1.2) drop-shadow(0 0 20px rgba(168, 85, 247, 0.3));
 }
 
 .provider-logo-text {
@@ -498,6 +504,8 @@
   font-weight: 400 !important;
 }
 
+
+
 /* Responsive */
 @media (max-width: 1400px) {
   .modern-stats-grid {
@@ -511,5 +519,14 @@
   
   .spinning-card-wrapper {
     height: 300px;
+  }
+
+  .opening-card-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .opening-card-name {
+    font-size: 0.9rem;
   }
 }

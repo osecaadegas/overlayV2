@@ -1,47 +1,67 @@
 import { useEffect, useRef, useState } from 'react';
 import { useBonusHunt } from '../../context/BonusHuntContext';
 import { slotDatabase } from '../../data/slotDatabase';
+import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernSidebarLayout.css';
 
-const ModernSidebarLayout = () => {
+const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
   const { bonuses, getSlotImage, stats, startMoney, stopMoney, actualBalance, totalSpent } = useBonusHunt();
   const [currentBonusIndex, setCurrentBonusIndex] = useState(0);
+  const [nextBonusIndex, setNextBonusIndex] = useState(1);
   const [isFlipped, setIsFlipped] = useState(false);
   const [imageKey, setImageKey] = useState(0);
+
+  // Find currently opening bonus - if selectedBonusId is provided, use it; otherwise use first unopened
+  const openingBonus = showBonusOpening 
+    ? (selectedBonusId 
+        ? bonuses.find(b => b.id === selectedBonusId) 
+        : bonuses.find(b => !b.opened))
+    : null;
 
   // Auto-rotate through bonuses - preload next bonus
   useEffect(() => {
     if (bonuses.length === 0) return;
 
     const rotateInterval = setInterval(() => {
-      const nextIndex = (currentBonusIndex + 1) % bonuses.length;
+      const upcomingIndex = (currentBonusIndex + 1) % bonuses.length;
       
-      // Preload next image while front is visible
+      // Preload next slot image and provider logo while front is visible
+      if (!bonuses[upcomingIndex] || !bonuses[upcomingIndex].slotName) return;
+      
       const img = new Image();
-      img.src = getSlotImage(bonuses[nextIndex].slotName);
+      img.src = getSlotImage(bonuses[upcomingIndex].slotName);
       
-      // Start flip after short delay to ensure preload started
+      // Preload provider logo
+      const slot = slotDatabase.find(s => s.name.toLowerCase() === bonuses[upcomingIndex].slotName.toLowerCase());
+      if (slot) {
+        const logoUrl = getProviderLogo(slot.provider);
+        if (logoUrl) {
+          const logoImg = new Image();
+          logoImg.src = logoUrl;
+        }
+      }
+      
+      // Start flip after preloading
       const startFlip = () => {
         setIsFlipped(true);
         
-        // Wait for complete flip to back (1s), then update data
+        // Wait for flip to show back, then update to next slot data
         setTimeout(() => {
-          setCurrentBonusIndex(nextIndex);
-          setImageKey(prev => prev + 1);
+          setNextBonusIndex(upcomingIndex);
           
-          // Wait a moment to ensure React updates DOM, then flip back
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              setIsFlipped(false);
-            }, 100);
-          });
-        }, 1100); // Wait slightly longer than 1s transition
+          // After back is shown with new provider, flip to front with new slot image
+          setTimeout(() => {
+            setCurrentBonusIndex(upcomingIndex);
+            setImageKey(prev => prev + 1);
+            setIsFlipped(false);
+          }, 100);
+        }, 1000); // Wait for flip animation to complete
       };
       
       img.onload = startFlip;
       img.onerror = startFlip;
       
-      // Fallback timeout in case image doesn't trigger load/error
+      // Fallback timeout
       setTimeout(startFlip, 200);
     }, 5000); // Change bonus every 5 seconds
 
@@ -54,8 +74,8 @@ const ModernSidebarLayout = () => {
 
   return (
     <div className="modern-sidebar-container">
-      {/* Statistics Card */}
-      <div className="modern-stats-card">
+        {/* Statistics Card */}
+        <div className="modern-stats-card">
         <div className="modern-stats-header">
           <div className="stats-icon">📊</div>
           <h3>BONUS HUNT STATISTICS</h3>
@@ -120,27 +140,11 @@ const ModernSidebarLayout = () => {
               <div className="stat-subtext">(break-even)</div>
             </div>
           </div>
-          <div className="modern-stat-item">
-            <div className="stat-icon">🎰</div>
-            <div className="stat-content">
-              <div className="stat-label">BEST SLOT</div>
-              <div className="stat-value">{stats.bestSlot?.name || '--'}</div>
-              <div className="stat-subtext">{stats.bestSlot?.multiplier ? `${stats.bestSlot.multiplier.toFixed(2)}x` : '--'}</div>
-            </div>
-          </div>
-          <div className="modern-stat-item">
-            <div className="stat-icon">💀</div>
-            <div className="stat-content">
-              <div className="stat-label">WORST SLOT</div>
-              <div className="stat-value">{stats.worstSlot?.name || '--'}</div>
-              <div className="stat-subtext">{stats.worstSlot?.multiplier ? `${stats.worstSlot.multiplier.toFixed(2)}x` : '--'}</div>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* 3D Spinning Bonus Card */}
-      {bonuses.length > 0 ? (
+      {bonuses.length > 0 && bonuses[currentBonusIndex] && bonuses[currentBonusIndex].slotName ? (
         <div className="spinning-card-wrapper">
             <div className={`spinning-card ${isFlipped ? 'flipped' : ''}`} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
               {/* Front - Slot Image */}
@@ -179,12 +183,12 @@ const ModernSidebarLayout = () => {
                 <div className="card-provider-section">
                   <div className="provider-logo-wrapper">
                     {(() => {
-                      const slot = slotDatabase.find(s => s.name.toLowerCase() === bonuses[currentBonusIndex].slotName.toLowerCase());
-                      return slot ? (
-                        <>
-                          <div className="provider-name">{slot.provider}</div>
-                          <div className="provider-logo-text">{slot.provider.toUpperCase()}</div>
-                        </>
+                      const slot = bonuses[nextBonusIndex]?.slotName ? slotDatabase.find(s => s.name.toLowerCase() === bonuses[nextBonusIndex].slotName.toLowerCase()) : null;
+                      const logoUrl = slot ? getProviderLogo(slot.provider) : null;
+                      return slot && logoUrl ? (
+                        <img src={logoUrl} alt={slot.provider} className="provider-logo-img" />
+                      ) : slot ? (
+                        <div className="provider-logo-text">{slot.provider.toUpperCase()}</div>
                       ) : (
                         <div className="provider-logo-text">SLOT PROVIDER</div>
                       );
@@ -193,12 +197,12 @@ const ModernSidebarLayout = () => {
                   <div className="card-back-stats">
                     <div className="back-stat">
                       <span className="back-stat-label">BET SIZE</span>
-                      <span className="back-stat-value">€{bonuses[currentBonusIndex].betSize.toFixed(2)}</span>
+                      <span className="back-stat-value">€{bonuses[nextBonusIndex].betSize.toFixed(2)}</span>
                     </div>
                     <div className="back-stat">
                       <span className="back-stat-label">STATUS</span>
-                      <span className={`back-stat-value ${bonuses[currentBonusIndex].opened ? 'opened' : 'unopened'}`}>
-                        {bonuses[currentBonusIndex].opened ? '✓ OPENED' : '○ WAITING'}
+                      <span className={`back-stat-value ${bonuses[nextBonusIndex].opened ? 'opened' : 'unopened'}`}>
+                        {bonuses[nextBonusIndex].opened ? '✓ OPENED' : '○ WAITING'}
                       </span>
                     </div>
                   </div>

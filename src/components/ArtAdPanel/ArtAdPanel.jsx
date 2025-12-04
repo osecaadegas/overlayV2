@@ -1,11 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './ArtAdPanel.css';
 import useDraggable from '../../hooks/useDraggable';
 
 const ArtAdPanel = ({ onClose }) => {
-  const [media, setMedia] = useState([]);
+  const [media, setMedia] = useState(() => {
+    const saved = localStorage.getItem('artad-media');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [mediaUrl, setMediaUrl] = useState('');
-  const [displayedMedia, setDisplayedMedia] = useState([]);
+  const [displayedMedia, setDisplayedMedia] = useState(() => {
+    const saved = localStorage.getItem('artad-displayed');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save to localStorage whenever media or displayedMedia changes
+  useEffect(() => {
+    localStorage.setItem('artad-media', JSON.stringify(media));
+  }, [media]);
+
+  useEffect(() => {
+    localStorage.setItem('artad-displayed', JSON.stringify(displayedMedia));
+  }, [displayedMedia]);
 
   const addMedia = () => {
     if (mediaUrl.trim()) {
@@ -49,15 +65,30 @@ const ArtAdPanel = ({ onClose }) => {
   };
 
   const showMedia = (mediaItem) => {
+    // Check if there's already a displayed instance of this media
+    const existingDisplayed = displayedMedia.find(m => m.id === mediaItem.id);
+    
+    if (existingDisplayed) {
+      // Already displayed, don't add duplicate
+      return;
+    }
+
     const newDisplayedMedia = {
       ...mediaItem,
       displayId: `${mediaItem.id}-${Date.now()}`,
       width: mediaItem.type === 'youtube' ? 560 : 400,
       height: mediaItem.type === 'youtube' ? 315 : mediaItem.type === 'video' ? 225 : 300,
       x: window.innerWidth / 2 - (mediaItem.type === 'youtube' ? 280 : 200),
-      y: window.innerHeight / 2 - (mediaItem.type === 'youtube' ? 157.5 : 150)
+      y: window.innerHeight / 2 - (mediaItem.type === 'youtube' ? 157.5 : 150),
+      scale: 1
     };
     setDisplayedMedia([...displayedMedia, newDisplayedMedia]);
+  };
+
+  const updateMediaScale = (displayId, scale) => {
+    setDisplayedMedia(displayedMedia.map(m =>
+      m.displayId === displayId ? { ...m, scale } : m
+    ));
   };
 
   const hideMedia = (displayId) => {
@@ -134,58 +165,70 @@ const ArtAdPanel = ({ onClose }) => {
                 <p>No media added</p>
               </div>
             ) : (
-              media.map(item => (
-                    <div key={item.id} className="media-card">
-                  <div className="media-card-preview">
-                    {item.type === 'youtube' ? (
-                      <iframe src={item.url} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{width: '100%', height: '100%'}} />
-                    ) : item.type === 'video' ? (
-                      <video src={item.url} />
-                    ) : (
-                      <img src={item.url} alt={item.title} />
+              media.map(item => {
+                const displayedItem = displayedMedia.find(m => m.id === item.id);
+                return (
+                  <div key={item.id} className="media-card">
+                    <div className="media-card-preview">
+                      {item.type === 'youtube' ? (
+                        <iframe src={item.url} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{width: '100%', height: '100%'}} />
+                      ) : item.type === 'video' ? (
+                        <video src={item.url} />
+                      ) : (
+                        <img src={item.url} alt={item.title} />
+                      )}
+                      <div className="media-card-type-badge">{item.type === 'youtube' ? '▶️' : item.type === 'video' ? '🎥' : '🖼️'}</div>
+                    </div>
+                    <div className="media-card-footer">
+                      <div className="media-card-title" title={item.title}>{item.title.length > 15 ? item.title.substring(0, 15) + '...' : item.title}</div>
+                    </div>
+                    {displayedItem && (
+                      <div className="media-resize-controls">
+                        <label className="resize-label">Size: {Math.round(displayedItem.scale * 100)}%</label>
+                        <input 
+                          type="range" 
+                          min="25" 
+                          max="200" 
+                          value={displayedItem.scale * 100}
+                          onChange={(e) => updateMediaScale(displayedItem.displayId, parseFloat(e.target.value) / 100)}
+                          className="resize-slider"
+                        />
+                      </div>
                     )}
-                    <div className="media-card-type-badge">{item.type === 'youtube' ? '▶️' : item.type === 'video' ? '🎥' : '🖼️'}</div>
+                    <div className="media-card-actions">
+                      <button 
+                        className={`ad-action-btn toggle ${displayedItem ? 'hide' : 'show'}`}
+                        onClick={() => displayedItem ? setDisplayedMedia(displayedMedia.filter(m => m.id !== item.id)) : showMedia(item)}
+                      >
+                        {displayedItem ? '🙈 Hide' : '👁️ Show'}
+                      </button>
+                      <button 
+                        className="ad-action-btn remove"
+                        onClick={() => removeMedia(item.id)}
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
-                  <div className="media-card-footer">
-                    <div className="media-card-title" title={item.title}>{item.title.length > 15 ? item.title.substring(0, 15) + '...' : item.title}</div>
-                  </div>
-                  <div className="media-card-actions">
-                    <button 
-                      className="ad-action-btn show"
-                      onClick={() => showMedia(item)}
-                    >
-                      👁️ Show
-                    </button>
-                    <button 
-                      className="ad-action-btn hide"
-                      onClick={() => setDisplayedMedia(displayedMedia.filter(m => m.id !== item.id))}
-                      disabled={!displayedMedia.some(m => m.id === item.id)}
-                    >
-                      🙈 Hide
-                    </button>
-                    <button 
-                      className="ad-action-btn remove"
-                      onClick={() => removeMedia(item.id)}
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
       </div>
 
-      {displayedMedia.map(item => (
-        <DraggableMedia
-          key={item.displayId}
-          item={item}
-          onClose={() => hideMedia(item.displayId)}
-          onSizeChange={(w, h) => updateMediaSize(item.displayId, w, h)}
-          onPositionChange={(x, y) => updateMediaPosition(item.displayId, x, y)}
-        />
-      ))}
+      {createPortal(
+        displayedMedia.map(item => (
+          <DraggableMedia
+            key={item.displayId}
+            item={item}
+            onClose={() => hideMedia(item.displayId)}
+            onSizeChange={(w, h) => updateMediaSize(item.displayId, w, h)}
+            onPositionChange={(x, y) => updateMediaPosition(item.displayId, x, y)}
+          />
+        )),
+        document.body
+      )}
     </>
   );
 };
@@ -196,35 +239,26 @@ const DraggableMedia = ({ item, onClose, onSizeChange, onPositionChange }) => {
   const isResizing = useRef(false);
   const startPos = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
-  useEffect(() => {
-    const element = mediaRef.current;
-    if (!element) return;
 
-    element.style.left = `${item.x}px`;
-    element.style.top = `${item.y}px`;
-    element.style.width = `${item.width}px`;
-    element.style.height = `${item.height}px`;
-  }, []);
 
   const handleMouseDown = (e) => {
     if (e.target.classList.contains('resize-handle')) {
       isResizing.current = true;
-      const rect = mediaRef.current.getBoundingClientRect();
       startPos.current = {
         x: e.clientX,
         y: e.clientY,
-        width: rect.width,
-        height: rect.height
+        width: item.width,
+        height: item.height
       };
-    } else if (e.target.closest('.draggable-media-container')) {
+      e.preventDefault();
+    } else if (e.currentTarget === mediaRef.current || e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
       isDragging.current = true;
-      const rect = mediaRef.current.getBoundingClientRect();
       startPos.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        x: e.clientX - item.x,
+        y: e.clientY - item.y
       };
+      e.preventDefault();
     }
-    e.preventDefault();
   };
 
   const handleMouseMove = (e) => {
@@ -234,15 +268,12 @@ const DraggableMedia = ({ item, onClose, onSizeChange, onPositionChange }) => {
       const newWidth = Math.max(200, startPos.current.width + deltaX);
       const newHeight = Math.max(150, startPos.current.height + deltaY);
       
-      mediaRef.current.style.width = `${newWidth}px`;
-      mediaRef.current.style.height = `${newHeight}px`;
       onSizeChange(newWidth, newHeight);
     } else if (isDragging.current) {
       const x = e.clientX - startPos.current.x;
       const y = e.clientY - startPos.current.y;
       
-      mediaRef.current.style.left = `${x}px`;
-      mediaRef.current.style.top = `${y}px`;
+      // Only update position, NOT size
       onPositionChange(x, y);
     }
   };
@@ -261,16 +292,26 @@ const DraggableMedia = ({ item, onClose, onSizeChange, onPositionChange }) => {
     };
   }, []);
 
+  const scale = item.scale || 1;
+  const scaledWidth = item.width * scale;
+  const scaledHeight = item.height * scale;
+
   return (
     <div 
       ref={mediaRef}
       className="draggable-media-container"
       onMouseDown={handleMouseDown}
+      style={{
+        width: `${scaledWidth}px`,
+        height: `${scaledHeight}px`,
+        left: `${item.x}px`,
+        top: `${item.y}px`
+      }}
     >
       {item.type === 'youtube' ? (
-        <iframe src={item.url} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%' }} />
+        <iframe src={item.url} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width: '100%', height: '100%', pointerEvents: 'auto' }} />
       ) : item.type === 'video' ? (
-        <video src={item.url} controls autoPlay loop style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        <video src={item.url} controls autoPlay loop style={{ width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'auto' }} />
       ) : (
         <img src={item.url} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
       )}

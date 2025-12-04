@@ -1,5 +1,6 @@
 import './Navbar.css';
 import { useState, useEffect } from 'react';
+import SpotifyWidget from '../SpotifyWidget/SpotifyWidget';
 
 const Navbar = () => {
   const [currentTime, setCurrentTime] = useState('');
@@ -39,14 +40,14 @@ const Navbar = () => {
         const data = await response.json();
         
         const formattedPrices = [
-          { symbol: 'BTC', name: 'Bitcoin', price: data.bitcoin?.usd, change: data.bitcoin?.usd_24h_change },
-          { symbol: 'ETH', name: 'Ethereum', price: data.ethereum?.usd, change: data.ethereum?.usd_24h_change },
-          { symbol: 'BNB', name: 'BNB', price: data.binancecoin?.usd, change: data.binancecoin?.usd_24h_change },
-          { symbol: 'SOL', name: 'Solana', price: data.solana?.usd, change: data.solana?.usd_24h_change },
-          { symbol: 'XRP', name: 'XRP', price: data.ripple?.usd, change: data.ripple?.usd_24h_change },
-          { symbol: 'ADA', name: 'Cardano', price: data.cardano?.usd, change: data.cardano?.usd_24h_change },
-          { symbol: 'DOGE', name: 'Dogecoin', price: data.dogecoin?.usd, change: data.dogecoin?.usd_24h_change },
-          { symbol: 'DOT', name: 'Polkadot', price: data.polkadot?.usd, change: data.polkadot?.usd_24h_change },
+          { symbol: 'BTC', name: 'Bitcoin', price: data.bitcoin?.usd, change: data.bitcoin?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
+          { symbol: 'ETH', name: 'Ethereum', price: data.ethereum?.usd, change: data.ethereum?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
+          { symbol: 'BNB', name: 'BNB', price: data.binancecoin?.usd, change: data.binancecoin?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png' },
+          { symbol: 'SOL', name: 'Solana', price: data.solana?.usd, change: data.solana?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+          { symbol: 'XRP', name: 'XRP', price: data.ripple?.usd, change: data.ripple?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png' },
+          { symbol: 'ADA', name: 'Cardano', price: data.cardano?.usd, change: data.cardano?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/975/small/cardano.png' },
+          { symbol: 'DOGE', name: 'Dogecoin', price: data.dogecoin?.usd, change: data.dogecoin?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png' },
+          { symbol: 'DOT', name: 'Polkadot', price: data.polkadot?.usd, change: data.polkadot?.usd_24h_change, logo: 'https://assets.coingecko.com/coins/images/12171/small/polkadot.png' },
         ];
         
         setCryptoPrices(formattedPrices);
@@ -120,6 +121,7 @@ const Navbar = () => {
       
       <div className="navbar-center">
         <span className="current-time">{currentTime}</span>
+        <SpotifyWidget />
       </div>
       
       <div className="navbar-right">
@@ -129,11 +131,21 @@ const Navbar = () => {
               <>
                 {[...cryptoPrices, ...cryptoPrices].map((crypto, index) => (
                   <div key={index} className="crypto-item">
-                    <span className="crypto-symbol">{crypto.symbol}</span>
-                    <span className="crypto-price">${crypto.price?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                    <span className={`crypto-change ${crypto.change >= 0 ? 'positive' : 'negative'}`}>
-                      {crypto.change >= 0 ? '▲' : '▼'} {Math.abs(crypto.change)?.toFixed(2)}%
-                    </span>
+                    <img src={crypto.logo} alt={crypto.symbol} className="crypto-logo" />
+                    <div className="crypto-info">
+                      <div className="crypto-name-row">
+                        <span className="crypto-name">{crypto.name}</span>
+                        <span className={`crypto-arrow ${crypto.change >= 0 ? 'positive' : 'negative'}`}>
+                          {crypto.change >= 0 ? '↑' : '↓'}
+                        </span>
+                      </div>
+                      <div className="crypto-details-row">
+                        <span className="crypto-price">${crypto.price?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className={`crypto-change ${crypto.change >= 0 ? 'positive' : 'negative'}`}>
+                          {Math.abs(crypto.change)?.toFixed(2)}%
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </>

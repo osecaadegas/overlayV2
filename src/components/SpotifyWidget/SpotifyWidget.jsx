@@ -1,56 +1,112 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import './SpotifyWidget.css';
 
-const SpotifyWidget = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState('No track playing');
-  const [currentArtist, setCurrentArtist] = useState('Connect to Spotify');
-  const [albumArt, setAlbumArt] = useState('');
+const CLIENT_ID = '308c74484b8f4878bc0ae17d2500d41c';
+const REDIRECT_URI = window.location.origin;
+const SCOPES = 'user-read-currently-playing user-read-playback-state';
 
-  const handleConnect = () => {
-    // Spotify OAuth would go here
-    alert('Spotify OAuth integration: You would need to set up Spotify Developer credentials and implement OAuth flow.');
-    setIsConnected(true);
-    setIsVisible(true);
+function SpotifyWidget() {
+  const [track, setTrack] = useState(null);
+  const [accessToken, setAccessToken] = useState(() => {
+    return localStorage.getItem('spotify-access-token') || '';
+  });
+
+  // Handle OAuth callback
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const params = new URLSearchParams(hash.substring(1));
+      const token = params.get('access_token');
+      if (token) {
+        setAccessToken(token);
+        localStorage.setItem('spotify-access-token', token);
+        window.location.hash = '';
+      }
+    }
+  }, []);
+
+  const handleLogin = () => {
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}`;
+    window.location.href = authUrl;
   };
 
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
+  const fetchCurrentSong = async () => {
+    if (!accessToken) return;
+
+    try {
+      const res = await fetch(
+        "https://api.spotify.com/v1/me/player/currently-playing",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        }
+      );
+
+      if (res.status === 204) {
+        setTrack(null);
+        return;
+      }
+
+      if (res.status === 401) {
+        console.error('Invalid Spotify token - please login again');
+        localStorage.removeItem('spotify-access-token');
+        setAccessToken('');
+        setTrack(null);
+        return;
+      }
+
+      const data = await res.json();
+
+      setTrack({
+        name: data.item?.name,
+        artist: data.item?.artists?.map(a => a.name).join(", "),
+        image: data.item?.album?.images[0].url
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  if (!isVisible) {
+  useEffect(() => {
+    fetchCurrentSong();
+    const interval = setInterval(fetchCurrentSong, 5000);
+    return () => clearInterval(interval);
+  }, [accessToken]);
+
+  if (!accessToken) {
     return (
-      <button className="spotify-show-btn" onClick={() => setIsVisible(true)}>
-        🎵 Show Spotify
+      <button className="spotify-login-btn" onClick={handleLogin}>
+        🎵 Connect Spotify
       </button>
+    );
+  }
+
+  if (!track) {
+    return (
+      <div className="spotify-widget nothing-playing">
+        Nothing playing
+      </div>
     );
   }
 
   return (
     <div className="spotify-widget">
-      <div className="spotify-content">
-        {albumArt && (
-          <img src={albumArt} alt="Album Art" className="spotify-album-art" />
-        )}
-        <div className="spotify-info">
-          <div className="spotify-track">{currentTrack}</div>
-          <div className="spotify-artist">{currentArtist}</div>
+      <img
+        src={track.image}
+        alt="Album cover"
+        className="spotify-album-art"
+      />
+
+      <div className="spotify-track-info">
+        <div className="spotify-track-name">
+          {track.name}
         </div>
-        <div className="spotify-controls">
-          {!isConnected ? (
-            <button className="spotify-auth-btn" onClick={handleConnect}>
-              Connect Spotify
-            </button>
-          ) : (
-            <button className="spotify-toggle-btn" onClick={toggleVisibility}>
-              Hide
-            </button>
-          )}
+
+        <div className="spotify-track-artist">
+          {track.artist}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default SpotifyWidget;

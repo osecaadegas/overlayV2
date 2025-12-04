@@ -4,7 +4,7 @@ import { slotDatabase } from '../../data/slotDatabase';
 import './BonusOpening.css';
 import useDraggable from '../../hooks/useDraggable';
 
-const BonusOpening = ({ bonusId, onClose }) => {
+const BonusOpening = ({ bonusId, onClose, onBonusChange }) => {
   const { bonuses, updateBonusResult, getSlotImage } = useBonusHunt();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [payout, setPayout] = useState('');
@@ -12,6 +12,12 @@ const BonusOpening = ({ bonusId, onClose }) => {
   const draggableRef = useDraggable(true, 'bonusopening');
 
   const unopenedBonuses = bonuses.filter(b => !b.opened);
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('BonusOpening - All bonuses:', bonuses);
+    console.log('BonusOpening - Unopened bonuses:', unopenedBonuses);
+  }, [bonuses, unopenedBonuses]);
   
   // If bonusId is provided, start from that bonus
   useEffect(() => {
@@ -24,6 +30,13 @@ const BonusOpening = ({ bonusId, onClose }) => {
   }, [bonusId]);
 
   const currentBonus = unopenedBonuses[currentIndex];
+
+  // Notify parent when current bonus changes
+  useEffect(() => {
+    if (currentBonus && onBonusChange) {
+      onBonusChange(currentBonus.id);
+    }
+  }, [currentBonus?.id, onBonusChange]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -53,12 +66,7 @@ const BonusOpening = ({ bonusId, onClose }) => {
       const payoutValue = parseFloat(payout);
       updateBonusResult(currentBonus.id, payoutValue);
       setPayout('');
-      
-      if (currentIndex < unopenedBonuses.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else {
-        onClose();
-      }
+      // Don't auto-advance - let user navigate manually
     }
   };
 
@@ -78,8 +86,8 @@ const BonusOpening = ({ bonusId, onClose }) => {
 
   if (!currentBonus) {
     return (
-      <div className="bonus-opening-panel">
-        <div className="bonus-opening-header">
+      <div className="bonus-opening-panel" ref={draggableRef}>
+        <div className="bonus-opening-header drag-handle">
           <h3>🎁 Bonus Opening</h3>
           <button className="compact-close-btn" onClick={onClose} title="Close">✕</button>
         </div>
@@ -91,16 +99,19 @@ const BonusOpening = ({ bonusId, onClose }) => {
     );
   }
 
+  console.log('Current bonus:', currentBonus);
+  
   const multiplier = payout ? (parseFloat(payout) / currentBonus.betSize).toFixed(2) : '0.00';
-  const image = getSlotImage(currentBonus.slotName);
-  const slot = slotDatabase.find(s => s.name.toLowerCase() === currentBonus.slotName.toLowerCase());
+  const slotName = currentBonus.slotName || 'Unknown Slot';
+  const image = slotName !== 'Unknown Slot' ? getSlotImage(slotName) : 'https://via.placeholder.com/150';
+  const slot = slotName !== 'Unknown Slot' ? slotDatabase.find(s => s.name.toLowerCase() === slotName.toLowerCase()) : null;
   const provider = slot?.provider || 'N/A';
 
   return (
     <div className="bonus-opening-panel" ref={draggableRef}>
-      <div className="bonus-opening-header drag-handle">
-        <h3>🎁 Opening {currentIndex + 1}/{unopenedBonuses.length}</h3>
-        <button className="compact-close-btn" onClick={onClose} title="Close">✕</button>
+      <div className="bonus-opening-header drag-handle" style={{ cursor: 'grab' }}>
+        <h3 style={{ cursor: 'grab' }}>🎁 Opening {currentIndex + 1}/{unopenedBonuses.length}</h3>
+        <button className="compact-close-btn" onClick={onClose} title="Close" style={{ cursor: 'pointer' }}>✕</button>
       </div>
 
       <div className="bonus-opening-content">
@@ -110,7 +121,7 @@ const BonusOpening = ({ bonusId, onClose }) => {
         
         <div className="compact-slot-info">
           <div className="slot-name-row">
-            <span className="slot-name">{currentBonus.slotName}</span>
+            <span className="slot-name">{slotName}</span>
             {currentBonus.isSuper && <span className="super-badge">⭐</span>}
           </div>
           <div className="slot-meta">
@@ -175,6 +186,10 @@ const BonusOpening = ({ bonusId, onClose }) => {
           <span>•</span>
           <span>Esc Close</span>
         </div>
+        
+        <button className="close-all-btn" onClick={onClose}>
+          Close All
+        </button>
       </div>
     </div>
   );
