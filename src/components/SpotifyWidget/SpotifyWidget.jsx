@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import './SpotifyWidget.css';
 
 const CLIENT_ID = '308c74484b8f4878bc0ae17d2500d41c';
-const REDIRECT_URI = window.location.origin;
+const REDIRECT_URI = window.location.hostname.includes('localhost') 
+  ? 'http://localhost:5173'
+  : 'https://reactoverlay-94ui08ozb-osecaadegas95-5328s-projects.vercel.app';
 const SCOPES = 'user-read-currently-playing user-read-playback-state';
 
 function SpotifyWidget() {
