@@ -24,7 +24,8 @@ export default function PointsManager() {
     description: '',
     point_cost: '',
     reward_type: 'premium_duration',
-    duration_days: '7'
+    duration_days: '7',
+    image_url: ''
   });
 
   const SE_CHANNEL_ID = import.meta.env.VITE_SE_CHANNEL_ID;
@@ -206,6 +207,7 @@ export default function PointsManager() {
           duration_days: parseInt(itemForm.duration_days),
           reward_type: itemForm.reward_type
         },
+        image_url: itemForm.image_url || null,
         is_active: true
       };
 
@@ -235,7 +237,8 @@ export default function PointsManager() {
         description: '',
         point_cost: '',
         reward_type: 'premium_duration',
-        duration_days: '7'
+        duration_days: '7',
+        image_url: ''
       });
       await loadRedemptionItems();
     } catch (err) {
@@ -408,7 +411,8 @@ export default function PointsManager() {
                       description: '',
                       point_cost: '',
                       reward_type: 'premium_duration',
-                      duration_days: '7'
+                      duration_days: '7',
+                      image_url: ''
                     });
                     setShowItemModal(true);
                   }}
@@ -440,7 +444,8 @@ export default function PointsManager() {
                             description: item.description,
                             point_cost: item.point_cost.toString(),
                             reward_type: item.reward_type,
-                            duration_days: (item.reward_value?.duration_days || 7).toString()
+                            duration_days: (item.reward_value?.duration_days || 7).toString(),
+                            image_url: item.image_url || ''
                           });
                           setShowItemModal(true);
                         }}
@@ -549,6 +554,19 @@ export default function PointsManager() {
                 onChange={(e) => setItemForm({ ...itemForm, duration_days: e.target.value })}
                 placeholder="e.g., 30"
               />
+            </div>
+
+            <div className="pm-form-group">
+              <label>Image URL (Optional)</label>
+              <input
+                type="text"
+                value={itemForm.image_url}
+                onChange={(e) => setItemForm({ ...itemForm, image_url: e.target.value })}
+                placeholder="https://images.unsplash.com/photo-..."
+              />
+              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
+                Enter an image URL (e.g., from Unsplash) to display on the redemption card
+              </small>
             </div>
 
             <div className="pm-modal-actions">
