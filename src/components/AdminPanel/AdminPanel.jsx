@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../hooks/useAdmin';
-import { getAllUsers, updateUserRole, revokeUserAccess, deleteUser } from '../../utils/adminUtils';
+import { getAllUsers, updateUserRole, revokeUserAccess, deleteUser, MODERATOR_PERMISSIONS } from '../../utils/adminUtils';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -35,11 +35,11 @@ export default function AdminPanel() {
     setLoading(false);
   };
 
-  const handleRoleChange = async (userId, role, expiresAt) => {
+  const handleRoleChange = async (userId, role, expiresAt, moderatorPermissions = null) => {
     setError('');
     setSuccess('');
     
-    const { error } = await updateUserRole(userId, role, expiresAt);
+    const { error } = await updateUserRole(userId, role, expiresAt, moderatorPermissions);
     
     if (error) {
       setError('Failed to update role: ' + error.message);
@@ -87,7 +87,8 @@ export default function AdminPanel() {
       ...user,
       newRole: user.role,
       expiryDays: user.access_expires_at ? 
-        Math.ceil((new Date(user.access_expires_at) - new Date()) / (1000 * 60 * 60 * 24)) : ''
+        Math.ceil((new Date(user.access_expires_at) - new Date()) / (1000 * 60 * 60 * 24)) : '',
+      moderatorPermissions: user.moderator_permissions || {}
     });
   };
 
@@ -101,7 +102,21 @@ export default function AdminPanel() {
       expiresAt = date.toISOString();
     }
     
-    handleRoleChange(editingUser.id, editingUser.newRole, expiresAt);
+    // Pass moderator permissions if role is moderator
+    const moderatorPerms = editingUser.newRole === 'moderator' ? editingUser.moderatorPermissions : null;
+    handleRoleChange(editingUser.id, editingUser.newRole, expiresAt, moderatorPerms);
+  };
+
+  const toggleModeratorPermission = (permission) => {
+    if (!editingUser) return;
+    
+    setEditingUser({
+      ...editingUser,
+      moderatorPermissions: {
+        ...editingUser.moderatorPermissions,
+        [permission]: !editingUser.moderatorPermissions[permission]
+      }
+    });
   };
 
   if (adminLoading || loading) {
@@ -137,6 +152,14 @@ export default function AdminPanel() {
         <div className="stat-card">
           <div className="stat-value">{users.filter(u => u.role === 'admin').length}</div>
           <div className="stat-label">Admins</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value">{users.filter(u => u.role === 'moderator').length}</div>
+          <div className="stat-label">Moderators</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value">{users.filter(u => u.role === 'premium').length}</div>
+          <div className="stat-label">Premium</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{users.filter(u => u.is_active).length}</div>
@@ -234,12 +257,34 @@ export default function AdminPanel() {
                   value={editingUser.newRole}
                   onChange={(e) => setEditingUser({...editingUser, newRole: e.target.value})}
                 >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                  <option value="premium">Premium</option>
-                  <option value="trial">Trial</option>
+                  <option value="user">User (No Overlay Access)</option>
+                  <option value="premium">Premium (Overlay Only)</option>
+                  <option value="moderator">Moderator (Overlay + Custom Admin)</option>
+                  <option value="admin">Admin (Full Access)</option>
                 </select>
               </div>
+
+              {/* Moderator Permissions */}
+              {editingUser.newRole === 'moderator' && (
+                <div className="form-group moderator-permissions">
+                  <label>Moderator Permissions</label>
+                  <div className="permissions-grid">
+                    {Object.entries(MODERATOR_PERMISSIONS).map(([key, description]) => (
+                      <label key={key} className="permission-checkbox">
+                        <input
+                          type="checkbox"
+                          checked={!!editingUser.moderatorPermissions[key]}
+                          onChange={() => toggleModeratorPermission(key)}
+                        />
+                        <div className="permission-info">
+                          <span className="permission-name">{key.replace(/_/g, ' ').toUpperCase()}</span>
+                          <span className="permission-desc">{description}</span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="form-group">
                 <label>Access Duration (days)</label>

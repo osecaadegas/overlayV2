@@ -169,9 +169,14 @@
   color: #c05621;
 }
 
-.role-trial {
+.role-moderator {
   background: #e9d8fd;
   color: #6b46c1;
+}
+
+.role-trial {
+  background: #e2e8f0;
+  color: #4a5568;
 }
 
 .status-badge {
@@ -319,6 +324,72 @@
 .form-group small {
   color: #718096;
   font-size: 0.85rem;
+}
+
+/* Moderator Permissions */
+.moderator-permissions {
+  margin-top: 10px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+.moderator-permissions > label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.05rem;
+  color: #2d3748;
+}
+
+.permissions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.permission-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.permission-checkbox:hover {
+  border-color: #667eea;
+  background: #f7fafc;
+}
+
+.permission-checkbox input[type="checkbox"] {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.permission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.permission-name {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.permission-desc {
+  color: #718096;
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
 .modal-actions {

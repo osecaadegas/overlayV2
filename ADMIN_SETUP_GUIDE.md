@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
   role TEXT NOT NULL DEFAULT 'user',
   access_expires_at TIMESTAMP WITH TIME ZONE,
   is_active BOOLEAN DEFAULT true,
+  moderator_permissions JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   UNIQUE(user_id)
@@ -125,11 +126,21 @@ The admin panel will work for viewing and managing roles, but won't be able to d
 
 ## Available Roles
 
-- **admin**: Full access + can manage other users
-- **user**: Standard access (default for new registrations)
-- **premium**: For premium subscribers (custom use)
-- **trial**: For trial users with temporary access
-- **custom**: You can add more roles as needed
+- **admin**: Full access to website and admin panel - can manage all users
+- **moderator**: Access to overlay + customizable admin permissions (set by admin)
+- **premium**: Access to overlay only (no admin panel)
+- **user**: No overlay access (default for new registrations)
+
+### Moderator Permissions
+
+When assigning the **moderator** role, admins can choose which permissions the moderator has:
+
+- **view_users**: Can view the user list in admin panel
+- **edit_user_roles**: Can change user roles and access settings
+- **revoke_access**: Can revoke user access
+- **view_statistics**: Can view user statistics
+
+These permissions are customizable per moderator and can be toggled in the edit user modal.
 
 ---
 
