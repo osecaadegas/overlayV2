@@ -224,6 +224,13 @@ export function StreamElementsProvider({ children }) {
       return { success: false, error: 'Insufficient points' };
     }
 
+    // Validate redemptionId is a valid UUID format
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidPattern.test(redemptionId)) {
+      console.error('Invalid redemption ID format:', redemptionId);
+      return { success: false, error: 'Invalid redemption item' };
+    }
+
     setLoading(true);
     setError(null);
 
@@ -286,8 +293,10 @@ export function StreamElementsProvider({ children }) {
 
       return { success: true };
     } catch (err) {
-      setError(err.message);
-      return { success: false, error: err.message };
+      console.error('Redemption error:', err);
+      const errorMessage = err.message || 'Failed to process redemption';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }
