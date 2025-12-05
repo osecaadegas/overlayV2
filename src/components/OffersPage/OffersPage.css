@@ -181,40 +181,37 @@
 }
 
 .info-btn,
-.claim-btn,
-.back-btn {
+.claim-btn {
   flex: 1;
-  padding: 9px;
+  padding: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 500;
   font-size: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .info-btn {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   color: #d4af37;
-  border: 1px solid #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .info-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
-  color: #d4af37;
-  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
 }
 
 .claim-btn {
-  background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
-  color: #000;
+  background: #d4af37;
+  color: #0f1318;
   font-weight: 600;
 }
 
 .claim-btn:hover {
-  background: linear-gradient(135deg, #e5c158 0%, #d4af37 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  background: #e5c158;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
 }
 
 /* Back of card */
@@ -239,16 +236,21 @@
 }
 
 .back-btn {
-  width: 100%;
-  background: transparent;
+  width: auto;
+  background: rgba(255, 255, 255, 0.05);
   color: #d4af37;
   margin-top: 16px;
-  border: 1px solid #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 8px 20px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .back-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
-  transform: translateY(-1px);
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
 }
 
 /* Scrollbar for details */
