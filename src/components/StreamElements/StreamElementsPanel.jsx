@@ -183,17 +183,7 @@ export default function StreamElementsPanel() {
       ) : (
         <div className="se-connected">
           <div className="se-account-info">
-            <div className="se-points-display">
-              <div className="se-points-label">Your Points</div>
-              <div className="se-points-value">
-                {loading ? '...' : points.toLocaleString()}
-              </div>
-              <button onClick={refreshPoints} className="se-refresh-btn" disabled={loading}>
-                🔄 Refresh
-              </button>
-            </div>
-            
-            <div className="se-account-details">
+            <div className="se-profile-card">
               <div className="se-user-info">
                 <div className="se-user-avatar">
                   {user?.user_metadata?.avatar_url ? (
@@ -209,6 +199,15 @@ export default function StreamElementsPanel() {
                   <p className="se-connected-label">Connected as: <span>{seAccount?.se_username || 'osecaadegas95'}</span></p>
                 </div>
               </div>
+              <div className="se-points-inline">
+                <div className="se-points-value">
+                  {loading ? '...' : points.toLocaleString()}
+                </div>
+                <div className="se-points-label">Points</div>
+              </div>
+              <button onClick={refreshPoints} className="se-refresh-btn" disabled={loading}>
+                🔄
+              </button>
             </div>
           </div>
 
