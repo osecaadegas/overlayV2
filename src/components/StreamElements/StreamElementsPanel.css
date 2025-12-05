@@ -192,7 +192,7 @@
 .se-account-info {
   position: absolute;
   top: 90px;
-  left: 20px;
+  right: 20px;
   z-index: 10;
 }
 
