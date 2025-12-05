@@ -23,11 +23,86 @@ export function StreamElementsProvider({ children }) {
   useEffect(() => {
     if (user) {
       loadStreamElementsConnection();
+      autoConnectTwitchUser();
     } else {
       setSeAccount(null);
       setPoints(0);
     }
   }, [user]);
+
+  // Auto-connect Twitch users to StreamElements
+  const autoConnectTwitchUser = async () => {
+    try {
+      // Check if user logged in via Twitch
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      
+      if (!authUser?.app_metadata?.provider || authUser.app_metadata.provider !== 'twitch') {
+        return; // Not a Twitch user
+      }
+
+      // Check if already connected
+      const { data: existing } = await supabase
+        .from('streamelements_connections')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (existing) return; // Already connected
+
+      // Get Twitch username from user metadata
+      const twitchUsername = authUser.user_metadata?.preferred_username || 
+                            authUser.user_metadata?.name ||
+                            authUser.user_metadata?.user_name;
+
+      if (!twitchUsername) return;
+
+      // Auto-connect using streamer's credentials
+      // These should be stored in environment variables or Supabase config
+      const streamerChannelId = import.meta.env.VITE_SE_CHANNEL_ID;
+      const streamerJwtToken = import.meta.env.VITE_SE_JWT_TOKEN;
+
+      if (!streamerChannelId || !streamerJwtToken) {
+        console.log('StreamElements credentials not configured');
+        return;
+      }
+
+      // Try to fetch points using Twitch username
+      const response = await fetch(
+        `https://api.streamelements.com/kappa/v2/points/${streamerChannelId}/${twitchUsername}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${streamerJwtToken}`,
+            'Accept': 'application/json'
+          }
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Save connection to database
+        await supabase
+          .from('streamelements_connections')
+          .insert({
+            user_id: user.id,
+            se_channel_id: streamerChannelId,
+            se_jwt_token: streamerJwtToken,
+            se_username: twitchUsername,
+            connected_at: new Date().toISOString()
+          });
+
+        setSeAccount({
+          se_channel_id: streamerChannelId,
+          se_jwt_token: streamerJwtToken,
+          se_username: twitchUsername
+        });
+        setPoints(data.points || 0);
+      }
+    } catch (err) {
+      console.error('Auto-connect failed:', err);
+      // Silently fail - user can manually connect if needed
+    }
+  };
 
   const loadStreamElementsConnection = async () => {
     try {
@@ -41,22 +116,25 @@ export function StreamElementsProvider({ children }) {
       
       if (data) {
         setSeAccount(data);
-        // Fetch current points
-        await fetchPoints(data.se_channel_id, data.se_jwt_token);
+        // Fetch current points using SE username
+        await fetchPoints(data.se_channel_id, data.se_jwt_token, data.se_username);
       }
     } catch (err) {
       console.error('Error loading SE connection:', err);
     }
   };
 
-  const fetchPoints = async (channelId, jwtToken) => {
+  const fetchPoints = async (channelId, jwtToken, username = null) => {
     setLoading(true);
     setError(null);
     
     try {
+      // Use username if provided, otherwise use user.id
+      const userId = username || user.id;
+      
       // Call StreamElements API to get user points
       const response = await fetch(
-        `https://api.streamelements.com/kappa/v2/points/${channelId}/${user.id}`,
+        `https://api.streamelements.com/kappa/v2/points/${channelId}/${userId}`,
         {
           headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -150,9 +228,12 @@ export function StreamElementsProvider({ children }) {
     setError(null);
 
     try {
+      // Use SE username for API call
+      const userId = seAccount.se_username || user.id;
+      
       // Deduct points via StreamElements API
       const response = await fetch(
-        `https://api.streamelements.com/kappa/v2/points/${seAccount.se_channel_id}/${user.id}/${-pointCost}`,
+        `https://api.streamelements.com/kappa/v2/points/${seAccount.se_channel_id}/${userId}/${-pointCost}`,
         {
           method: 'PUT',
           headers: {
@@ -190,7 +271,7 @@ export function StreamElementsProvider({ children }) {
 
   const refreshPoints = async () => {
     if (seAccount) {
-      await fetchPoints(seAccount.se_channel_id, seAccount.se_jwt_token);
+      await fetchPoints(seAccount.se_channel_id, seAccount.se_jwt_token, seAccount.se_username);
     }
   };
 
