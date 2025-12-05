@@ -144,7 +144,7 @@ export default function PointsManager() {
     // Add timestamp to prevent caching
     const { data: redemptionsData, error } = await supabase
       .from('point_redemptions')
-      .select('*')
+      .select('id, user_id, redemption_id, points_spent, redeemed_at, processed, status')
       .order('redeemed_at', { ascending: false })
       .limit(50);
 
@@ -153,7 +153,7 @@ export default function PointsManager() {
       throw error;
     }
 
-    console.log('Loaded redemptions:', redemptionsData);
+    console.log('Loaded redemptions with status:', redemptionsData);
 
     // Get user emails
     const { data: allUsers } = await supabase.rpc('get_all_user_emails');
