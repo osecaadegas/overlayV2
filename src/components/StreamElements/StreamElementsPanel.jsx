@@ -211,25 +211,33 @@ export default function StreamElementsPanel() {
                   const canAfford = points >= item.point_cost;
                   const isRedeeming = redeeming === item.id;
                   
+                  // Use a default premium image if no image URL is provided
+                  const imageUrl = item.image_url || 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400&h=300&fit=crop';
+                  
                   return (
                     <div 
                       key={item.id} 
                       className={`se-item ${!canAfford ? 'disabled' : ''}`}
                     >
-                      <div className="se-item-header">
-                        <h4>{item.name}</h4>
-                        <div className="se-item-cost">
-                          {item.point_cost.toLocaleString()} pts
-                        </div>
+                      <div className="se-item-image">
+                        <img src={imageUrl} alt={item.name} />
                       </div>
-                      <p className="se-item-description">{item.description}</p>
-                      <button
-                        onClick={() => handleRedeem(item)}
-                        disabled={!canAfford || isRedeeming || loading}
-                        className="se-redeem-btn"
-                      >
-                        {isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
-                      </button>
+                      <div className="se-item-content">
+                        <div className="se-item-header">
+                          <h4>{item.name}</h4>
+                          <div className="se-item-cost">
+                            {item.point_cost.toLocaleString()} pts
+                          </div>
+                        </div>
+                        <p className="se-item-description">{item.description}</p>
+                        <button
+                          onClick={() => handleRedeem(item)}
+                          disabled={!canAfford || isRedeeming || loading}
+                          className="se-redeem-btn"
+                        >
+                          {isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
