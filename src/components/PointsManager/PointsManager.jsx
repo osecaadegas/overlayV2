@@ -519,34 +519,42 @@ export default function PointsManager() {
                         <td className="pm-points">{redemption.points_spent.toLocaleString()}</td>
                         <td>{new Date(redemption.redeemed_at).toLocaleString()}</td>
                         <td>
-                          <span className={`pm-status-badge ${redemption.status || 'pending'}`}>
-                            {redemption.status === 'approved' && '✅ Approved'}
-                            {redemption.status === 'denied' && '❌ Denied'}
-                            {!redemption.status && '⏳ Pending'}
-                          </span>
+                          {(() => {
+                            const currentStatus = redemption.status || (redemption.processed ? 'approved' : 'pending');
+                            return (
+                              <span className={`pm-status-badge ${currentStatus}`}>
+                                {currentStatus === 'approved' && '✅ Approved'}
+                                {currentStatus === 'denied' && '❌ Denied'}
+                                {currentStatus === 'pending' && '⏳ Pending'}
+                              </span>
+                            );
+                          })()}
                         </td>
                         <td>
-                          {!redemption.status && (
-                            <div className="pm-redemption-actions">
-                              <button
-                                onClick={() => handleApproveRedemption(redemption.id)}
-                                className="pm-approve-btn"
-                                title="Approve redemption"
-                              >
-                                ✅ Approve
-                              </button>
-                              <button
-                                onClick={() => handleDenyRedemption(redemption)}
-                                className="pm-deny-btn"
-                                title="Deny and refund"
-                              >
-                                ❌ Deny
-                              </button>
-                            </div>
-                          )}
-                          {redemption.status && (
-                            <span className="pm-no-action">—</span>
-                          )}
+                          {(() => {
+                            const hasStatus = redemption.status || redemption.processed;
+                            if (!hasStatus) {
+                              return (
+                                <div className="pm-redemption-actions">
+                                  <button
+                                    onClick={() => handleApproveRedemption(redemption.id)}
+                                    className="pm-approve-btn"
+                                    title="Approve redemption"
+                                  >
+                                    ✅ Approve
+                                  </button>
+                                  <button
+                                    onClick={() => handleDenyRedemption(redemption)}
+                                    className="pm-deny-btn"
+                                    title="Deny and refund"
+                                  >
+                                    ❌ Deny
+                                  </button>
+                                </div>
+                              );
+                            }
+                            return <span className="pm-no-action">—</span>;
+                          })()}
                         </td>
                       </tr>
                     ))}
