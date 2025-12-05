@@ -1,6 +1,8 @@
 import './StreamPage.css';
 
 export default function StreamPage() {
+  const twitchChannel = 'osecaadegas95';
+  
   return (
     <div className="stream-page">
       <div className="stream-container">
@@ -9,12 +11,14 @@ export default function StreamPage() {
         
         <div className="stream-content">
           <div className="stream-embed">
-            <div className="stream-placeholder">
-              <span className="stream-icon">🎥</span>
-              <h3>Stream Embed</h3>
-              <p>Connect your Twitch/YouTube channel to display live stream here</p>
-              <button className="connect-btn">Connect Stream</button>
-            </div>
+            <iframe
+              src={`https://player.twitch.tv/?channel=${twitchChannel}&parent=${window.location.hostname}`}
+              height="600"
+              width="100%"
+              allowFullScreen
+              title="Twitch Stream"
+              style={{ border: 'none', borderRadius: '12px' }}
+            />
           </div>
 
           <div className="stream-info">
