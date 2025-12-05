@@ -89,6 +89,7 @@ export default function StreamElementsPanel() {
       return;
     }
 
+    console.log('Redeeming item:', { id: item.id, name: item.name, type: typeof item.id });
     setRedeeming(item.id);
     const result = await redeemPoints(item.id, item.point_cost);
     setRedeeming(null);
@@ -98,7 +99,8 @@ export default function StreamElementsPanel() {
       await refreshPoints();
       await loadRedemptionItems(); // Reload items to update stock count
     } else {
-      alert(`Redemption failed: ${result.error}`);
+      console.error('Redemption failed:', result.error);
+      alert(`Redemption failed: ${result.error}\n\nPlease contact an admin if this issue persists.`);
     }
   };
 
