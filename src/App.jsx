@@ -524,10 +524,10 @@ function ProtectedOverlay() {
   return <AppContent />;
 }
 
-// Layout wrapper to show sidebar on all pages except overlay
+// Layout wrapper to show sidebar on all pages except overlay and landing page
 function LayoutWrapper({ children }) {
   const location = useLocation();
-  const showSidebar = location.pathname !== '/overlay';
+  const showSidebar = location.pathname !== '/overlay' && location.pathname !== '/';
 
   return (
     <>
