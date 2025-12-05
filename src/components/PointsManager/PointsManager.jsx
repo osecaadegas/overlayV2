@@ -55,18 +55,26 @@ export default function PointsManager() {
     // Get all users with SE connections
     const { data: connections, error: connError } = await supabase
       .from('streamelements_connections')
-      .select(`
-        *,
-        user:user_id (
-          email
-        )
-      `);
+      .select('*');
 
     if (connError) throw connError;
+
+    // Get user emails using the getAllUsers RPC function
+    const { data: allUsers } = await supabase.rpc('get_all_user_emails');
+    
+    // Create a map of user_id to email
+    const emailMap = {};
+    if (allUsers) {
+      allUsers.forEach(user => {
+        emailMap[user.user_id] = user.email;
+      });
+    }
 
     // Fetch current points for each user from SE API
     const usersWithPoints = await Promise.all(
       connections.map(async (conn) => {
+        const userEmail = emailMap[conn.user_id] || conn.se_username || 'Unknown';
+
         try {
           const response = await fetch(
             `https://api.streamelements.com/kappa/v2/points/${conn.se_channel_id}/${conn.se_username}`,
@@ -83,7 +91,7 @@ export default function PointsManager() {
             return {
               ...conn,
               current_points: data.points || 0,
-              email: conn.user?.email || 'Unknown'
+              email: userEmail
             };
           }
         } catch (err) {
@@ -93,7 +101,7 @@ export default function PointsManager() {
         return {
           ...conn,
           current_points: 0,
-          email: conn.user?.email || 'Unknown'
+          email: userEmail
         };
       })
     );
@@ -102,18 +110,43 @@ export default function PointsManager() {
   };
 
   const loadRedemptions = async () => {
-    const { data, error } = await supabase
+    const { data: redemptionsData, error } = await supabase
       .from('point_redemptions')
-      .select(`
-        *,
-        user:user_id (email),
-        item:redemption_id (name, point_cost)
-      `)
+      .select('*')
       .order('redeemed_at', { ascending: false })
       .limit(50);
 
     if (error) throw error;
-    setRedemptions(data || []);
+
+    // Get user emails
+    const { data: allUsers } = await supabase.rpc('get_all_user_emails');
+    const emailMap = {};
+    if (allUsers) {
+      allUsers.forEach(user => {
+        emailMap[user.user_id] = user.email;
+      });
+    }
+
+    // Get redemption items
+    const { data: items } = await supabase
+      .from('redemption_items')
+      .select('*');
+    
+    const itemMap = {};
+    if (items) {
+      items.forEach(item => {
+        itemMap[item.id] = item;
+      });
+    }
+
+    // Combine data
+    const enrichedRedemptions = redemptionsData.map(redemption => ({
+      ...redemption,
+      user: { email: emailMap[redemption.user_id] || 'Unknown' },
+      item: itemMap[redemption.redemption_id] || { name: 'Deleted Item', point_cost: 0 }
+    }));
+
+    setRedemptions(enrichedRedemptions);
   };
 
   const loadRedemptionItems = async () => {
