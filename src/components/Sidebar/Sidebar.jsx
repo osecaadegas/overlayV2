@@ -9,7 +9,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOverlayAccess, setHasOverlayAccess] = useState(false);
   const { user, signOut } = useAuth();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, isModerator } = useAdmin();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -50,6 +50,7 @@ export default function Sidebar() {
     { icon: '🎁', label: 'Offers', path: '/offers', show: true },
     { icon: '👤', label: 'Profile', path: '/profile', show: user },
     { icon: '💎', label: 'Points Store', path: '/points', show: user },
+    { icon: '🎮', label: 'Points Manager', path: '/points-manager', show: isModerator },
     { icon: '🎰', label: 'Overlay', path: '/overlay', show: hasOverlayAccess },
     { icon: '🛡️', label: 'Admin Panel', path: '/admin', show: isAdmin },
     { icon: '📺', label: 'Stream', path: '/stream', show: true },

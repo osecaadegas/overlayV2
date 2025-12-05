@@ -5,12 +5,14 @@ import { getUserRole } from '../utils/adminUtils';
 export const useAdmin = () => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isModerator, setIsModerator] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAdminStatus = async () => {
       if (!user) {
         setIsAdmin(false);
+        setIsModerator(false);
         setLoading(false);
         return;
       }
@@ -21,12 +23,15 @@ export const useAdmin = () => {
         if (error) {
           console.error('Error checking admin status:', error);
           setIsAdmin(false);
+          setIsModerator(false);
         } else {
           setIsAdmin(data?.role === 'admin');
+          setIsModerator(data?.role === 'moderator' || data?.role === 'admin');
         }
       } catch (error) {
         console.error('Error in useAdmin:', error);
         setIsAdmin(false);
+        setIsModerator(false);
       } finally {
         setLoading(false);
       }
@@ -35,5 +40,5 @@ export const useAdmin = () => {
     checkAdminStatus();
   }, [user]);
 
-  return { isAdmin, loading };
+  return { isAdmin, isModerator, loading };
 };
