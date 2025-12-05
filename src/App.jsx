@@ -4,6 +4,8 @@ import './App.css';
 import { BonusHuntProvider, useBonusHunt } from './context/BonusHuntContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage/LandingPage';
+import AdminPanel from './components/AdminPanel/AdminPanel';
+import { checkUserAccess } from './utils/adminUtils';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
 import BonusHuntStats from './components/BonusHuntStats/BonusHuntStats';
@@ -441,8 +443,23 @@ function AppContent() {
 // Protected Route wrapper
 function ProtectedOverlay() {
   const { user, loading } = useAuth();
+  const [accessCheck, setAccessCheck] = useState({ checking: true, hasAccess: false, reason: null });
 
-  if (loading) {
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!user) {
+        setAccessCheck({ checking: false, hasAccess: false, reason: 'Not authenticated' });
+        return;
+      }
+
+      const result = await checkUserAccess(user.id);
+      setAccessCheck({ checking: false, ...result });
+    };
+
+    checkAccess();
+  }, [user]);
+
+  if (loading || accessCheck.checking) {
     return (
       <div style={{
         display: 'flex',
@@ -462,6 +479,40 @@ function ProtectedOverlay() {
     return <Navigate to="/" replace />;
   }
 
+  if (!accessCheck.hasAccess) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        textAlign: 'center',
+        padding: '20px'
+      }}>
+        <h1 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>🚫 Access Denied</h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>{accessCheck.reason}</p>
+        <button 
+          onClick={() => window.location.href = '/'}
+          style={{
+            padding: '12px 30px',
+            background: 'white',
+            color: '#667eea',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          Return to Home
+        </button>
+      </div>
+    );
+  }
+
   return <AppContent />;
 }
 
@@ -473,6 +524,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/overlay" element={<ProtectedOverlay />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </BrowserRouter>
       </BonusHuntProvider>

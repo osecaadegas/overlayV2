@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useAdmin } from '../../hooks/useAdmin';
 import AuthModal from '../Auth/AuthModal';
 import './LandingPage.css';
 
 export default function LandingPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user, signOut } = useAuth();
+  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
 
   const handleOverlayClick = () => {
     navigate('/overlay');
+  };
+
+  const handleAdminClick = () => {
+    navigate('/admin');
   };
 
   const handleLogout = async () => {
@@ -27,6 +33,11 @@ export default function LandingPage() {
         <div className="landing-auth-buttons">
           {user ? (
             <>
+              {isAdmin && (
+                <button onClick={handleAdminClick} className="admin-button">
+                  🛡️ Admin
+                </button>
+              )}
               <button onClick={handleOverlayClick} className="overlay-button">
                 Go to Overlay
               </button>

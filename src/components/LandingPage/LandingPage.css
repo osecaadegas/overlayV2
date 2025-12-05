@@ -49,6 +49,17 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.admin-button {
+  background: #ffd700;
+  color: #2d3748;
+  font-weight: 700;
+}
+
+.admin-button:hover {
+  background: #ffed4e;
+  transform: translateY(-2px);
+}
+
 .overlay-button {
   background: rgba(255, 255, 255, 0.2);
   color: white;
