@@ -12,3 +12,9 @@ ALTER TABLE redemption_items
 ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT NULL;
 
 COMMENT ON COLUMN redemption_items.image_url IS 'URL of image to display on the redemption card';
+
+-- Add processed column to point_redemptions table
+ALTER TABLE point_redemptions
+ADD COLUMN IF NOT EXISTS processed BOOLEAN DEFAULT false;
+
+COMMENT ON COLUMN point_redemptions.processed IS 'Whether the redemption has been manually processed by admin';

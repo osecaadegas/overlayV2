@@ -147,7 +147,10 @@ export default function PointsManager() {
       .order('redeemed_at', { ascending: false })
       .limit(50);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error loading redemptions:', error);
+      throw error;
+    }
 
     // Get user emails
     const { data: allUsers } = await supabase.rpc('get_all_user_emails');
@@ -322,6 +325,20 @@ export default function PointsManager() {
     }
   };
 
+  const handleMarkProcessed = async (redemptionId, currentStatus) => {
+    try {
+      const { error } = await supabase
+        .from('point_redemptions')
+        .update({ processed: !currentStatus })
+        .eq('id', redemptionId);
+
+      if (error) throw error;
+      await loadRedemptions();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="points-manager">
       <div className="pm-header">
@@ -427,9 +444,13 @@ export default function PointsManager() {
                         <td className="pm-points">{redemption.points_spent.toLocaleString()}</td>
                         <td>{new Date(redemption.redeemed_at).toLocaleString()}</td>
                         <td>
-                          <span className={`pm-status ${redemption.processed ? 'processed' : 'pending'}`}>
+                          <button
+                            onClick={() => handleMarkProcessed(redemption.id, redemption.processed)}
+                            className={`pm-status ${redemption.processed ? 'processed' : 'pending'}`}
+                            style={{ cursor: 'pointer', border: 'none', background: 'transparent' }}
+                          >
                             {redemption.processed ? '✅ Processed' : '⏳ Pending'}
-                          </span>
+                          </button>
                         </td>
                       </tr>
                     ))}
