@@ -3,24 +3,22 @@ import { supabase } from '../config/supabaseClient';
 // Get all users with their roles
 export const getAllUsers = async () => {
   try {
-    // Query user_roles table with a join to get email from auth.users
-    const { data, error } = await supabase
+    // Get user roles
+    const { data: rolesData, error: rolesError } = await supabase
       .from('user_roles')
-      .select(`
-        *,
-        user:user_id (
-          email,
-          created_at
-        )
-      `);
+      .select('*');
 
-    if (error) throw error;
+    if (rolesError) throw rolesError;
 
-    // Format the data
-    const users = (data || []).map(roleInfo => ({
+    // Get current user's email from auth to build the list
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
+
+    // For now, we can only show the current user since we can't access auth.users table
+    // In production, you'd use a server-side function for this
+    const users = (rolesData || []).map(roleInfo => ({
       id: roleInfo.user_id,
-      email: roleInfo.user?.email || 'Unknown',
-      created_at: roleInfo.user?.created_at || roleInfo.created_at,
+      email: roleInfo.user_id === currentUser?.id ? currentUser.email : `User ${roleInfo.user_id.substring(0, 8)}...`,
+      created_at: roleInfo.created_at,
       role: roleInfo.role || 'user',
       access_expires_at: roleInfo.access_expires_at || null,
       is_active: roleInfo.is_active !== false,
