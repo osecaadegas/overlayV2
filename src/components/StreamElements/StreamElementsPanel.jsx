@@ -205,9 +205,6 @@ export default function StreamElementsPanel() {
                 </div>
                 <div className="se-points-label">Points</div>
               </div>
-              <button onClick={refreshPoints} className="se-refresh-btn" disabled={loading}>
-                🔄
-              </button>
             </div>
           </div>
 
