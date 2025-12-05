@@ -122,25 +122,34 @@
 }
 
 .users-table thead {
-  background: #f7fafc;
+  background: #e2e8f0;
 }
 
 .users-table th {
   padding: 15px;
   text-align: left;
   font-weight: 700;
-  color: #2d3748;
-  border-bottom: 2px solid #e2e8f0;
+  color: #1a202c;
+  border-bottom: 2px solid #cbd5e0;
+}
+
+.users-table tbody tr {
+  background: #f7fafc;
+}
+
+.users-table tbody tr:nth-child(even) {
+  background: #edf2f7;
 }
 
 .users-table td {
   padding: 15px;
-  border-bottom: 1px solid #e2e8f0;
-  color: #000000;
+  border-bottom: 1px solid #cbd5e0;
+  color: #1a202c;
+  font-weight: 500;
 }
 
 .users-table tr:hover {
-  background: #f7fafc;
+  background: #e2e8f0 !important;
 }
 
 .inactive-user {
