@@ -93,6 +93,24 @@ export default function Sidebar() {
           </button>
         </div>
 
+        {/* Featured Cards */}
+        <div className="sidebar-featured">
+          <div className="featured-card featured-card-blue" onClick={() => handleNavigation('/offers')}>
+            <div className="featured-icon">🎁</div>
+            <div className="featured-content">
+              <div className="featured-label">Claim</div>
+              <div className="featured-title">Offers</div>
+            </div>
+          </div>
+          <div className="featured-card featured-card-green" onClick={() => handleNavigation('/points')}>
+            <div className="featured-icon">🎉</div>
+            <div className="featured-content">
+              <div className="featured-label">Daily</div>
+              <div className="featured-title">Giveaways</div>
+            </div>
+          </div>
+        </div>
+
         <nav className="sidebar-nav">
           {menuItems.map((item, index) => 
             item.show ? (
