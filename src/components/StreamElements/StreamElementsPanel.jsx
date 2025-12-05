@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStreamElements } from '../../context/StreamElementsContext';
+import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../config/supabaseClient';
 import './StreamElementsPanel.css';
 
@@ -15,6 +16,8 @@ export default function StreamElementsPanel() {
     refreshPoints,
     isConnected
   } = useStreamElements();
+
+  const { user } = useAuth();
 
   const [showLinkForm, setShowLinkForm] = useState(false);
   const [channelId, setChannelId] = useState('');
@@ -191,11 +194,21 @@ export default function StreamElementsPanel() {
             </div>
             
             <div className="se-account-details">
-              <p><strong>Connected as:</strong> {seAccount?.se_username || 'User'}</p>
-              <p><strong>Channel ID:</strong> {seAccount?.se_channel_id}</p>
-              <button onClick={handleUnlink} className="se-unlink-btn">
-                Unlink Account
-              </button>
+              <div className="se-user-info">
+                <div className="se-user-avatar">
+                  {user?.user_metadata?.avatar_url ? (
+                    <img src={user.user_metadata.avatar_url} alt="User Avatar" />
+                  ) : (
+                    <div className="se-avatar-placeholder">
+                      {(seAccount?.se_username || user?.email || 'U')[0].toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div className="se-user-details">
+                  <p className="se-username">{seAccount?.se_username || user?.email || 'User'}</p>
+                  <p className="se-connected-label">Connected as: <span>{seAccount?.se_username || 'osecaadegas95'}</span></p>
+                </div>
+              </div>
             </div>
           </div>
 
