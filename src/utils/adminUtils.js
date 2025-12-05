@@ -61,7 +61,6 @@ export const getUserRole = async (userId) => {
 export const updateUserRole = async (userId, role, accessExpiresAt = null, moderatorPermissions = null) => {
   try {
     const updateData = {
-      user_id: userId,
       role: role,
       access_expires_at: accessExpiresAt,
       is_active: true,
@@ -71,11 +70,15 @@ export const updateUserRole = async (userId, role, accessExpiresAt = null, moder
     // Only include moderator_permissions if provided and role is moderator
     if (role === 'moderator' && moderatorPermissions !== null) {
       updateData.moderator_permissions = moderatorPermissions;
+    } else if (role !== 'moderator') {
+      // Clear moderator permissions if changing to non-moderator role
+      updateData.moderator_permissions = {};
     }
 
     const { data, error } = await supabase
       .from('user_roles')
-      .upsert(updateData)
+      .update(updateData)
+      .eq('user_id', userId)
       .select()
       .single();
 
