@@ -10,22 +10,25 @@ export const getAllUsers = async () => {
 
     if (rolesError) throw rolesError;
 
-    // Get current user's email from auth to build the list
-    const { data: { user: currentUser } } = await supabase.auth.getUser();
+    // Fetch emails for each user using the Postgres function
+    const usersWithEmails = await Promise.all(
+      (rolesData || []).map(async (roleInfo) => {
+        const { data: emailData } = await supabase
+          .rpc('get_user_email', { user_id: roleInfo.user_id });
 
-    // For now, we can only show the current user since we can't access auth.users table
-    // In production, you'd use a server-side function for this
-    const users = (rolesData || []).map(roleInfo => ({
-      id: roleInfo.user_id,
-      email: roleInfo.user_id === currentUser?.id ? currentUser.email : `User ${roleInfo.user_id.substring(0, 8)}...`,
-      created_at: roleInfo.created_at,
-      role: roleInfo.role || 'user',
-      access_expires_at: roleInfo.access_expires_at || null,
-      is_active: roleInfo.is_active !== false,
-      moderator_permissions: roleInfo.moderator_permissions || {},
-    }));
+        return {
+          id: roleInfo.user_id,
+          email: emailData || `User ${roleInfo.user_id.substring(0, 8)}...`,
+          created_at: roleInfo.created_at,
+          role: roleInfo.role || 'user',
+          access_expires_at: roleInfo.access_expires_at || null,
+          is_active: roleInfo.is_active !== false,
+          moderator_permissions: roleInfo.moderator_permissions || {},
+        };
+      })
+    );
 
-    return { data: users, error: null };
+    return { data: usersWithEmails, error: null };
   } catch (error) {
     console.error('Error fetching users:', error);
     return { data: null, error };
