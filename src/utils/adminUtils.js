@@ -3,36 +3,33 @@ import { supabase } from '../config/supabaseClient';
 // Get all users with their roles
 export const getAllUsers = async () => {
   try {
-    // Get auth users
-    const { data: authData, error: authError } = await supabase.auth.admin.listUsers();
-    
-    if (authError) throw authError;
-
-    // Get user roles from our custom table
-    const { data: rolesData, error: rolesError } = await supabase
+    // Query user_roles table with a join to get email from auth.users
+    const { data, error } = await supabase
       .from('user_roles')
-      .select('*');
+      .select(`
+        *,
+        user:user_id (
+          email,
+          created_at
+        )
+      `);
 
-    if (rolesError && rolesError.code !== 'PGRST116') { // Ignore "table not found" error
-      console.error('Roles error:', rolesError);
-    }
+    if (error) throw error;
 
-    // Merge auth data with roles data
-    const users = authData.users.map(user => {
-      const roleInfo = rolesData?.find(r => r.user_id === user.id) || {};
-      return {
-        id: user.id,
-        email: user.email,
-        created_at: user.created_at,
-        role: roleInfo.role || 'user',
-        access_expires_at: roleInfo.access_expires_at || null,
-        is_active: roleInfo.is_active !== false,
-        moderator_permissions: roleInfo.moderator_permissions || {},
-      };
-    });
+    // Format the data
+    const users = (data || []).map(roleInfo => ({
+      id: roleInfo.user_id,
+      email: roleInfo.user?.email || 'Unknown',
+      created_at: roleInfo.user?.created_at || roleInfo.created_at,
+      role: roleInfo.role || 'user',
+      access_expires_at: roleInfo.access_expires_at || null,
+      is_active: roleInfo.is_active !== false,
+      moderator_permissions: roleInfo.moderator_permissions || {},
+    }));
 
     return { data: users, error: null };
   } catch (error) {
+    console.error('Error fetching users:', error);
     return { data: null, error };
   }
 };
