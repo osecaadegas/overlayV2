@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import './App.css';
 import { BonusHuntProvider, useBonusHunt } from './context/BonusHuntContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { StreamElementsProvider } from './context/StreamElementsContext';
+import StreamElementsPanel from './components/StreamElements/StreamElementsPanel';
 import LandingPage from './components/LandingPage/LandingPage';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -537,21 +539,24 @@ function LayoutWrapper({ children }) {
 function App() {
   return (
     <AuthProvider>
-      <BonusHuntProvider>
-        <BrowserRouter>
-          <LayoutWrapper>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/offers" element={<OffersPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/stream" element={<StreamPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/overlay" element={<ProtectedOverlay />} />
-              <Route path="/admin" element={<AdminPanel />} />
-            </Routes>
-          </LayoutWrapper>
-        </BrowserRouter>
-      </BonusHuntProvider>
+      <StreamElementsProvider>
+        <BonusHuntProvider>
+          <BrowserRouter>
+            <LayoutWrapper>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/offers" element={<OffersPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/stream" element={<StreamPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/points" element={<StreamElementsPanel />} />
+                <Route path="/overlay" element={<ProtectedOverlay />} />
+                <Route path="/admin" element={<AdminPanel />} />
+              </Routes>
+            </LayoutWrapper>
+          </BrowserRouter>
+        </BonusHuntProvider>
+      </StreamElementsProvider>
     </AuthProvider>
   );
 }

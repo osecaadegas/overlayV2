@@ -49,6 +49,7 @@ export default function Sidebar() {
     { icon: '🏠', label: 'Home', path: '/', show: true },
     { icon: '🎁', label: 'Offers', path: '/offers', show: true },
     { icon: '👤', label: 'Profile', path: '/profile', show: user },
+    { icon: '💎', label: 'Points Store', path: '/points', show: user },
     { icon: '🎰', label: 'Overlay', path: '/overlay', show: hasOverlayAccess },
     { icon: '🛡️', label: 'Admin Panel', path: '/admin', show: isAdmin },
     { icon: '📺', label: 'Stream', path: '/stream', show: true },
