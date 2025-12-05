@@ -72,6 +72,11 @@
   font-size: 1rem;
   transition: all 0.2s;
   background: white;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
 }
 
 .form-group input:focus {
@@ -83,6 +88,7 @@
 .form-group input:disabled {
   background: #f7fafc;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .auth-error {

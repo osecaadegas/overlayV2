@@ -115,6 +115,7 @@ export default function AuthPage() {
                 setIsLogin(!isLogin);
                 setError('');
                 setMessage('');
+                setConfirmPassword('');
               }}
               className="auth-switch-button"
               disabled={loading}
