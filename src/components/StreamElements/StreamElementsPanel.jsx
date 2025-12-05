@@ -89,7 +89,9 @@ export default function StreamElementsPanel() {
       return;
     }
 
-    console.log('Redeeming item:', { id: item.id, name: item.name, type: typeof item.id });
+    console.log('Full item object:', item);
+    console.log('Item.id specifically:', item.id);
+    console.log('All item keys:', Object.keys(item));
     setRedeeming(item.id);
     const result = await redeemPoints(item.id, item.point_cost);
     setRedeeming(null);
