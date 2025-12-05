@@ -163,6 +163,92 @@
   font-size: 1.1rem;
 }
 
+/* User Info in Redemptions */
+.pm-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pm-username {
+  font-weight: 600;
+  color: #d4af37;
+  font-size: 0.95rem;
+}
+
+.pm-email {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+/* Status Badge */
+.pm-status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pm-status-badge.approved {
+  background: #c6f6d5;
+  color: #2f855a;
+}
+
+.pm-status-badge.denied {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.pm-status-badge.pending {
+  background: #feebc8;
+  color: #c05621;
+}
+
+/* Redemption Actions */
+.pm-redemption-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pm-approve-btn {
+  padding: 8px 14px;
+  background: #48bb78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 600;
+}
+
+.pm-approve-btn:hover {
+  background: #38a169;
+}
+
+.pm-deny-btn {
+  padding: 8px 14px;
+  background: #f56565;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 600;
+}
+
+.pm-deny-btn:hover {
+  background: #e53e3e;
+}
+
+.pm-no-action {
+  color: #4a5568;
+  font-size: 1.2rem;
+}
+
 .pm-status {
   padding: 5px 12px;
   border-radius: 20px;

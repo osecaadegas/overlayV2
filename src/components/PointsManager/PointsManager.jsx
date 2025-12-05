@@ -161,6 +161,18 @@ export default function PointsManager() {
       });
     }
 
+    // Get SE connections for usernames
+    const { data: connections } = await supabase
+      .from('streamelements_connections')
+      .select('*');
+    
+    const usernameMap = {};
+    if (connections) {
+      connections.forEach(conn => {
+        usernameMap[conn.user_id] = conn.se_username;
+      });
+    }
+
     // Get redemption items
     const { data: items } = await supabase
       .from('redemption_items')
@@ -176,7 +188,10 @@ export default function PointsManager() {
     // Combine data
     const enrichedRedemptions = redemptionsData.map(redemption => ({
       ...redemption,
-      user: { email: emailMap[redemption.user_id] || 'Unknown' },
+      user: { 
+        email: emailMap[redemption.user_id] || 'Unknown',
+        username: usernameMap[redemption.user_id] || 'Unknown'
+      },
       item: itemMap[redemption.redemption_id] || { name: 'Deleted Item', point_cost: 0 }
     }));
 
@@ -325,17 +340,71 @@ export default function PointsManager() {
     }
   };
 
-  const handleMarkProcessed = async (redemptionId, currentStatus) => {
+  const handleApproveRedemption = async (redemptionId) => {
     try {
       const { error } = await supabase
         .from('point_redemptions')
-        .update({ processed: !currentStatus })
+        .update({ processed: true, status: 'approved' })
         .eq('id', redemptionId);
 
       if (error) throw error;
+      setSuccess('Redemption approved');
       await loadRedemptions();
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleDenyRedemption = async (redemption) => {
+    if (!confirm('Are you sure you want to deny this redemption? Points will be refunded to the user.')) return;
+
+    try {
+      // Refund points to user
+      const { data: connections } = await supabase
+        .from('streamelements_connections')
+        .select('*')
+        .eq('user_id', redemption.user_id)
+        .single();
+
+      if (connections) {
+        // Refund via SE API
+        await fetch(
+          `https://api.streamelements.com/kappa/v2/points/${connections.se_channel_id}/${connections.se_username}/${redemption.points_spent}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${connections.se_jwt_token}`,
+              'Accept': 'application/json'
+            }
+          }
+        );
+
+        // Restore stock if applicable
+        const { data: item } = await supabase
+          .from('redemption_items')
+          .select('available_units')
+          .eq('id', redemption.redemption_id)
+          .single();
+
+        if (item && item.available_units !== null) {
+          await supabase
+            .from('redemption_items')
+            .update({ available_units: item.available_units + 1 })
+            .eq('id', redemption.redemption_id);
+        }
+      }
+
+      // Mark as denied
+      const { error } = await supabase
+        .from('point_redemptions')
+        .update({ processed: true, status: 'denied' })
+        .eq('id', redemption.id);
+
+      if (error) throw error;
+      setSuccess('Redemption denied and points refunded');
+      await loadRedemptions();
+    } catch (err) {
+      setError('Failed to deny redemption: ' + err.message);
     }
   };
 
@@ -434,23 +503,51 @@ export default function PointsManager() {
                       <th>Points Spent</th>
                       <th>Date</th>
                       <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {redemptions.map((redemption) => (
                       <tr key={redemption.id}>
-                        <td>{redemption.user?.email || 'Unknown'}</td>
+                        <td>
+                          <div className="pm-user-info">
+                            <div className="pm-username">{redemption.user?.username || 'Unknown'}</div>
+                            <div className="pm-email">{redemption.user?.email || 'Unknown'}</div>
+                          </div>
+                        </td>
                         <td>{redemption.item?.name || 'Deleted Item'}</td>
                         <td className="pm-points">{redemption.points_spent.toLocaleString()}</td>
                         <td>{new Date(redemption.redeemed_at).toLocaleString()}</td>
                         <td>
-                          <button
-                            onClick={() => handleMarkProcessed(redemption.id, redemption.processed)}
-                            className={`pm-status ${redemption.processed ? 'processed' : 'pending'}`}
-                            style={{ cursor: 'pointer', border: 'none', background: 'transparent' }}
-                          >
-                            {redemption.processed ? '✅ Processed' : '⏳ Pending'}
-                          </button>
+                          <span className={`pm-status-badge ${redemption.status || (redemption.processed ? 'approved' : 'pending')}`}>
+                            {redemption.status === 'approved' && '✅ Approved'}
+                            {redemption.status === 'denied' && '❌ Denied'}
+                            {!redemption.status && redemption.processed && '✅ Processed'}
+                            {!redemption.status && !redemption.processed && '⏳ Pending'}
+                          </span>
+                        </td>
+                        <td>
+                          {!redemption.processed && (
+                            <div className="pm-redemption-actions">
+                              <button
+                                onClick={() => handleApproveRedemption(redemption.id)}
+                                className="pm-approve-btn"
+                                title="Approve redemption"
+                              >
+                                ✅ Approve
+                              </button>
+                              <button
+                                onClick={() => handleDenyRedemption(redemption)}
+                                className="pm-deny-btn"
+                                title="Deny and refund"
+                              >
+                                ❌ Deny
+                              </button>
+                            </div>
+                          )}
+                          {redemption.processed && (
+                            <span className="pm-no-action">—</span>
+                          )}
                         </td>
                       </tr>
                     ))}
