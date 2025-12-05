@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import { BonusHuntProvider, useBonusHunt } from './context/BonusHuntContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage/LandingPage';
 import AdminPanel from './components/AdminPanel/AdminPanel';
+import Sidebar from './components/Sidebar/Sidebar';
+import OffersPage from './components/OffersPage/OffersPage';
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import StreamPage from './components/StreamPage/StreamPage';
+import AboutPage from './components/AboutPage/AboutPage';
 import { checkUserAccess } from './utils/adminUtils';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
@@ -516,16 +521,35 @@ function ProtectedOverlay() {
   return <AppContent />;
 }
 
+// Layout wrapper to show sidebar on all pages except overlay
+function LayoutWrapper({ children }) {
+  const location = useLocation();
+  const showSidebar = location.pathname !== '/overlay';
+
+  return (
+    <>
+      {showSidebar && <Sidebar />}
+      {children}
+    </>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <BonusHuntProvider>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/overlay" element={<ProtectedOverlay />} />
-            <Route path="/admin" element={<AdminPanel />} />
-          </Routes>
+          <LayoutWrapper>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/offers" element={<OffersPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/stream" element={<StreamPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/overlay" element={<ProtectedOverlay />} />
+              <Route path="/admin" element={<AdminPanel />} />
+            </Routes>
+          </LayoutWrapper>
         </BrowserRouter>
       </BonusHuntProvider>
     </AuthProvider>

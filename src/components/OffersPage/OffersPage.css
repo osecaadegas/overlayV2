@@ -1,0 +1,140 @@
+.offers-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 20px 40px;
+}
+
+.offers-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.offers-container h1 {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.offers-subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  margin-bottom: 60px;
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.offer-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.offer-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.offer-card.featured {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.05);
+}
+
+.offer-card.featured:hover {
+  transform: scale(1.08) translateY(-10px);
+}
+
+.offer-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #fbbf24;
+  color: #1a202c;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.offer-card.featured .offer-badge {
+  background: #fbbf24;
+}
+
+.offer-card h3 {
+  font-size: 2rem;
+  margin: 20px 0 15px;
+  color: #1a202c;
+}
+
+.offer-card.featured h3 {
+  color: white;
+}
+
+.offer-card p {
+  color: #718096;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.offer-card.featured p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.offer-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #667eea;
+  margin-bottom: 30px;
+}
+
+.offer-card.featured .offer-price {
+  color: white;
+}
+
+.offer-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.offer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.offer-card.featured .offer-btn {
+  background: white;
+  color: #667eea;
+}
+
+@media (max-width: 768px) {
+  .offers-container h1 {
+    font-size: 2rem;
+  }
+  
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .offer-card.featured {
+    transform: scale(1);
+  }
+}
