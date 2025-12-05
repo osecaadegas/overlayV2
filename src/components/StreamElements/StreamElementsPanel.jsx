@@ -79,6 +79,12 @@ export default function StreamElementsPanel() {
       return;
     }
 
+    // Check if item is out of stock
+    if (item.available_units !== null && item.available_units <= 0) {
+      alert('This item is out of stock!');
+      return;
+    }
+
     if (!confirm(`Redeem "${item.name}" for ${item.point_cost.toLocaleString()} points?`)) {
       return;
     }
@@ -90,6 +96,7 @@ export default function StreamElementsPanel() {
     if (result.success) {
       alert('Redemption successful! Your reward has been applied.');
       await refreshPoints();
+      await loadRedemptionItems(); // Reload items to update stock count
     } else {
       alert(`Redemption failed: ${result.error}`);
     }
@@ -219,6 +226,7 @@ export default function StreamElementsPanel() {
                 {redemptionItems.map(item => {
                   const canAfford = points >= item.point_cost;
                   const isRedeeming = redeeming === item.id;
+                  const isOutOfStock = item.available_units !== null && item.available_units <= 0;
                   
                   // Use a default premium image if no image URL is provided
                   const imageUrl = item.image_url || 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400&h=300&fit=crop';
@@ -226,10 +234,13 @@ export default function StreamElementsPanel() {
                   return (
                     <div 
                       key={item.id} 
-                      className={`se-item ${!canAfford ? 'disabled' : ''}`}
+                      className={`se-item ${!canAfford || isOutOfStock ? 'disabled' : ''}`}
                     >
                       <div className="se-item-image">
                         <img src={imageUrl} alt={item.name} />
+                        {isOutOfStock && (
+                          <div className="se-out-of-stock-badge">OUT OF STOCK</div>
+                        )}
                       </div>
                       <div className="se-item-content">
                         <div className="se-item-header">
@@ -239,12 +250,17 @@ export default function StreamElementsPanel() {
                           </div>
                         </div>
                         <p className="se-item-description">{item.description}</p>
+                        {item.available_units !== null && (
+                          <p className="se-item-stock">
+                            Stock: <strong>{item.available_units}</strong> remaining
+                          </p>
+                        )}
                         <button
                           onClick={() => handleRedeem(item)}
-                          disabled={!canAfford || isRedeeming || loading}
+                          disabled={!canAfford || isRedeeming || loading || isOutOfStock}
                           className="se-redeem-btn"
                         >
-                          {isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
+                          {isOutOfStock ? 'Out of Stock' : isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
                         </button>
                       </div>
                     </div>

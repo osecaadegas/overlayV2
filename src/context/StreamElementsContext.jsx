@@ -245,6 +245,30 @@ export function StreamElementsProvider({ children }) {
 
       if (!response.ok) throw new Error('Failed to deduct points');
 
+      // Get the redemption item to check available_units
+      const { data: itemData, error: itemError } = await supabase
+        .from('redemption_items')
+        .select('available_units')
+        .eq('id', redemptionId)
+        .single();
+
+      if (itemError) throw itemError;
+
+      // Check if item has limited units and if any are available
+      if (itemData.available_units !== null) {
+        if (itemData.available_units <= 0) {
+          throw new Error('This item is out of stock');
+        }
+        
+        // Decrement available_units
+        const { error: updateError } = await supabase
+          .from('redemption_items')
+          .update({ available_units: itemData.available_units - 1 })
+          .eq('id', redemptionId);
+
+        if (updateError) throw updateError;
+      }
+
       // Record redemption in database
       const { error: dbError } = await supabase
         .from('point_redemptions')
