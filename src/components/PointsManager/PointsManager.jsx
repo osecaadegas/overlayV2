@@ -25,7 +25,8 @@ export default function PointsManager() {
     point_cost: '',
     reward_type: 'premium_duration',
     duration_days: '7',
-    image_url: ''
+    image_url: '',
+    available_units: ''
   });
 
   const SE_CHANNEL_ID = import.meta.env.VITE_SE_CHANNEL_ID;
@@ -208,6 +209,7 @@ export default function PointsManager() {
           reward_type: itemForm.reward_type
         },
         image_url: itemForm.image_url || null,
+        available_units: itemForm.available_units ? parseInt(itemForm.available_units) : null,
         is_active: true
       };
 
@@ -238,7 +240,8 @@ export default function PointsManager() {
         point_cost: '',
         reward_type: 'premium_duration',
         duration_days: '7',
-        image_url: ''
+        image_url: '',
+        available_units: ''
       });
       await loadRedemptionItems();
     } catch (err) {
@@ -412,7 +415,8 @@ export default function PointsManager() {
                       point_cost: '',
                       reward_type: 'premium_duration',
                       duration_days: '7',
-                      image_url: ''
+                      image_url: '',
+                      available_units: ''
                     });
                     setShowItemModal(true);
                   }}
@@ -431,6 +435,9 @@ export default function PointsManager() {
                     <p className="pm-item-description">{item.description}</p>
                     <div className="pm-item-meta">
                       <span>Duration: {item.reward_value?.duration_days || 0} days</span>
+                      {item.available_units !== null && (
+                        <span>Stock: {item.available_units} units</span>
+                      )}
                       <span className={`pm-item-status ${item.is_active ? 'active' : 'inactive'}`}>
                         {item.is_active ? '🟢 Active' : '🔴 Inactive'}
                       </span>
@@ -445,7 +452,8 @@ export default function PointsManager() {
                             point_cost: item.point_cost.toString(),
                             reward_type: item.reward_type,
                             duration_days: (item.reward_value?.duration_days || 7).toString(),
-                            image_url: item.image_url || ''
+                            image_url: item.image_url || '',
+                            available_units: item.available_units ? item.available_units.toString() : ''
                           });
                           setShowItemModal(true);
                         }}
@@ -566,6 +574,20 @@ export default function PointsManager() {
               />
               <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
                 Enter an image URL (e.g., from Unsplash) to display on the redemption card
+              </small>
+            </div>
+
+            <div className="pm-form-group">
+              <label>Available Units (Optional)</label>
+              <input
+                type="number"
+                value={itemForm.available_units}
+                onChange={(e) => setItemForm({ ...itemForm, available_units: e.target.value })}
+                placeholder="e.g., 10 (leave empty for unlimited)"
+                min="0"
+              />
+              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
+                Number of units available for redemption. Leave empty for unlimited stock.
               </small>
             </div>
 
