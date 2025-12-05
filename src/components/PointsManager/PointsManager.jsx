@@ -519,15 +519,14 @@ export default function PointsManager() {
                         <td className="pm-points">{redemption.points_spent.toLocaleString()}</td>
                         <td>{new Date(redemption.redeemed_at).toLocaleString()}</td>
                         <td>
-                          <span className={`pm-status-badge ${redemption.status || (redemption.processed ? 'approved' : 'pending')}`}>
+                          <span className={`pm-status-badge ${redemption.status || 'pending'}`}>
                             {redemption.status === 'approved' && '✅ Approved'}
                             {redemption.status === 'denied' && '❌ Denied'}
-                            {!redemption.status && redemption.processed && '✅ Processed'}
-                            {!redemption.status && !redemption.processed && '⏳ Pending'}
+                            {!redemption.status && '⏳ Pending'}
                           </span>
                         </td>
                         <td>
-                          {!redemption.processed && (
+                          {!redemption.status && (
                             <div className="pm-redemption-actions">
                               <button
                                 onClick={() => handleApproveRedemption(redemption.id)}
@@ -545,7 +544,7 @@ export default function PointsManager() {
                               </button>
                             </div>
                           )}
-                          {redemption.processed && (
+                          {redemption.status && (
                             <span className="pm-no-action">—</span>
                           )}
                         </td>

@@ -184,20 +184,21 @@
 /* Status Badge */
 .pm-status-badge {
   display: inline-block;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .pm-status-badge.approved {
-  background: #c6f6d5;
-  color: #2f855a;
+  background: #48bb78;
+  color: white;
 }
 
 .pm-status-badge.denied {
-  background: #fed7d7;
-  color: #c53030;
+  background: #f56565;
+  color: white;
 }
 
 .pm-status-badge.pending {
