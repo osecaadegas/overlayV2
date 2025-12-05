@@ -281,6 +281,12 @@ export function StreamElementsProvider({ children }) {
       }
 
       // Record redemption in database
+      console.log('About to insert redemption:', {
+        user_id: user.id,
+        redemption_id: redemptionId,
+        points_spent: pointCost
+      });
+      
       const { error: dbError } = await supabase
         .from('point_redemptions')
         .insert({
@@ -290,7 +296,10 @@ export function StreamElementsProvider({ children }) {
           redeemed_at: new Date().toISOString()
         });
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Database insert error:', dbError);
+        throw dbError;
+      }
 
       // Update local points
       setPoints(prev => prev - pointCost);
