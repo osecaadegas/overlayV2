@@ -9,10 +9,12 @@ const CustomizationPanel = ({ onClose }) => {
     const saved = localStorage.getItem('overlaySettings');
     return saved ? JSON.parse(saved) : {
       // General
-      streamerName: 'Your Name',
+      streamerName: localStorage.getItem('streamerName') || 'Your Name',
       websiteUrl: '',
       logoUrl: '',
       backgroundType: 'stars',
+      backgroundStyle: 'animated-stars',
+      customBackgroundUrl: '',
       panelPosition: 'right',
       carouselSpeed: 3,
       dragResize: true,
@@ -41,41 +43,16 @@ const CustomizationPanel = ({ onClose }) => {
       showChat: false,
       chatPosition: 'bottom-left',
       chatWidth: 350,
-      chatHeight: 500
+      chatHeight: 500,
+      
+      // Spotify
+      showSpotify: false
     };
   });
-
-  const themes = [
-    { id: 'default', name: 'Default', colors: ['#23243a', '#9346ff', '#00e1ff'] },
-    { id: 'dark-purple', name: 'Dark Purple', colors: ['#1a1625', '#7b2cbf', '#c77dff'] },
-    { id: 'neon-cyan', name: 'Neon Cyan', colors: ['#0a192f', '#00ffff', '#00cccc'] },
-    { id: 'sunset-orange', name: 'Sunset Orange', colors: ['#2d1b1e', '#ff6b35', '#ffaa00'] },
-    { id: 'forest-green', name: 'Forest Green', colors: ['#1a2e1a', '#52b788', '#95d5b2'] },
-    { id: 'royal-blue', name: 'Royal Blue', colors: ['#0d1b2a', '#415a77', '#778da9'] },
-    { id: 'hot-pink', name: 'Hot Pink', colors: ['#2b1628', '#ff006e', '#fb5607'] },
-    { id: 'crimson-red', name: 'Crimson Red', colors: ['#1a0a0a', '#dc2f02', '#e85d04'] },
-    { id: 'gold-rush', name: 'Gold Rush', colors: ['#2d2102', '#ffd60a', '#ffc300'] },
-    { id: 'ocean-blue', name: 'Ocean Blue', colors: ['#03045e', '#0077b6', '#00b4d8'] },
-    { id: 'midnight-black', name: 'Midnight Black', colors: ['#0d0d0d', '#333333', '#1a1a1a'] },
-    { id: 'pastel-dream', name: 'Pastel Dream', colors: ['#f8f9fa', '#e9ecef', '#dee2e6'] },
-    { id: 'retro-vibes', name: 'Retro Vibes', colors: ['#3d0066', '#ff00ff', '#00ffff'] },
-    { id: 'christmas', name: 'Christmas', colors: ['#0d3b0d', '#c41e3a', '#4cbb17'] },
-    { id: 'matrix', name: 'Matrix', colors: ['#000000', '#00ff00', '#003300'] }
-  ];
 
   const handleSave = () => {
     // Save to localStorage
     localStorage.setItem('overlaySettings', JSON.stringify(settings));
-    
-    // Apply CSS variables
-    document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
-    document.documentElement.style.setProperty('--secondary-color', settings.secondaryColor);
-    document.documentElement.style.setProperty('--accent-color', settings.accentColor);
-    document.documentElement.style.setProperty('--background-color', settings.backgroundColor);
-    document.documentElement.style.setProperty('--text-color', settings.textColor);
-    document.documentElement.style.setProperty('--gradient-1', settings.gradient1);
-    document.documentElement.style.setProperty('--gradient-2', settings.gradient2);
-    document.documentElement.style.setProperty('--gradient-angle', `${settings.gradientAngle}deg`);
     
     alert('Settings saved successfully!');
     onClose();
@@ -88,170 +65,213 @@ const CustomizationPanel = ({ onClose }) => {
     }
   };
 
-  const applyTheme = (theme) => {
-    setSettings({
-      ...settings,
-      backgroundColor: theme.colors[0],
-      primaryColor: theme.colors[1],
-      secondaryColor: theme.colors[2]
-    });
-  };
-
-  const updateSetting = (key, value) => {
-    setSettings({ ...settings, [key]: value });
-  };
-
   const renderBrandingTab = () => (
     <div className="tab-panel">
       <div className="section">
         <h3>🏷️ Branding</h3>
         <div className="setting-row">
           <label>Streamer Name:</label>
-          <input type="text" id="custom-streamer-name" placeholder="Enter streamer name" />
+          <input 
+            type="text" 
+            id="custom-streamer-name" 
+            placeholder="Enter streamer name"
+            defaultValue={settings.streamerName}
+            onChange={(e) => {
+              const newName = e.target.value;
+              const newSettings = { ...settings, streamerName: newName };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              localStorage.setItem('streamerName', newName);
+              localStorage.setItem('twitchChannel', newName);
+              window.dispatchEvent(new CustomEvent('streamerNameChanged', { detail: { name: newName } }));
+            }}
+          />
         </div>
         <div className="setting-row">
-          <label>Website URL:</label>
-          <input type="url" id="custom-website-url" placeholder="https://your-website.com" />
-        </div>
-        <div className="setting-row">
-          <label>Logo:</label>
-          <button className="file-btn" onClick={() => document.getElementById('custom-logo-file').click()}>
-            Choose Logo
-          </button>
-          <input type="file" id="custom-logo-file" accept="image/*" style={{ display: 'none' }} />
-          <button className="reset-btn">Reset</button>
-        </div>
-      </div>
-
-      <div className="section">
-        <h3>🖼️ Background</h3>
-        <div className="setting-row">
-          <label>Background Type:</label>
-          <select id="background-type">
-            <option value="color">Solid Color</option>
-            <option value="gradient">Gradient</option>
-            <option value="image">Image</option>
+          <label>Default Slot Image:</label>
+          <select 
+            value={localStorage.getItem('defaultSlotImage') || 'zilhas.png'}
+            onChange={(e) => {
+              localStorage.setItem('defaultSlotImage', e.target.value);
+              window.dispatchEvent(new CustomEvent('defaultSlotImageChanged'));
+            }}
+          >
+            <option value="zilhas.png">Zilhas</option>
+            <option value="seca.png">Seca</option>
+            <option value="TnT.png">TnT</option>
           </select>
-        </div>
-        <div className="setting-row">
-          <label>Background Color:</label>
-          <input type="color" id="bg-color" defaultValue="#0c1445" />
         </div>
       </div>
     </div>
   );
 
-  const renderLayoutTab = () => (
+
+
+  const renderBackgroundTab = () => (
     <div className="tab-panel">
       <div className="section">
-        <h3>📍 Panel Positioning</h3>
-        <div className="setting-row">
-          <label>Info Panel Position:</label>
-          <select id="info-panel-position">
-            <option value="upper-right">Upper Right</option>
-            <option value="lower-right">Lower Right</option>
-            <option value="upper-left">Upper Left</option>
-            <option value="lower-left">Lower Left</option>
-            <option value="center-right">Center Right (Default)</option>
-          </select>
-        </div>
-        <div className="setting-row">
-          <label>Tournament Position:</label>
-          <select id="tournament-position">
-            <option value="upper-right">Upper Right</option>
-            <option value="lower-right">Lower Right</option>
-            <option value="upper-left">Upper Left</option>
-            <option value="lower-left">Lower Left</option>
-            <option value="center-right">Center Right (Default)</option>
-          </select>
-        </div>
-      </div>
+        <h3>🎨 Background Style</h3>
+        
+        <div className="background-grid">
+          {/* Animated Backgrounds */}
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'animated-stars' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'animated-stars' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'animated-stars';
+            }}
+          >
+            <div className="bg-preview animated-stars-preview"></div>
+            <span>Animated Stars</span>
+          </div>
 
-      <div className="section">
-        <h3>🎠 Bonus List</h3>
-        <div className="setting-row">
-          <label>Carousel Control:</label>
-          <div className="button-group">
-            <button className="control-btn" title="Pause/Play">⏸️</button>
-            <button className="control-btn" title="Speed">🏃</button>
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'particles' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'particles' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'particles';
+            }}
+          >
+            <div className="bg-preview particles-preview"></div>
+            <span>Particles</span>
+          </div>
+
+          {/* Solid Colors */}
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'dark' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'dark' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'dark';
+            }}
+          >
+            <div className="bg-preview" style={{ background: '#0f0f23' }}></div>
+            <span>Dark Blue</span>
+          </div>
+
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'black' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'black' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'black';
+            }}
+          >
+            <div className="bg-preview" style={{ background: '#000000' }}></div>
+            <span>Pure Black</span>
+          </div>
+
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'purple' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'purple' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'purple';
+            }}
+          >
+            <div className="bg-preview" style={{ background: '#1a0f2e' }}></div>
+            <span>Deep Purple</span>
+          </div>
+
+          {/* Gradients */}
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'gradient-purple' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'gradient-purple' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'gradient-purple';
+            }}
+          >
+            <div className="bg-preview" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}></div>
+            <span>Purple Gradient</span>
+          </div>
+
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'gradient-blue' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'gradient-blue' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'gradient-blue';
+            }}
+          >
+            <div className="bg-preview" style={{ background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' }}></div>
+            <span>Ocean Gradient</span>
+          </div>
+
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'gradient-sunset' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'gradient-sunset' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'gradient-sunset';
+            }}
+          >
+            <div className="bg-preview" style={{ background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%)' }}></div>
+            <span>Sunset Gradient</span>
+          </div>
+
+          <div 
+            className={`background-option ${settings.backgroundStyle === 'gradient-neon' ? 'active' : ''}`}
+            onClick={() => {
+              const newSettings = { ...settings, backgroundStyle: 'gradient-neon' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              document.body.className = 'gradient-neon';
+            }}
+          >
+            <div className="bg-preview" style={{ background: 'linear-gradient(135deg, #00d4ff 0%, #9147ff 50%, #ff006e 100%)' }}></div>
+            <span>Neon Gradient</span>
           </div>
         </div>
-        <div className="setting-row">
-          <label>Enable Drag/Resize:</label>
-          <input type="checkbox" id="enable-drag-resize" />
-        </div>
-      </div>
-    </div>
-  );
 
-  const renderColorsTab = () => (
-    <div className="tab-panel">
-      <div className="section">
-        <h3>🎨 Base Colors</h3>
         <div className="setting-row">
-          <label>Primary Color:</label>
-          <input type="color" id="primary-color" defaultValue="#9346ff" />
+          <label>Custom Background URL:</label>
+          <input 
+            type="text" 
+            placeholder="Enter image URL or upload below"
+            value={settings.customBackgroundUrl || ''}
+            onChange={(e) => {
+              const url = e.target.value;
+              const newSettings = { ...settings, customBackgroundUrl: url, backgroundStyle: 'custom' };
+              setSettings(newSettings);
+              localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+              if (url) {
+                document.body.style.background = `url(${url}) center/cover fixed`;
+              }
+            }}
+          />
         </div>
-        <div className="setting-row">
-          <label>Secondary Color:</label>
-          <input type="color" id="secondary-color" defaultValue="#00e1ff" />
-        </div>
-        <div className="setting-row">
-          <label>Accent Color:</label>
-          <input type="color" id="accent-color" defaultValue="#ff006e" />
-        </div>
-        <div className="setting-row">
-          <label>Background Color:</label>
-          <input type="color" id="panel-bg-color" defaultValue="#23243a" />
-        </div>
-        <div className="setting-row">
-          <label>Text Color:</label>
-          <input type="color" id="text-color" defaultValue="#f3f4f6" />
-        </div>
-      </div>
 
-      <div className="section">
-        <h3>🌈 Gradients</h3>
         <div className="setting-row">
-          <label>Gradient Color 1:</label>
-          <input type="color" id="gradient-color-1" defaultValue="#9346ff" />
-        </div>
-        <div className="setting-row">
-          <label>Gradient Color 2:</label>
-          <input type="color" id="gradient-color-2" defaultValue="#00e1ff" />
-        </div>
-        <div className="setting-row">
-          <label>Gradient Angle:</label>
-          <input type="range" id="gradient-angle" min="0" max="360" defaultValue="135" />
-          <span id="gradient-angle-value">135°</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderEffectsTab = () => (
-    <div className="tab-panel">
-      <div className="section">
-        <h3>✨ Visual Effects</h3>
-        <div className="setting-row">
-          <label>Animations:</label>
-          <input type="checkbox" id="enable-animations" defaultChecked />
-        </div>
-        <div className="setting-row">
-          <label>Particles:</label>
-          <input type="checkbox" id="enable-particles" />
-        </div>
-        <div className="setting-row">
-          <label>Blur Effects:</label>
-          <input type="checkbox" id="enable-blur" defaultChecked />
-        </div>
-        <div className="setting-row">
-          <label>Shadows:</label>
-          <input type="checkbox" id="enable-shadows" defaultChecked />
-        </div>
-        <div className="setting-row">
-          <label>Glow Effects:</label>
-          <input type="checkbox" id="enable-glow" defaultChecked />
+          <label>Or Upload Background:</label>
+          <input 
+            type="file" 
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                  const url = event.target.result;
+                  const newSettings = { ...settings, customBackgroundUrl: url, backgroundStyle: 'custom' };
+                  setSettings(newSettings);
+                  localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+                  document.body.style.background = `url(${url}) center/cover fixed`;
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+          />
         </div>
       </div>
     </div>
@@ -259,6 +279,23 @@ const CustomizationPanel = ({ onClose }) => {
 
   const renderWidgetsTab = () => (
     <div className="tab-panel">
+      <div className="section">
+        <h3>🎵 Spotify Widget</h3>
+        <div className="setting-row">
+          <label>Enable Spotify Widget:</label>
+          <input 
+            type="checkbox" 
+            id="enable-spotify"
+            defaultChecked={localStorage.getItem('showSpotify') === 'true'}
+            onChange={(e) => {
+              const showSpotify = e.target.checked;
+              localStorage.setItem('showSpotify', showSpotify);
+              window.dispatchEvent(new CustomEvent('toggleSpotify', { detail: { show: showSpotify } }));
+            }}
+          />
+        </div>
+      </div>
+
       <div className="section">
         <h3>💬 Twitch Chat</h3>
         <div className="setting-row">
@@ -276,7 +313,18 @@ const CustomizationPanel = ({ onClose }) => {
         </div>
         <div className="setting-row">
           <label>Twitch Channel:</label>
-          <input type="text" id="twitch-channel" placeholder="Enter channel name" />
+          <input 
+            type="text" 
+            id="twitch-channel" 
+            placeholder="Enter channel name"
+            defaultValue={localStorage.getItem('twitchChannel') || ''}
+            onChange={(e) => {
+              const newChannel = e.target.value;
+              localStorage.setItem('twitchChannel', newChannel);
+              localStorage.setItem('streamerName', newChannel);
+              window.dispatchEvent(new CustomEvent('streamerNameChanged', { detail: { name: newChannel } }));
+            }}
+          />
         </div>
         <div className="setting-row">
           <label>Chat Position:</label>
@@ -338,58 +386,10 @@ const CustomizationPanel = ({ onClose }) => {
           <span id="chat-height-value">{settings.chatHeight || 500}px</span>
         </div>
       </div>
-      
-      <div className="section">
-        <h3>🎵 Spotify Widget</h3>
-        <div className="setting-row">
-          <label>Enable Spotify Widget:</label>
-          <input 
-            type="checkbox" 
-            id="enable-spotify-widget"
-            defaultChecked={localStorage.getItem('showSpotify') === 'true'}
-            onChange={(e) => {
-              const showSpotify = e.target.checked;
-              localStorage.setItem('showSpotify', showSpotify);
-              window.dispatchEvent(new CustomEvent('toggleSpotify', { detail: { show: showSpotify } }));
-            }}
-          />
-        </div>
-        <div className="setting-row">
-          <label>Spotify Position:</label>
-          <select id="spotify-position">
-            <option value="top-left">Top Left</option>
-            <option value="top-right">Top Right</option>
-            <option value="bottom-left">Bottom Left</option>
-            <option value="bottom-right">Bottom Right</option>
-          </select>
-        </div>
-      </div>
     </div>
   );
 
-  const renderThemesTab = () => (
-    <div className="tab-panel">
-      <div className="section">
-        <h3>🌈 Theme Presets</h3>
-        <div className="themes-grid">
-          {themes.map(theme => (
-            <button 
-              key={theme.id} 
-              className="theme-card"
-              onClick={() => applyTheme(theme)}
-            >
-              <div className="theme-preview">
-                <div className="preview-bar" style={{ background: theme.colors[0] }} />
-                <div className="preview-bar" style={{ background: theme.colors[1] }} />
-                <div className="preview-bar" style={{ background: theme.colors[2] }} />
-              </div>
-              <span className="theme-name">{theme.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+
 
   const draggableRef = useDraggable(true, 'customization');
 
@@ -409,22 +409,10 @@ const CustomizationPanel = ({ onClose }) => {
             🏷️ Brand
           </button>
           <button 
-            className={`tab-btn ${activeTab === 'layout' ? 'active' : ''}`}
-            onClick={() => setActiveTab('layout')}
+            className={`tab-btn ${activeTab === 'background' ? 'active' : ''}`}
+            onClick={() => setActiveTab('background')}
           >
-            📐 Layout
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'colors' ? 'active' : ''}`}
-            onClick={() => setActiveTab('colors')}
-          >
-            🎨 Colors
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === 'effects' ? 'active' : ''}`}
-            onClick={() => setActiveTab('effects')}
-          >
-            ✨ Effects
+            🎨 Background
           </button>
           <button 
             className={`tab-btn ${activeTab === 'widgets' ? 'active' : ''}`}
@@ -432,21 +420,12 @@ const CustomizationPanel = ({ onClose }) => {
           >
             🔌 Widgets
           </button>
-          <button 
-            className={`tab-btn ${activeTab === 'themes' ? 'active' : ''}`}
-            onClick={() => setActiveTab('themes')}
-          >
-            🌈 Themes
-          </button>
         </div>
 
         <div className="customization-body">
           {activeTab === 'branding' && renderBrandingTab()}
-          {activeTab === 'layout' && renderLayoutTab()}
-          {activeTab === 'colors' && renderColorsTab()}
-          {activeTab === 'effects' && renderEffectsTab()}
+          {activeTab === 'background' && renderBackgroundTab()}
           {activeTab === 'widgets' && renderWidgetsTab()}
-          {activeTab === 'themes' && renderThemesTab()}
         </div>
 
         <div className="customization-footer">

@@ -27,6 +27,8 @@ function AppContent() {
   const [showBHPanel, setShowBHPanel] = useState(false);
   const [showStatsPanel, setShowStatsPanel] = useState(false);
   const [showBonusOpening, setShowBonusOpening] = useState(false);
+  const [showBHStats, setShowBHStats] = useState(() => localStorage.getItem('showBHStats') !== 'false');
+  const [showBHCards, setShowBHCards] = useState(() => localStorage.getItem('showBHCards') !== 'false');
   const [showEditSlots, setShowEditSlots] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
   const [selectedBonusId, setSelectedBonusId] = useState(null);
@@ -57,6 +59,11 @@ function AppContent() {
   useEffect(() => {
     const handleToggleSpotify = (e) => setShowSpotify(e.detail.show);
     const handleToggleTwitch = (e) => setShowTwitchChatWidget(e.detail.show);
+    const handleToggleBHStats = (e) => {
+      setShowBHStats(e.detail.show);
+      if (e.detail.show) setShowStatsPanel(true);
+    };
+    const handleToggleBHCards = (e) => setShowBHCards(e.detail.show);
     const handleChatSettingsUpdate = () => {
       const settings = localStorage.getItem('overlaySettings');
       if (settings) {
@@ -71,11 +78,15 @@ function AppContent() {
     
     window.addEventListener('toggleSpotify', handleToggleSpotify);
     window.addEventListener('toggleTwitchChat', handleToggleTwitch);
+    window.addEventListener('toggleBHStats', handleToggleBHStats);
+    window.addEventListener('toggleBHCards', handleToggleBHCards);
     window.addEventListener('chatSettingsUpdated', handleChatSettingsUpdate);
     
     return () => {
       window.removeEventListener('toggleSpotify', handleToggleSpotify);
       window.removeEventListener('toggleTwitchChat', handleToggleTwitch);
+      window.removeEventListener('toggleBHStats', handleToggleBHStats);
+      window.removeEventListener('toggleBHCards', handleToggleBHCards);
       window.removeEventListener('chatSettingsUpdated', handleChatSettingsUpdate);
     };
   }, []);
@@ -137,7 +148,7 @@ function AppContent() {
         {showBonusOpening && layoutMode === 'modern-sidebar' && showStatsPanel && <CurrentlyOpening selectedBonusId={selectedBonusId} />}
         
         {/* Right Sidebar - Info Panel (Conditionally visible) */}
-        <aside className={`info-panel ${showStatsPanel ? 'info-panel--visible' : ''}`} style={{ display: showStatsPanel ? 'flex' : 'none' }}>
+        <aside className={`info-panel ${showStatsPanel && showBHStats ? 'info-panel--visible' : ''}`} style={{ display: showStatsPanel && showBHStats ? 'flex' : 'none' }}>
           {/* Layout Switcher */}
           <div className="layout-switcher">
             <button 
@@ -164,12 +175,12 @@ function AppContent() {
           </div>
 
           {/* Statistics Section - Only show for classic layout */}
-          {showStatsPanel && layoutMode === 'classic' && <StatsPanel />}
+          {showStatsPanel && showBHStats && layoutMode === 'classic' && <StatsPanel />}
 
           {/* Bonus List Section */}
           {layoutMode === 'classic' && <BonusList onBonusClick={handleBonusClick} />}
-          {layoutMode === 'modern-card' && <ModernCardLayout />}
-          {layoutMode === 'modern-sidebar' && <ModernSidebarLayout />}
+          {layoutMode === 'modern-card' && <ModernCardLayout showCards={showBHCards} />}
+          {layoutMode === 'modern-sidebar' && <ModernSidebarLayout showCards={showBHCards} />}
         </aside>
       </div>
       {showBHPanel && <BHPanel onClose={() => setShowBHPanel(false)} onOpenBonusOpening={(bonusId) => {
@@ -203,7 +214,7 @@ function AppContent() {
       {showSpotify && <SpotifyWidget />}
       
       {/* Twitch Chat (only show if enabled in customization) */}
-      {showTwitchChatWidget && <TwitchChat channel="" position={chatSettings.position} width={chatSettings.width} height={chatSettings.height} />}
+      {showTwitchChatWidget && <TwitchChat channel={localStorage.getItem('twitchChannel') || ''} position={chatSettings.position} width={chatSettings.width} height={chatSettings.height} />}
       
       {/* Bonus Opening Panel */}
       {showBonusOpening && (

@@ -81,6 +81,7 @@ const useDraggable = (enabled = true, storageKey = null) => {
           const { left, top } = JSON.parse(savedPosition);
           element.style.left = left;
           element.style.top = top;
+          element.style.transform = 'none';
           positionRestored = true;
         } catch (e) {
           console.warn('Failed to restore panel position:', e);
@@ -89,11 +90,15 @@ const useDraggable = (enabled = true, storageKey = null) => {
     }
     
     // Center on first render if not already positioned and no saved position
-    if (!positionRestored && !element.style.left && !element.style.top) {
-      const x = (window.innerWidth - element.offsetWidth) / 2;
-      const y = (window.innerHeight - element.offsetHeight) / 2;
-      element.style.left = `${x}px`;
-      element.style.top = `${y}px`;
+    if (!positionRestored) {
+      // Use requestAnimationFrame to ensure element is fully rendered
+      requestAnimationFrame(() => {
+        const x = (window.innerWidth - element.offsetWidth) / 2;
+        const y = (window.innerHeight - element.offsetHeight) / 2;
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+        element.style.transform = 'none';
+      });
     }
 
     return () => {

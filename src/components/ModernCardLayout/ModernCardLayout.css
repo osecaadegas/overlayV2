@@ -21,24 +21,20 @@
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }
 
 .bonus-card.opened {
   border-color: rgba(0, 255, 136, 0.6);
-  box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
 }
 
 .bonus-card.unopened {
   border-color: rgba(255, 107, 107, 0.6);
-  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.2);
 }
 
 .bonus-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 225, 255, 0.4);
 }
 
 .card-image-section {
@@ -230,6 +226,41 @@
   pointer-events: none;
 }
 
+.card-payout-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(25, 30, 40, 0.95), rgba(25, 30, 40, 0.75));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.payout-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #5eead4;
+  text-shadow: 0 0 8px rgba(94, 234, 212, 0.4), 0 2px 4px rgba(0, 0, 0, 0.6);
+  letter-spacing: 1px;
+  flex: 1;
+}
+
+.multiplier-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4), 0 2px 4px rgba(0, 0, 0, 0.6);
+  letter-spacing: 1px;
+}
+
 .card-details-section {
   padding: 1.5rem;
   flex: 1;
@@ -336,6 +367,56 @@
 
 .modern-card-layout::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(90deg, #9346ff, #00e1ff);
+}
+
+/* Best multiplier - green glow */
+.bonus-card.best-glow {
+  border-color: rgba(0, 255, 136, 1);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 136, 0.6),
+    0 0 40px rgba(0, 255, 136, 0.4),
+    0 0 60px rgba(0, 255, 136, 0.2);
+  animation: greenPulse 2s ease-in-out infinite;
+}
+
+/* Worst multiplier - red glow */
+.bonus-card.worst-glow {
+  border-color: rgba(255, 107, 107, 1);
+  box-shadow: 
+    0 0 20px rgba(255, 107, 107, 0.6),
+    0 0 40px rgba(255, 107, 107, 0.4),
+    0 0 60px rgba(255, 107, 107, 0.2);
+  animation: redPulse 2s ease-in-out infinite;
+}
+
+@keyframes greenPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(0, 255, 136, 0.6),
+      0 0 40px rgba(0, 255, 136, 0.4),
+      0 0 60px rgba(0, 255, 136, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(0, 255, 136, 0.8),
+      0 0 60px rgba(0, 255, 136, 0.6),
+      0 0 90px rgba(0, 255, 136, 0.4);
+  }
+}
+
+@keyframes redPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(255, 107, 107, 0.6),
+      0 0 40px rgba(255, 107, 107, 0.4),
+      0 0 60px rgba(255, 107, 107, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(255, 107, 107, 0.8),
+      0 0 60px rgba(255, 107, 107, 0.6),
+      0 0 90px rgba(255, 107, 107, 0.4);
+  }
 }
 
 @media (max-width: 768px) {

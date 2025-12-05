@@ -72,12 +72,21 @@ const GiveawayPanel = ({ onClose }) => {
     
     // Calculate rotation to land on winner (multiple full spins + final position)
     const segmentAngle = 360 / entries.length;
-    const targetAngle = winnerIndex * segmentAngle;
-    const fullSpins = 5; // 5 full rotations
-    const totalRotation = (fullSpins * 360) + (360 - targetAngle) + (segmentAngle / 2); // Center on winner
+    // Calculate the center angle of the winner segment
+    // Segments start at 0° and go clockwise, pointer is at top (12 o'clock)
+    const segmentCenterAngle = (winnerIndex * segmentAngle) + (segmentAngle / 2);
     
-    // Spin the wheel
-    setWheelRotation(totalRotation);
+    // Minimum 3 full spins + random extra rotations (3-5) to ensure visual variety
+    const minSpins = 3;
+    const extraSpins = Math.floor(Math.random() * 3); // 0-2 extra spins
+    const fullSpins = minSpins + extraSpins;
+    
+    // Calculate rotation needed: full spins + rotation to align segment center with pointer
+    // We need to rotate so the segment center is at the top (0°/360°)
+    const additionalRotation = (fullSpins * 360) + (360 - segmentCenterAngle);
+    
+    // Spin the wheel by adding to current rotation (ensures visible spin every time)
+    setWheelRotation(prev => prev + additionalRotation);
     
     // After spin completes (3 seconds), show winner and confetti
     setTimeout(() => {

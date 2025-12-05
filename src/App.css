@@ -17,8 +17,8 @@ body {
   position: relative;
 }
 
-/* Stars layer 1 - small stars */
-body::before {
+/* Stars layer 1 - small stars (only for animated-stars background) */
+body.animated-stars::before {
   content: '';
   position: fixed;
   top: 0;
@@ -43,8 +43,8 @@ body::before {
   z-index: -2;
 }
 
-/* Stars layer 2 - larger stars */
-body::after {
+/* Stars layer 2 - larger stars (only for animated-stars background) */
+body.animated-stars::after {
   content: '';
   position: fixed;
   top: 0;

@@ -31,12 +31,28 @@ const BHPanel = ({ onClose, onOpenBonusOpening }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingBonusId, setEditingBonusId] = useState(null);
+  const [showStats, setShowStats] = useState(() => localStorage.getItem('showBHStats') !== 'false');
+  const [showCards, setShowCards] = useState(() => localStorage.getItem('showBHCards') !== 'false');
 
   const slotNameRef = useRef(null);
   const betSizeRef = useRef(null);
   const fileInputRef = useRef(null);
   const { currency } = overlayConfig.display;
   const draggableRef = useDraggable(true, 'bonushunt');
+
+  const toggleStats = () => {
+    const newValue = !showStats;
+    setShowStats(newValue);
+    localStorage.setItem('showBHStats', newValue);
+    window.dispatchEvent(new CustomEvent('toggleBHStats', { detail: { show: newValue } }));
+  };
+
+  const toggleCards = () => {
+    const newValue = !showCards;
+    setShowCards(newValue);
+    localStorage.setItem('showBHCards', newValue);
+    window.dispatchEvent(new CustomEvent('toggleBHCards', { detail: { show: newValue } }));
+  };
 
   // Handle import
   const handleImport = (e) => {
@@ -327,6 +343,22 @@ const BHPanel = ({ onClose, onOpenBonusOpening }) => {
         {/* Management Actions */}
         <div className="bh-panel-footer">
           <div className="bh-management-buttons">
+            <button
+              className={`bh-btn bh-btn-small ${showStats ? 'bh-btn-active' : ''}`}
+              onClick={toggleStats}
+              type="button"
+              title="Toggle Statistics Panel"
+            >
+              📊 Stats
+            </button>
+            <button
+              className={`bh-btn bh-btn-small ${showCards ? 'bh-btn-active' : ''}`}
+              onClick={toggleCards}
+              type="button"
+              title="Toggle Spinning Cards"
+            >
+              🎴 Cards
+            </button>
             <button
               className={`bh-btn bh-btn-small ${editMode ? 'bh-btn-active' : ''}`}
               onClick={() => setEditMode(!editMode)}

@@ -342,4 +342,104 @@
   .themes-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
+
+  .background-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+/* Background Options Grid */
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.background-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.background-option:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 225, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.background-option.active {
+  background: rgba(0, 225, 255, 0.1);
+  border-color: #00e1ff;
+  box-shadow: 0 0 20px rgba(0, 225, 255, 0.3);
+}
+
+.bg-preview {
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.animated-stars-preview {
+  background: #0f0f23;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-stars-preview::before {
+  content: '✨';
+  position: absolute;
+  font-size: 1.5rem;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.particles-preview {
+  background: radial-gradient(circle, #1a1a2e 0%, #0f0f23 100%);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.background-option span {
+  font-size: 0.75rem;
+  color: #d1d5db;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.setting-row input[type="file"] {
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #d1d5db;
+  font-size: 0.875rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.setting-row input[type="file"]::-webkit-file-upload-button {
+  padding: 0.5rem 1rem;
+  background: rgba(0, 225, 255, 0.2);
+  border: 1px solid rgba(0, 225, 255, 0.5);
+  border-radius: 6px;
+  color: #00e1ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.setting-row input[type="file"]::-webkit-file-upload-button:hover {
+  background: rgba(0, 225, 255, 0.3);
 }

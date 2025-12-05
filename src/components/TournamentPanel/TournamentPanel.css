@@ -286,8 +286,8 @@
 .tournament-suggestion-item {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
+  padding: 0.15rem 0.3rem;
   cursor: pointer;
   transition: all 0.2s ease;
   border-bottom: 1px solid rgba(0, 225, 255, 0.1);
@@ -302,8 +302,8 @@
 }
 
 .tournament-suggestion-item img {
-  width: 40px;
-  height: 40px;
+  width: 85px;
+  height: 85px;
   object-fit: cover;
   border-radius: 6px;
   border: 1px solid rgba(0, 225, 255, 0.2);
@@ -641,7 +641,7 @@
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 320px;
+  width: 260px;
   background: linear-gradient(135deg, rgba(26, 27, 46, 0.98) 0%, rgba(22, 33, 62, 0.98) 100%);
   backdrop-filter: blur(16px);
   border: 2px solid rgba(0, 225, 255, 0.5);
@@ -652,12 +652,12 @@
 }
 
 .winner-widget-content {
-  padding: 1rem;
+  padding: 0.75rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .winner-trophy-overlay {
@@ -682,14 +682,14 @@
 
 .winner-widget-content h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 800;
   background: linear-gradient(135deg, #00e1ff 0%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .winner-player {
@@ -711,8 +711,8 @@
 
 .winner-slot-card {
   position: relative;
-  width: 250px;
-  height: 320px;
+  width: 200px;
+  height: 220px;
   border-radius: 12px;
   overflow: hidden;
   border: 3px solid rgba(0, 225, 255, 0.5);
@@ -730,10 +730,10 @@
   top: 0;
   left: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: 0.4rem;
   background: rgba(0, 0, 0, 0.85);
   color: #00e1ff;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   text-align: center;
   text-shadow: 0 0 15px rgba(0, 225, 255, 0.6);

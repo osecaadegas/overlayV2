@@ -11,8 +11,45 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
   const [player1Payout, setPlayer1Payout] = useState('');
   const [player2BetSize, setPlayer2BetSize] = useState('');
   const [player2Payout, setPlayer2Payout] = useState('');
+  const [previousRound, setPreviousRound] = useState(currentRound);
 
   const currentMatch = matches[currentMatchIndex];
+
+  // Save match data to localStorage
+  const saveMatchData = (matchIndex, data) => {
+    const cacheKey = `tournament_match_${matchIndex}`;
+    localStorage.setItem(cacheKey, JSON.stringify(data));
+  };
+
+  // Load match data from localStorage
+  const loadMatchData = (matchIndex) => {
+    const cacheKey = `tournament_match_${matchIndex}`;
+    const cached = localStorage.getItem(cacheKey);
+    return cached ? JSON.parse(cached) : null;
+  };
+
+  // Detect phase change and clear all cached data for the new phase
+  useEffect(() => {
+    if (currentRound !== previousRound && previousRound !== null) {
+      // Phase changed - clear all match data for this round
+      console.log(`Phase changed from ${previousRound} to ${currentRound} - clearing all inputs`);
+      
+      // Clear all cached match data
+      matches.forEach((_, index) => {
+        localStorage.removeItem(`tournament_match_${index}`);
+      });
+      
+      // Clear current inputs
+      setPlayer1BetSize('');
+      setPlayer1Payout('');
+      setPlayer2BetSize('');
+      setPlayer2Payout('');
+      
+      // Reset to first match of new phase
+      setCurrentMatchIndex(0);
+    }
+    setPreviousRound(currentRound);
+  }, [currentRound, previousRound, matches]);
 
   // Sync with parent's match index when it changes (e.g., when advancing rounds)
   useEffect(() => {
@@ -20,12 +57,32 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
   }, [parentMatchIndex]);
 
   useEffect(() => {
-    // Reset inputs when match changes
-    setPlayer1BetSize('');
-    setPlayer1Payout('');
-    setPlayer2BetSize('');
-    setPlayer2Payout('');
+    // Load cached data when match changes
+    const cachedData = loadMatchData(currentMatchIndex);
+    if (cachedData) {
+      setPlayer1BetSize(cachedData.player1BetSize || '');
+      setPlayer1Payout(cachedData.player1Payout || '');
+      setPlayer2BetSize(cachedData.player2BetSize || '');
+      setPlayer2Payout(cachedData.player2Payout || '');
+    } else {
+      setPlayer1BetSize('');
+      setPlayer1Payout('');
+      setPlayer2BetSize('');
+      setPlayer2Payout('');
+    }
   }, [currentMatchIndex]);
+
+  // Save data whenever inputs change
+  useEffect(() => {
+    if (player1BetSize || player1Payout || player2BetSize || player2Payout) {
+      saveMatchData(currentMatchIndex, {
+        player1BetSize,
+        player1Payout,
+        player2BetSize,
+        player2Payout
+      });
+    }
+  }, [player1BetSize, player1Payout, player2BetSize, player2Payout, currentMatchIndex]);
 
   const calculateMultiplier = (bet, payout) => {
     const betVal = parseFloat(bet) || 0;
@@ -135,32 +192,32 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
                 alt={currentMatch.player1?.slot}
                 onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Slot'}
               />
-            </div>
-            <div className="control-input-group">
-              <label>💰 Bet Size</label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                value={player1BetSize}
-                onChange={(e) => setPlayer1BetSize(e.target.value)}
-              />
-            </div>
-            <div className="control-input-group">
-              <label>💵 Payout</label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                value={player1Payout}
-                onChange={(e) => setPlayer1Payout(e.target.value)}
-              />
-            </div>
-            {player1BetSize && player1Payout && (
-              <div className="control-multiplier-display">
-                {player1Multiplier}x
+              <div className="control-inputs-overlay">
+                <div className="control-input-group">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="Bet Size"
+                    value={player1BetSize}
+                    onChange={(e) => setPlayer1BetSize(e.target.value)}
+                  />
+                </div>
+                <div className="control-input-group">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="Payout"
+                    value={player1Payout}
+                    onChange={(e) => setPlayer1Payout(e.target.value)}
+                  />
+                </div>
+                {player1BetSize && player1Payout && (
+                  <div className="control-multiplier-display">
+                    {player1Multiplier}x
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* VS Divider */}
@@ -174,32 +231,32 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
                 alt={currentMatch.player2?.slot}
                 onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Slot'}
               />
-            </div>
-            <div className="control-input-group">
-              <label>💰 Bet Size</label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                value={player2BetSize}
-                onChange={(e) => setPlayer2BetSize(e.target.value)}
-              />
-            </div>
-            <div className="control-input-group">
-              <label>💵 Payout</label>
-              <input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                value={player2Payout}
-                onChange={(e) => setPlayer2Payout(e.target.value)}
-              />
-            </div>
-            {player2BetSize && player2Payout && (
-              <div className="control-multiplier-display">
-                {player2Multiplier}x
+              <div className="control-inputs-overlay">
+                <div className="control-input-group">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="Bet Size"
+                    value={player2BetSize}
+                    onChange={(e) => setPlayer2BetSize(e.target.value)}
+                  />
+                </div>
+                <div className="control-input-group">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="Payout"
+                    value={player2Payout}
+                    onChange={(e) => setPlayer2Payout(e.target.value)}
+                  />
+                </div>
+                {player2BetSize && player2Payout && (
+                  <div className="control-multiplier-display">
+                    {player2Multiplier}x
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
 

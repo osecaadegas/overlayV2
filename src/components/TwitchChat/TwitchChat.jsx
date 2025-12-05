@@ -4,22 +4,18 @@ import useDraggable from '../../hooks/useDraggable';
 
 const TwitchChat = ({ channel, position = 'bottom-right', width = 350, height = 500 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [chatChannel, setChatChannel] = useState(channel || '');
+  const [chatChannel, setChatChannel] = useState(() => localStorage.getItem('twitchChannel') || channel || '');
   const [isEditing, setIsEditing] = useState(false);
-  const draggableRef = useDraggable(true, 'twitchchat');
+  const draggableRef = useDraggable(isVisible, 'twitchchat');
 
   useEffect(() => {
-    // Set initial position to bottom-right if no saved position exists
-    if (draggableRef.current && isVisible) {
-      const savedPosition = localStorage.getItem('panel-position-twitchchat');
-      if (!savedPosition) {
-        const x = window.innerWidth - width - 32;
-        const y = window.innerHeight - height - 32;
-        draggableRef.current.style.left = `${x}px`;
-        draggableRef.current.style.top = `${y}px`;
-      }
-    }
-  }, [isVisible, width, height]);
+    const handleStreamerNameChange = (e) => {
+      setChatChannel(e.detail.name);
+    };
+
+    window.addEventListener('streamerNameChanged', handleStreamerNameChange);
+    return () => window.removeEventListener('streamerNameChanged', handleStreamerNameChange);
+  }, []);
 
   const positionStyles = {
     'top-left': { top: '6rem', left: '2rem' },
@@ -52,13 +48,20 @@ const TwitchChat = ({ channel, position = 'bottom-right', width = 350, height = 
         height: `${height}px`
       }}
     >
-      <div className="twitch-chat-header drag-handle">
+      <div className="twitch-chat-header">
+        <div className="drag-handle-icon drag-handle">⋮⋮</div>
         <span className="twitch-chat-title">
           {isEditing ? (
             <input
               type="text"
               value={chatChannel}
-              onChange={(e) => setChatChannel(e.target.value)}
+              onChange={(e) => {
+                const newChannel = e.target.value;
+                setChatChannel(newChannel);
+                localStorage.setItem('twitchChannel', newChannel);
+                localStorage.setItem('streamerName', newChannel);
+                window.dispatchEvent(new CustomEvent('streamerNameChanged', { detail: { name: newChannel } }));
+              }}
               onBlur={() => setIsEditing(false)}
               onKeyPress={(e) => e.key === 'Enter' && setIsEditing(false)}
               placeholder="Enter Twitch channel"

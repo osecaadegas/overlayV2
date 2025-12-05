@@ -3,7 +3,7 @@ import { slotDatabase } from '../../data/slotDatabase';
 import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernCardLayout.css';
 
-const ModernCardLayout = () => {
+const ModernCardLayout = ({ showCards = true }) => {
   const { bonuses, getSlotImage } = useBonusHunt();
 
   if (bonuses.length === 0) {
@@ -17,6 +17,32 @@ const ModernCardLayout = () => {
     );
   }
 
+  if (!showCards) {
+    return <div className="modern-card-layout" style={{ display: 'none' }} />;
+  }
+
+  // Find best and worst opened bonuses
+  const openedBonuses = bonuses.filter(b => b.multiplier !== null && b.multiplier !== undefined);
+  let bestBonusId = null;
+  let worstBonusId = null;
+
+  if (openedBonuses.length >= 2) {
+    const bestBonus = openedBonuses.reduce((best, current) => 
+      current.multiplier > best.multiplier ? current : best
+    );
+    const worstBonus = openedBonuses.reduce((worst, current) => 
+      current.multiplier < worst.multiplier ? current : worst
+    );
+    
+    // Don't set same bonus as both best and worst
+    if (bestBonus.id !== worstBonus.id) {
+      bestBonusId = bestBonus.id;
+      worstBonusId = worstBonus.id;
+      console.log('Best bonus:', bestBonus.slotName, bestBonus.multiplier + 'x', 'ID:', bestBonusId);
+      console.log('Worst bonus:', worstBonus.slotName, worstBonus.multiplier + 'x', 'ID:', worstBonusId);
+    }
+  }
+
   return (
     <div className="modern-card-layout">
       <div className="card-carousel">
@@ -28,8 +54,13 @@ const ModernCardLayout = () => {
           const provider = slot?.provider || 'Unknown Provider';
           const providerLogo = getProviderLogo(provider);
           
+          // Determine glow class
+          let glowClass = '';
+          if (bonus.id === bestBonusId) glowClass = 'best-glow';
+          if (bonus.id === worstBonusId) glowClass = 'worst-glow';
+          
           return (
-            <div key={bonus.id} className={`bonus-card ${bonus.opened ? 'opened' : 'unopened'}`}>
+            <div key={bonus.id} className={`bonus-card ${bonus.opened ? 'opened' : 'unopened'} ${glowClass}`}>
               <div className="card-image-section">
                 <div className="card-flipper">
                   {/* Front side - Slot Image */}
@@ -61,10 +92,12 @@ const ModernCardLayout = () => {
                   </div>
                 </div>
                 
-                {bonus.isSuper && <div className="card-super-badge">⭐ SUPER</div>}
-                <div className="card-status-badge">
-                  {bonus.opened ? '✓ Opened' : '○ Unopened'}
-                </div>
+                {bonus.opened && (
+                  <div className="card-payout-overlay">
+                    <div className="payout-value">€{payout.toFixed(2)}</div>
+                    <div className="multiplier-value">{bonus.multiplier.toFixed(2)}x</div>
+                  </div>
+                )}
               </div>
               
               <div className="card-details-section">
@@ -78,24 +111,12 @@ const ModernCardLayout = () => {
                   </div>
                   
                   {bonus.opened && (
-                    <>
-                      <div className="card-stat">
-                        <span className="stat-label">Payout</span>
-                        <span className="stat-value">€{payout.toFixed(2)}</span>
-                      </div>
-                      <div className="card-stat">
-                        <span className="stat-label">Multiplier</span>
-                        <span className={`stat-value ${bonus.multiplier >= 1 ? 'positive' : 'negative'}`}>
-                          {bonus.multiplier.toFixed(2)}x
-                        </span>
-                      </div>
-                      <div className="card-stat">
-                        <span className="stat-label">Profit/Loss</span>
-                        <span className={`stat-value ${profitLoss >= 0 ? 'positive' : 'negative'}`}>
-                          {profitLoss >= 0 ? '+' : ''}€{profitLoss.toFixed(2)}
-                        </span>
-                      </div>
-                    </>
+                    <div className="card-stat">
+                      <span className="stat-label">Profit/Loss</span>
+                      <span className={`stat-value ${profitLoss >= 0 ? 'positive' : 'negative'}`}>
+                        {profitLoss >= 0 ? '+' : ''}€{profitLoss.toFixed(2)}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>

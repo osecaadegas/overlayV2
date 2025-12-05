@@ -56,7 +56,7 @@ const TournamentBracketWidget = ({ matches, currentRound, currentMatchIndex }) =
             </div>
 
             {/* VS */}
-            <div className="bracket-mini-vs">⚔️</div>
+            <div className={`bracket-mini-vs ${idx === currentMatchIndex ? 'active' : ''}`}>⚔️</div>
 
             {/* Player 2 */}
             <div className={`bracket-mini-card ${match.winner === match.player2?.player ? 'winner' : match.winner ? 'loser' : ''}`}>

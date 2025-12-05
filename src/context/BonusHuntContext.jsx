@@ -64,8 +64,8 @@ export const BonusHuntProvider = ({ children }) => {
   // Calculate total spent
   const totalSpent = startMoney - stopMoney;
 
-  // Calculate stats
-  const stats = calculateStats(bonuses);
+  // Calculate stats with startMoney and actualBalance (Stop Loss)
+  const stats = calculateStats(bonuses, startMoney, actualBalance);
 
   // Add bonus
   const addBonus = (bonusData) => {
@@ -149,7 +149,11 @@ export const BonusHuntProvider = ({ children }) => {
     
     // Check slot database
     const slot = slotDatabase.find(s => s.name.toLowerCase() === slotName.toLowerCase());
-    return slot ? slot.image : DEFAULT_SLOT_IMAGE;
+    if (slot) return slot.image;
+    
+    // Use selected default image from localStorage or fall back to DEFAULT_SLOT_IMAGE
+    const defaultImage = localStorage.getItem('defaultSlotImage') || 'zilhas.png';
+    return `/${defaultImage}`;
   };
 
   // Navigate to next bonus in opening mode

@@ -4,12 +4,17 @@ import SpotifyWidget from '../SpotifyWidget/SpotifyWidget';
 
 const Navbar = () => {
   const [currentTime, setCurrentTime] = useState('');
-  const [streamerName, setStreamerName] = useState('Streamer');
+  const [streamerName, setStreamerName] = useState(() => {
+    return localStorage.getItem('streamerName') || 'Streamer';
+  });
   const [isEditingName, setIsEditingName] = useState(false);
   const [logoSrc, setLogoSrc] = useState('https://static.twitchcdn.net/assets/favicon-32-e29e246c157142c94346.png');
   const [cryptoPrices, setCryptoPrices] = useState([]);
-  const [contentImage, setContentImage] = useState('/wager.png'); // Default to wager
+  const [contentImage, setContentImage] = useState('/content.png'); // Default to content
   const contentImages = ['/wager.png', '/raw.png', '/content.png'];
+  const [showSpotify, setShowSpotify] = useState(() => {
+    return localStorage.getItem('showSpotify') === 'true';
+  });
 
   const toggleContentImage = () => {
     setContentImage(prev => {
@@ -61,6 +66,26 @@ const Navbar = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Listen for Spotify toggle events
+  useEffect(() => {
+    const handleToggleSpotify = (e) => {
+      setShowSpotify(e.detail.show);
+    };
+
+    window.addEventListener('toggleSpotify', handleToggleSpotify);
+    return () => window.removeEventListener('toggleSpotify', handleToggleSpotify);
+  }, []);
+
+  // Listen for streamer name changes from other components
+  useEffect(() => {
+    const handleStreamerNameChange = (e) => {
+      setStreamerName(e.detail.name);
+    };
+
+    window.addEventListener('streamerNameChanged', handleStreamerNameChange);
+    return () => window.removeEventListener('streamerNameChanged', handleStreamerNameChange);
+  }, []);
+
   const handleLogoClick = () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -78,8 +103,14 @@ const Navbar = () => {
 
   const handleNameClick = () => setIsEditingName(true);
   const handleNameBlur = (e) => {
-    setStreamerName(e.target.value || 'Streamer');
+    const newName = e.target.value || 'Streamer';
+    setStreamerName(newName);
     setIsEditingName(false);
+    
+    // Save to localStorage and notify other components
+    localStorage.setItem('streamerName', newName);
+    localStorage.setItem('twitchChannel', newName);
+    window.dispatchEvent(new CustomEvent('streamerNameChanged', { detail: { name: newName } }));
   };
 
   return (
@@ -121,7 +152,7 @@ const Navbar = () => {
       
       <div className="navbar-center">
         <span className="current-time">{currentTime}</span>
-        <SpotifyWidget />
+        {showSpotify && <SpotifyWidget />}
       </div>
       
       <div className="navbar-right">

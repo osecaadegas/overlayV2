@@ -40,6 +40,21 @@
   padding: 0.75rem 1rem;
   background: rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 0.5rem;
+}
+
+.drag-handle-icon {
+  cursor: move;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.drag-handle-icon:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .twitch-chat-title {

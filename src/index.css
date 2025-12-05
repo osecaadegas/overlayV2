@@ -60,3 +60,51 @@ h1, h2, h3, h4, h5, h6 {
 .drag-handle:active {
   cursor: grabbing;
 }
+
+/* Background Styles */
+body.dark {
+  background: #0f0f23 !important;
+}
+
+body.black {
+  background: #000000 !important;
+}
+
+body.purple {
+  background: #1a0f2e !important;
+}
+
+body.gradient-purple {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background-attachment: fixed;
+}
+
+body.gradient-blue {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%) !important;
+  background-attachment: fixed;
+}
+
+body.gradient-sunset {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%) !important;
+  background-attachment: fixed;
+}
+
+body.gradient-neon {
+  background: linear-gradient(135deg, #00d4ff 0%, #9147ff 50%, #ff006e 100%) !important;
+  background-attachment: fixed;
+}
+
+body.animated-stars {
+  background: #0f0f23 !important;
+}
+
+body.particles {
+  background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f23 100%) !important;
+  background-attachment: fixed;
+}
+
+body.custom {
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+}

@@ -4,7 +4,7 @@ import { slotDatabase } from '../../data/slotDatabase';
 import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernSidebarLayout.css';
 
-const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
+const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId, showCards = true }) => {
   const { bonuses, getSlotImage, stats, startMoney, stopMoney, actualBalance, totalSpent } = useBonusHunt();
   const [currentBonusIndex, setCurrentBonusIndex] = useState(0);
   const [nextBonusIndex, setNextBonusIndex] = useState(1);
@@ -17,6 +17,25 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
         ? bonuses.find(b => b.id === selectedBonusId) 
         : bonuses.find(b => !b.opened))
     : null;
+
+  // Find best and worst opened bonuses
+  const openedBonuses = bonuses.filter(b => b.multiplier !== null && b.multiplier !== undefined);
+  let bestBonusId = null;
+  let worstBonusId = null;
+
+  if (openedBonuses.length >= 2) {
+    const bestBonus = openedBonuses.reduce((best, current) => 
+      current.multiplier > best.multiplier ? current : best
+    );
+    const worstBonus = openedBonuses.reduce((worst, current) => 
+      current.multiplier < worst.multiplier ? current : worst
+    );
+    
+    if (bestBonus.id !== worstBonus.id) {
+      bestBonusId = bestBonus.id;
+      worstBonusId = worstBonus.id;
+    }
+  }
 
   // Auto-rotate through bonuses - preload next bonus
   useEffect(() => {
@@ -121,21 +140,21 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
           <div className="modern-stat-item">
             <div className="stat-icon">🎲</div>
             <div className="stat-content">
-              <div className="stat-label">TOTAL BONUSES</div>
-              <div className="stat-value">{stats.totalBonuses} <span className="stat-subtext">(opened)</span></div>
+              <div className="stat-label">BONUS</div>
+              <div className="stat-value">{stats.unopenedBonuses}/{stats.totalBonuses}</div>
             </div>
           </div>
           <div className="modern-stat-item">
             <div className="stat-icon">📉</div>
             <div className="stat-content">
-              <div className="stat-label">AVG MULTIPLIER</div>
+              <div className="stat-label">AVG X</div>
               <div className="stat-value">{stats.averageMultiplier.toFixed(2)}x</div>
             </div>
           </div>
           <div className="modern-stat-item">
             <div className="stat-icon">🚀</div>
             <div className="stat-content">
-              <div className="stat-label">REQUIRED MULT.</div>
+              <div className="stat-label">BE X</div>
               <div className="stat-value">{stats.requiredMultiplier.toFixed(2)}x</div>
               <div className="stat-subtext">(break-even)</div>
             </div>
@@ -144,9 +163,9 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
       </div>
 
       {/* 3D Spinning Bonus Card */}
-      {bonuses.length > 0 && bonuses[currentBonusIndex] && bonuses[currentBonusIndex].slotName ? (
+      {showCards && bonuses.length > 0 && bonuses[currentBonusIndex] && bonuses[currentBonusIndex].slotName ? (
         <div className="spinning-card-wrapper">
-            <div className={`spinning-card ${isFlipped ? 'flipped' : ''}`} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+            <div className={`spinning-card ${isFlipped ? 'flipped' : ''} ${bonuses[currentBonusIndex].isSuper ? 'super-electrified' : ''} ${bonuses[currentBonusIndex].id === bestBonusId ? 'best-glow' : ''} ${bonuses[currentBonusIndex].id === worstBonusId ? 'worst-glow' : ''}`} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
               {/* Front - Slot Image */}
               <div className="card-face card-front">
                 <img 
@@ -157,18 +176,6 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
                 />
                 <div className="card-overlay">
                   <div className="card-slot-name">{bonuses[currentBonusIndex].slotName}</div>
-                  <div className="card-bet-info">
-                    <span className="card-bet">€{bonuses[currentBonusIndex].betSize.toFixed(2)}</span>
-                    {bonuses[currentBonusIndex].isSuper && <span className="card-super-badge">⭐ SUPER</span>}
-                  </div>
-                  {bonuses[currentBonusIndex].opened && (
-                    <div className="card-result">
-                      <div className="card-payout">€{(bonuses[currentBonusIndex].multiplier * bonuses[currentBonusIndex].betSize).toFixed(2)}</div>
-                      <div className={`card-multiplier ${bonuses[currentBonusIndex].multiplier >= 1 ? 'positive' : 'negative'}`}>
-                        {bonuses[currentBonusIndex].multiplier.toFixed(2)}x
-                      </div>
-                    </div>
-                  )}
                   {!bonuses[currentBonusIndex].opened && (
                     <div className="card-unopened">
                       <div className="unopened-icon">🔒</div>
@@ -176,6 +183,12 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
                     </div>
                   )}
                 </div>
+                {bonuses[currentBonusIndex].opened && (
+                  <div className="sidebar-payout-overlay">
+                    <div className="sidebar-payout-value">€{(bonuses[currentBonusIndex].multiplier * bonuses[currentBonusIndex].betSize).toFixed(2)}</div>
+                    <div className="sidebar-multiplier-value">{bonuses[currentBonusIndex].multiplier.toFixed(2)}x</div>
+                  </div>
+                )}
               </div>
               
               {/* Back - Provider Logo */}
@@ -195,16 +208,20 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId }) => {
                     })()}
                   </div>
                   <div className="card-back-stats">
-                    <div className="back-stat">
-                      <span className="back-stat-label">BET SIZE</span>
-                      <span className="back-stat-value">€{bonuses[nextBonusIndex].betSize.toFixed(2)}</span>
-                    </div>
-                    <div className="back-stat">
-                      <span className="back-stat-label">STATUS</span>
-                      <span className={`back-stat-value ${bonuses[nextBonusIndex].opened ? 'opened' : 'unopened'}`}>
-                        {bonuses[nextBonusIndex].opened ? '✓ OPENED' : '○ WAITING'}
-                      </span>
-                    </div>
+                    {bonuses[nextBonusIndex] && (
+                      <>
+                        <div className="back-stat">
+                          <span className="back-stat-label">BET SIZE</span>
+                          <span className="back-stat-value">€{bonuses[nextBonusIndex].betSize.toFixed(2)}</span>
+                        </div>
+                        <div className="back-stat">
+                          <span className="back-stat-label">STATUS</span>
+                          <span className={`back-stat-value ${bonuses[nextBonusIndex].opened ? 'opened' : 'unopened'}`}>
+                            {bonuses[nextBonusIndex].opened ? '✓ OPENED' : '○ WAITING'}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

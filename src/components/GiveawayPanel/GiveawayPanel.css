@@ -410,7 +410,7 @@
 /* Floating Wheel Container */
 .wheel-sidebar {
   position: fixed;
-  top: 50%;
+  top: 35%;
   right: -550px;
   transform: translateY(-50%);
   width: 500px;

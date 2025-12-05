@@ -2,6 +2,7 @@
 
 /**
  * Calculate the average multiplier from opened bonuses only
+ * Formula: Total payout / Total bet size of opened bonuses
  * @param {Array} bonuses - Array of bonus objects
  * @returns {number} Average multiplier
  */
@@ -10,39 +11,46 @@ export const calculateAverageMultiplier = (bonuses) => {
   
   // Only count bonuses that have been opened (have multiplier)
   const openedBonuses = bonuses.filter(bonus => 
-    bonus.multiplier !== null && bonus.multiplier !== undefined && bonus.multiplier > 0
+    bonus.multiplier !== null && bonus.multiplier !== undefined
   );
   
   if (openedBonuses.length === 0) return 0;
   
-  // Average of all multipliers
-  const totalMultiplier = openedBonuses.reduce((sum, bonus) => sum + bonus.multiplier, 0);
-  return totalMultiplier / openedBonuses.length;
+  // Total payout from opened bonuses
+  const totalPayout = openedBonuses.reduce((sum, bonus) => sum + (bonus.betSize * bonus.multiplier), 0);
+  
+  // Total bet size of opened bonuses
+  const totalBetSize = openedBonuses.reduce((sum, bonus) => sum + bonus.betSize, 0);
+  
+  if (totalBetSize === 0) return 0;
+  
+  // Average multiplier = total payout / total bet size
+  return totalPayout / totalBetSize;
 };
 
 /**
- * Calculate the required multiplier to break even from remaining bonuses
+ * Calculate the required multiplier to break even
+ * Formula: |profit/loss| / totalBetValue = BE X
+ * Example: Lost €500, have €5 in bets = need 100x average to break even
  * @param {Array} bonuses - Array of bonus objects
- * @param {number} totalCost - Total amount spent
+ * @param {number} profitLoss - Current profit/loss value
  * @returns {number} Required multiplier for break-even
  */
-export const calculateRequiredMultiplier = (bonuses, totalCost) => {
-  if (!Array.isArray(bonuses)) return 0;
+export const calculateRequiredMultiplier = (bonuses, profitLoss) => {
+  if (!Array.isArray(bonuses) || bonuses.length === 0) return 0;
   
-  // Total return from opened bonuses
-  const totalReturn = calculateTotalReturn(bonuses);
+  // Sum of all bonus bet values
+  const totalBetValue = bonuses.reduce((sum, b) => sum + (b.betSize || 0), 0);
   
-  // Remaining bets (unopened bonuses)
-  const remainingBets = bonuses
-    .filter(b => b.multiplier === null || b.multiplier === undefined)
-    .reduce((sum, b) => sum + b.betSize, 0);
+  // If total bet value is 0 or profit/loss is 0, return 0
+  if (totalBetValue === 0 || profitLoss === 0) return 0;
   
-  if (remainingBets === 0) return 0;
+  // If already in profit, return 0 (already past break-even)
+  if (profitLoss > 0) return 0;
   
-  // Amount needed to break even
-  const needed = totalCost - totalReturn;
-  
-  return needed > 0 ? needed / remainingBets : 0;
+  // Formula: |profit/loss| / totalBetValue = required multiplier
+  // Example: -500 loss / 5 bet = 100x needed
+  return Math.abs(profitLoss) / totalBetValue;
 };
 
 /**
@@ -70,12 +78,16 @@ export const calculateTotalReturn = (bonuses) => {
 
 /**
  * Calculate profit/loss
- * @param {number} totalReturn - Total return from bonuses
- * @param {number} totalCost - Total cost of bonuses
+ * Formula: (stopMoney - startMoney) + sum of all payouts
+ * If you start with 1000 and stop at 500, that's -500 (loss)
+ * Then add each payout to increase the total
+ * @param {number} startMoney - Starting money amount
+ * @param {number} stopMoney - Stop loss money amount
+ * @param {number} totalReturn - Total return from bonuses (sum of all payouts)
  * @returns {number} Profit or loss
  */
-export const calculateProfitLoss = (totalReturn, totalCost) => {
-  return totalReturn - totalCost;
+export const calculateProfitLoss = (startMoney, stopMoney, totalReturn) => {
+  return (stopMoney - startMoney) + totalReturn;
 };
 
 /**
@@ -120,16 +132,19 @@ export const findWorstSlot = (bonuses) => {
 /**
  * Calculate all stats at once
  * @param {Array} bonuses - Array of bonus objects
+ * @param {number} startMoney - Starting money amount
+ * @param {number} stopMoney - Stop loss money amount
  * @returns {Object} Object containing all calculated stats
  */
-export const calculateStats = (bonuses) => {
+export const calculateStats = (bonuses, startMoney = 0, stopMoney = 0) => {
   const totalBonuses = bonuses.length;
   const totalCost = calculateTotalCost(bonuses);
   const totalReturn = calculateTotalReturn(bonuses);
-  const profitLoss = calculateProfitLoss(totalReturn, totalCost);
+  const profitLoss = calculateProfitLoss(startMoney, stopMoney, totalReturn);
   const averageMultiplier = calculateAverageMultiplier(bonuses);
-  const requiredMultiplier = calculateRequiredMultiplier(bonuses, totalCost);
+  const requiredMultiplier = calculateRequiredMultiplier(bonuses, profitLoss);
   const openedBonuses = countOpenedBonuses(bonuses);
+  const unopenedBonuses = totalBonuses - openedBonuses;
   const bestSlot = findBestSlot(bonuses);
   const worstSlot = findWorstSlot(bonuses);
 
@@ -141,6 +156,7 @@ export const calculateStats = (bonuses) => {
     averageMultiplier,
     requiredMultiplier,
     openedBonuses,
+    unopenedBonuses,
     bestSlot,
     worstSlot
   };
