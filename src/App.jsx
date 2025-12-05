@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { BonusHuntProvider, useBonusHunt } from './context/BonusHuntContext';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import LandingPage from './components/LandingPage/LandingPage';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
 import BonusHuntStats from './components/BonusHuntStats/BonusHuntStats';
@@ -437,14 +438,44 @@ function AppContent() {
   );
 }
 
+// Protected Route wrapper
+function ProtectedOverlay() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        fontSize: '1.5rem'
+      }}>
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <AppContent />;
+}
+
 function App() {
   return (
     <AuthProvider>
-      <ProtectedRoute>
-        <BonusHuntProvider>
-          <AppContent />
-        </BonusHuntProvider>
-      </ProtectedRoute>
+      <BonusHuntProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/overlay" element={<ProtectedOverlay />} />
+          </Routes>
+        </BrowserRouter>
+      </BonusHuntProvider>
     </AuthProvider>
   );
 }
