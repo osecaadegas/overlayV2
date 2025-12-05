@@ -220,6 +220,10 @@ export function StreamElementsProvider({ children }) {
   };
 
   const redeemPoints = async (redemptionId, pointCost) => {
+    console.log('=== redeemPoints called ===');
+    console.log('redemptionId received:', redemptionId, 'type:', typeof redemptionId);
+    console.log('pointCost received:', pointCost);
+    
     if (points < pointCost) {
       return { success: false, error: 'Insufficient points' };
     }
