@@ -1,12 +1,12 @@
 .bonus-item {
   background: linear-gradient(135deg, 
-    rgba(147, 70, 255, 0.08) 0%, 
-    rgba(0, 225, 255, 0.05) 100%);
-  border: 1px solid rgba(147, 70, 255, 0.2);
+    color-mix(in srgb, var(--theme-secondary) 8%, transparent) 0%, 
+    color-mix(in srgb, var(--theme-primary) 5%, transparent) 100%);
+  border: 2px solid var(--theme-border);
   border-radius: 18px;
   margin: 0.4rem 0;
   padding: 12px;
-  color: #ffffff;
+  color: var(--theme-text);
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -14,6 +14,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   list-style: none;
+  font-family: var(--theme-font);
 }
 
 .bonus-item::before {
@@ -25,18 +26,18 @@
   height: 100%;
   background: linear-gradient(90deg, 
     transparent 0%, 
-    rgba(147, 70, 255, 0.1) 50%, 
+    color-mix(in srgb, var(--theme-secondary) 10%, transparent) 50%, 
     transparent 100%);
   transition: left 0.5s ease;
 }
 
 .bonus-item:hover {
   transform: translateX(4px);
-  border-color: rgba(147, 70, 255, 0.3);
+  border-color: color-mix(in srgb, var(--theme-secondary) 30%, transparent);
   background: linear-gradient(135deg, 
-    rgba(147, 70, 255, 0.1) 0%, 
+    color-mix(in srgb, var(--theme-secondary) 10%, transparent) 0%, 
     rgba(255, 255, 255, 0.05) 100%);
-  box-shadow: 0 4px 16px rgba(147, 70, 255, 0.2);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-secondary) 20%, transparent);
 }
 
 .bonus-item:hover::before {
@@ -44,11 +45,11 @@
 }
 
 .bonus-item:nth-child(odd) {
-  border-left: 3px solid rgba(147, 70, 255, 0.4);
+  border-left: 3px solid color-mix(in srgb, var(--theme-secondary) 40%, transparent);
 }
 
 .bonus-item:nth-child(even) {
-  border-left: 3px solid rgba(0, 225, 255, 0.4);
+  border-left: 3px solid color-mix(in srgb, var(--theme-primary) 40%, transparent);
 }
 
 .bonus-content {

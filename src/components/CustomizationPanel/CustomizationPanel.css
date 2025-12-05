@@ -16,14 +16,16 @@
   width: 90%;
   max-width: 900px;
   max-height: 90vh;
-  background: linear-gradient(135deg, #23243a 0%, #2d2e4a 100%);
+  background: var(--theme-panel-bg);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 1.5px 0 0 #00e1ff inset;
+  border: 1px solid var(--theme-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 1.5px 0 0 var(--theme-primary) inset;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.3s ease;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
 }
 
 .customization-header {
@@ -97,8 +99,9 @@
 
 .customization-body {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem 1.5rem;
   overflow-y: auto;
+  max-height: 500px;
 }
 
 .customization-body::-webkit-scrollbar {
@@ -120,13 +123,13 @@
 }
 
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .section h3 {
   color: #f3f4f6;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
   font-weight: 600;
 }
 
@@ -213,10 +216,48 @@
   gap: 0.5rem;
 }
 
+.theme-category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+
+.theme-category-btn {
+  padding: 0.6rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.theme-category-btn:hover {
+  background: rgba(0, 225, 255, 0.1);
+  color: #00e1ff;
+  border-color: rgba(0, 225, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.theme-category-btn.active {
+  background: rgba(0, 225, 255, 0.2);
+  color: #00e1ff;
+  border-color: #00e1ff;
+  box-shadow: 0 0 15px rgba(0, 225, 255, 0.3);
+}
+
 .themes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.6rem;
 }
 
 .theme-card {
@@ -348,6 +389,97 @@
   }
 }
 
+/* Themes Options Grid */
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  width: 80px;
+  height: 60px;
+}
+
+.theme-option.fx-theme {
+  animation: rgb-pulse 3s ease-in-out infinite;
+  border-width: 3px;
+}
+
+.theme-option:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 225, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.theme-option.active {
+  background: rgba(0, 225, 255, 0.1);
+  border-color: #00e1ff;
+  box-shadow: 0 0 25px rgba(0, 225, 255, 0.4);
+}
+
+.theme-preview {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.3rem;
+  gap: 0.15rem;
+}
+
+.theme-preview-header {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.theme-preview-circle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.theme-preview-body {
+  flex: 1;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.3rem;
+}
+
+.theme-preview-bar {
+  height: 2px;
+  border-radius: 1px;
+  width: 100%;
+}
+
+.theme-preview-bar.short {
+  width: 60%;
+}
+
+.theme-name {
+  padding: 0.3rem 0.2rem;
+  font-size: 0.6rem;
+  color: #d1d5db;
+  font-weight: 500;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Background Options Grid */
 .background-grid {
   display: grid;
@@ -442,4 +574,56 @@
 
 .setting-row input[type="file"]::-webkit-file-upload-button:hover {
   background: rgba(0, 225, 255, 0.3);
+}
+
+/* FX Theme Border Animations */
+@keyframes rgb-pulse {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  50% { filter: hue-rotate(180deg) brightness(1.3); }
+  100% { filter: hue-rotate(360deg) brightness(1); }
+}
+
+@keyframes stripe-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 5px currentColor); }
+  50% { filter: brightness(1.5) drop-shadow(0 0 15px currentColor); }
+}
+
+@keyframes fire-pulse {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+  25% { filter: hue-rotate(-10deg) brightness(1.2); }
+  75% { filter: hue-rotate(10deg) brightness(1.3); }
+}
+
+@keyframes rainbow-flash {
+  0% { filter: hue-rotate(0deg) saturate(2); }
+  100% { filter: hue-rotate(360deg) saturate(2); }
+}
+
+@keyframes glitch-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 18px 0; }
+}
+
+@keyframes disco-flash {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  25% { filter: hue-rotate(90deg) brightness(1.5); }
+  50% { filter: hue-rotate(180deg) brightness(1); }
+  75% { filter: hue-rotate(270deg) brightness(1.5); }
+  100% { filter: hue-rotate(360deg) brightness(1); }
+}
+
+@keyframes holographic-shift {
+  0% { filter: hue-rotate(0deg) saturate(1.5); }
+  100% { filter: hue-rotate(360deg) saturate(1.5); }
+}
+
+@keyframes lightning-flash {
+  0%, 90%, 100% { opacity: 1; }
+  45%, 55% { opacity: 0.5; }
+  50% { opacity: 1; filter: brightness(2); }
 }

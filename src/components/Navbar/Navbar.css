@@ -3,12 +3,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.7rem 2.5rem;
-  background: linear-gradient(135deg, rgba(26, 27, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+  background: var(--theme-panel-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 2px solid rgba(0, 225, 255, 0.3);
+  border: 2px solid var(--theme-border);
   border-radius: 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 0 rgba(0, 225, 255, 0.2) inset, 0 0 40px rgba(145, 71, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 0 var(--theme-primary) inset, 0 0 40px var(--theme-secondary);
   position: fixed !important;
   top: 1rem !important;
   left: 50% !important;
@@ -19,6 +19,8 @@
   z-index: 10000;
   pointer-events: auto !important;
   user-select: none;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
 }
 
 .navbar-left {
@@ -49,9 +51,9 @@
   width: 46px;
   height: 46px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(145, 71, 255, 0.4), rgba(0, 225, 255, 0.4));
-  box-shadow: 0 6px 20px rgba(0, 225, 255, 0.3), 0 0 15px rgba(145, 71, 255, 0.2);
-  border: 2px solid rgba(0, 225, 255, 0.5);
+  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
+  box-shadow: 0 6px 20px var(--theme-primary), 0 0 15px var(--theme-secondary);
+  border: 2px solid var(--theme-primary);
   transition: all 0.3s ease;
   cursor: pointer;
   object-fit: cover;
@@ -59,39 +61,39 @@
 
 .navbar-logo:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 28px rgba(0, 225, 255, 0.5), 0 0 25px rgba(145, 71, 255, 0.4);
-  border-color: rgba(0, 225, 255, 0.8);
+  box-shadow: 0 8px 28px var(--theme-primary), 0 0 25px var(--theme-secondary);
+  border-color: var(--theme-primary);
 }
 
 .streamer-name {
   font-size: 1.1rem;
   font-weight: 800;
   letter-spacing: 1.5px;
-  background: linear-gradient(135deg, #00e1ff 0%, #9147ff 50%, #a855f7 100%);
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 50%, var(--theme-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   cursor: pointer;
   text-transform: uppercase;
   transition: all 0.3s ease;
-  text-shadow: 0 0 20px rgba(0, 225, 255, 0.3);
-  filter: drop-shadow(0 0 8px rgba(145, 71, 255, 0.4));
+  text-shadow: 0 0 20px var(--theme-primary);
+  filter: drop-shadow(0 0 8px var(--theme-secondary));
 }
 
 .streamer-name:hover {
   letter-spacing: 2px;
-  filter: drop-shadow(0 0 12px rgba(145, 71, 255, 0.6));
+  filter: drop-shadow(0 0 12px var(--theme-secondary));
 }
 
 .streamer-name-input {
   background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: 1px solid #00e1ff;
+  color: var(--theme-text);
+  border: 1px solid var(--theme-primary);
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 1.2rem;
   font-weight: 600;
-  font-family: inherit;
+  font-family: var(--theme-font);
 }
 
 .navbar-center {
@@ -216,13 +218,13 @@
   font-size: 1.1rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 2px;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(145, 71, 255, 0.4) 0%, rgba(0, 225, 255, 0.4) 100%);
-  border: 2px solid rgba(0, 225, 255, 0.5);
+  color: var(--theme-text);
+  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
+  border: 2px solid var(--theme-primary);
   padding: 0.6rem 1.5rem;
   border-radius: 12px;
   font-weight: 800;
-  box-shadow: 0 4px 20px rgba(0, 225, 255, 0.3), 0 0 15px rgba(145, 71, 255, 0.2);
+  box-shadow: 0 4px 20px var(--theme-primary), 0 0 15px var(--theme-secondary);
   display: flex;
   align-items: center;
   min-width: 120px;
@@ -232,13 +234,14 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   flex-shrink: 0;
+  font-family: var(--theme-font);
 }
 
 .current-time:hover {
-  background: linear-gradient(135deg, rgba(145, 71, 255, 0.6) 0%, rgba(0, 225, 255, 0.6) 100%);
-  border-color: rgba(0, 225, 255, 0.8);
+  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
+  border-color: var(--theme-primary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 225, 255, 0.5), 0 0 20px rgba(145, 71, 255, 0.4);
+  box-shadow: 0 6px 24px var(--theme-primary), 0 0 20px var(--theme-secondary);
 }
 
 .navbar-right {
@@ -255,22 +258,23 @@
   align-items: center;
   gap: 6px;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #9147ff 0%, #00e1ff 100%);
-  border: 1px solid rgba(0, 225, 255, 0.3);
+  background: linear-gradient(135deg, var(--theme-secondary) 0%, var(--theme-primary) 100%);
+  border: 1px solid var(--theme-primary);
   border-radius: 8px;
-  color: #fff;
+  color: var(--theme-text);
   font-weight: 600;
   font-size: 0.85rem;
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(145, 71, 255, 0.2);
+  box-shadow: 0 4px 12px var(--theme-secondary);
+  font-family: var(--theme-font);
 }
 
 .navbar-website-btn:hover {
-  background: linear-gradient(135deg, #00e1ff 0%, #9147ff 100%);
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 225, 255, 0.3);
+  box-shadow: 0 6px 16px var(--theme-primary);
 }
 
 .website-btn-icon {

@@ -3,17 +3,19 @@
   max-width: 90vw;
   height: fit-content;
   
-  background: linear-gradient(135deg, rgba(26, 27, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+  background: var(--theme-panel-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   
-  border: 1px solid rgba(0, 225, 255, 0.25);
+  border: 1px solid var(--theme-primary);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   
   padding: 1rem 1.2rem;
   position: relative;
   overflow: hidden;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
 }
 
 .bh-panel::before {
@@ -23,7 +25,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 225, 255, 0.08), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--theme-primary) 8%, transparent), transparent);
   animation: panel-shimmer 3s infinite;
   pointer-events: none;
 }
@@ -43,7 +45,7 @@
   justify-content: space-between;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(0, 225, 255, 0.15);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-primary) 15%, transparent);
   position: relative;
   z-index: 1;
 }
@@ -51,7 +53,7 @@
 .bh-panel-header h3 {
   font-size: 0.85rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #00e1ff 0%, #a855f7 100%);
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -179,7 +181,7 @@
 .bh-suggestion-name {
   font-weight: 600;
   font-size: 0.95rem;
-  color: #ffffff;
+  color: var(--theme-text);
 }
 
 .bh-suggestion-provider {
@@ -203,13 +205,13 @@
   
   font-size: 1.1rem;
   font-weight: 600;
-  color: #f3f4f6;
+  color: var(--theme-text);
 }
 
 .bh-checkbox input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  accent-color: #9147ff;
+  accent-color: var(--theme-secondary);
   cursor: pointer;
 }
 
@@ -238,26 +240,28 @@
 }
 
 .bh-btn-primary {
-  background: linear-gradient(135deg, #9147ff 0%, #7c3aed 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(145, 71, 255, 0.3);
+  background: linear-gradient(135deg, var(--theme-secondary) 0%, var(--theme-accent) 100%);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-secondary) 30%, transparent);
+  font-family: var(--theme-font);
 }
 
 .bh-btn-primary:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #9147ff 100%);
+  background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-secondary) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(145, 71, 255, 0.4);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-secondary) 40%, transparent);
 }
 
 .bh-btn-secondary {
   background: rgba(35, 39, 47, 0.8);
-  color: #f3f4f6;
-  border: 1px solid rgba(100, 65, 165, 0.3);
+  color: var(--theme-text);
+  border: 1px solid color-mix(in srgb, var(--theme-secondary) 30%, transparent);
+  font-family: var(--theme-font);
 }
 
 .bh-btn-secondary:hover {
-  background: rgba(100, 65, 165, 0.2);
-  border-color: #9147ff;
+  background: color-mix(in srgb, var(--theme-secondary) 20%, transparent);
+  border-color: var(--theme-secondary);
   transform: translateY(-2px);
 }
 
@@ -268,17 +272,18 @@
 .bh-btn-opening {
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
-  background: linear-gradient(135deg, #00e1ff 0%, #a855f7 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-accent) 100%);
+  color: var(--theme-text);
   border: none;
-  box-shadow: 0 4px 16px rgba(0, 225, 255, 0.3);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-primary) 30%, transparent);
   animation: pulse-opening 2s infinite;
+  font-family: var(--theme-font);
 }
 
 .bh-btn-opening:hover {
-  background: linear-gradient(135deg, #a855f7 0%, #00e1ff 100%);
+  background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-primary) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 225, 255, 0.4);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-primary) 40%, transparent);
 }
 
 @keyframes pulse-opening {
@@ -320,9 +325,9 @@
 }
 
 .bh-btn-active {
-  background: linear-gradient(135deg, #00e1ff 0%, #9147ff 100%);
-  color: #ffffff;
-  border-color: #00e1ff;
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+  color: var(--theme-text);
+  border-color: var(--theme-primary);
 }
 
 /* Edit Mode */
@@ -331,13 +336,13 @@
   padding: 1rem;
   background: rgba(35, 36, 58, 0.4);
   border-radius: 12px;
-  border: 1px solid rgba(0, 225, 255, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 20%, transparent);
 }
 
 .bh-edit-list h4 {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #00e1ff;
+  color: var(--theme-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0 0 0.75rem 0;

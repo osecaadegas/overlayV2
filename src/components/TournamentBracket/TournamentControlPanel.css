@@ -2,15 +2,17 @@
   position: fixed;
   width: 420px;
   max-height: 90vh;
-  background: linear-gradient(135deg, rgba(26, 27, 46, 0.98) 0%, rgba(22, 33, 62, 0.98) 100%);
+  background: var(--theme-panel-bg);
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(0, 225, 255, 0.4);
+  border: 2px solid var(--theme-primary);
   border-radius: 16px;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 225, 255, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px var(--theme-primary);
   z-index: 99999;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
 }
 
 .control-panel-header {
@@ -19,7 +21,7 @@
   justify-content: space-between;
   padding: 0.5rem 0.75rem;
   background: rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(0, 225, 255, 0.2);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-primary) 20%, transparent);
 }
 
 .control-panel-header.drag-handle {
@@ -31,7 +33,7 @@
   margin: 0;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #00e1ff;
+  color: var(--theme-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -67,7 +69,7 @@
 
 .control-match-info {
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0, 225, 255, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 20%, transparent);
   border-radius: 10px;
   padding: 0.6rem 0.75rem;
 }
@@ -96,7 +98,7 @@
 
 .match-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #9147ff, #00e1ff);
+  background: linear-gradient(90deg, var(--theme-secondary), var(--theme-primary));
   border-radius: 3px;
   transition: width 0.3s ease;
 }
@@ -107,14 +109,14 @@
   gap: 0.6rem;
   padding: 0.6rem 0.75rem;
   background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 225, 255, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 20%, transparent);
   border-radius: 10px;
 }
 
 .control-bet-section label {
   font-size: 0.75rem;
   font-weight: 700;
-  color: rgba(0, 225, 255, 0.9);
+  color: var(--theme-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
@@ -124,20 +126,21 @@
   flex: 1;
   padding: 0.5rem 0.6rem;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 225, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 30%, transparent);
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--theme-text);
   font-size: 0.9rem;
   font-weight: 700;
   text-align: center;
   outline: none;
   transition: all 0.2s ease;
+  font-family: var(--theme-font);
 }
 
 .control-bet-input:focus {
-  border-color: rgba(0, 225, 255, 0.6);
+  border-color: var(--theme-primary);
   background: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 16px rgba(0, 225, 255, 0.3);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--theme-primary) 30%, transparent);
 }
 
 .control-bet-input::placeholder {
@@ -155,14 +158,14 @@
   display: flex;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0, 225, 255, 0.2);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 20%, transparent);
   border-radius: 10px;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
 .control-player:hover {
-  border-color: rgba(0, 225, 255, 0.4);
+  border-color: color-mix(in srgb, var(--theme-primary) 40%, transparent);
   background: rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
@@ -179,11 +182,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #9147ff, #00e1ff);
+  background: linear-gradient(135deg, var(--theme-secondary), var(--theme-primary));
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--theme-text);
   flex-shrink: 0;
 }
 
@@ -387,8 +390,8 @@
 }
 
 .control-dot.active {
-  background: linear-gradient(135deg, #00e1ff, #9147ff);
-  box-shadow: 0 0 12px rgba(0, 225, 255, 0.6);
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--theme-primary) 60%, transparent);
   transform: scale(1.4);
 }
 

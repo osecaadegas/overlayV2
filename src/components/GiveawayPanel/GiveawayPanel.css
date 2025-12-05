@@ -16,14 +16,16 @@
   width: 75%;
   max-width: 700px;
   max-height: 85vh;
-  background: linear-gradient(135deg, #23243a 0%, #2d2e4a 100%);
+  background: var(--theme-panel-bg);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--theme-border);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.4s ease;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
 }
 
 .giveaway-header {
@@ -38,7 +40,7 @@
 .giveaway-header h2 {
   margin: 0;
   font-size: 1.1rem;
-  color: #f3f4f6;
+  color: var(--theme-text);
   font-weight: 700;
 }
 
@@ -65,15 +67,16 @@
 
 .add-btn {
   padding: 0.5rem 0.75rem;
-  background: linear-gradient(90deg, #10b981, #059669);
+  background: linear-gradient(90deg, var(--theme-primary), var(--theme-secondary));
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: var(--theme-text);
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  font-family: var(--theme-font);
 }
 
 .add-btn:hover {
@@ -202,16 +205,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(90deg, #9147ff, #00e1ff);
+  background: linear-gradient(90deg, var(--theme-secondary), var(--theme-primary));
   border-radius: 50%;
   font-size: 0.65rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--theme-text);
 }
 
 .entry-name {
   flex: 1;
-  color: #f3f4f6;
+  color: var(--theme-text);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -234,8 +237,8 @@
 }
 
 .winner-display.final {
-  background: linear-gradient(135deg, rgba(145, 71, 255, 0.3), rgba(0, 225, 255, 0.3));
-  border-color: #00e1ff;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-secondary) 30%, transparent), color-mix(in srgb, var(--theme-primary) 30%, transparent));
+  border-color: var(--theme-primary);
 }
 
 .winner-icon {
@@ -281,19 +284,20 @@
 .draw-btn {
   width: 100%;
   padding: 0.75rem;
-  background: linear-gradient(90deg, #9147ff, #00e1ff);
+  background: linear-gradient(90deg, var(--theme-secondary), var(--theme-primary));
   border: none;
   border-radius: 12px;
-  color: #fff;
+  color: var(--theme-text);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
+  font-family: var(--theme-font);
 }
 
 .draw-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(145, 71, 255, 0.5);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-secondary) 50%, transparent);
 }
 
 .draw-btn:disabled {
@@ -316,12 +320,13 @@
   padding: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.05);
-  color: #f3f4f6;
+  color: var(--theme-text);
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.8rem;
   transition: all 0.2s;
+  font-family: var(--theme-font);
 }
 
 .winner-action-btn:hover {
@@ -344,7 +349,7 @@
 
 .stat-value {
   font-size: 1.5rem;
-  color: #00e1ff;
+  color: var(--theme-primary);
   font-weight: 700;
   margin-bottom: 0.35rem;
 }
@@ -381,20 +386,20 @@
 }
 
 @keyframes colorCycle {
-  0% { color: #9147ff; }
-  25% { color: #00e1ff; }
-  50% { color: #ff6b35; }
-  75% { color: #1db954; }
-  100% { color: #9147ff; }
+  0% { color: var(--theme-secondary); }
+  25% { color: var(--theme-primary); }
+  50% { color: var(--theme-accent); }
+  75% { color: var(--theme-primary); }
+  100% { color: var(--theme-secondary); }
 }
 
 /* Toggle Wheel Button */
 .toggle-wheel-btn {
   padding: 0.5rem 0.75rem;
-  background: linear-gradient(90deg, #9147ff, #00e1ff);
+  background: linear-gradient(90deg, var(--theme-secondary), var(--theme-primary));
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: var(--theme-text);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -433,12 +438,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #23243a 0%, #2d2e4a 100%);
+  background: var(--theme-panel-bg);
   border-radius: 50%;
-  border: 3px solid rgba(0, 225, 255, 0.5);
+  border: 3px solid var(--theme-primary);
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.7),
-    0 0 40px rgba(0, 225, 255, 0.3),
+    0 0 40px var(--theme-primary),
     inset 0 0 30px rgba(0, 0, 0, 0.3);
   padding: 2rem;
 }
@@ -471,8 +476,8 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 3rem;
-  color: #00e1ff;
-  filter: drop-shadow(0 0 15px rgba(0, 225, 255, 1));
+  color: var(--theme-primary);
+  filter: drop-shadow(0 0 15px var(--theme-primary));
   animation: pulse-pointer 1.5s ease-in-out infinite;
   z-index: 10;
 }
