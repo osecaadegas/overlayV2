@@ -1,7 +1,7 @@
 .profile-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 80px 20px 40px;
+  background: #0f0f23;
+  padding: 40px 20px;
 }
 
 .profile-container {
@@ -10,10 +10,11 @@
 }
 
 .profile-container h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: white;
   text-align: center;
   margin-bottom: 50px;
+  font-weight: 600;
 }
 
 .profile-content {
@@ -23,10 +24,10 @@
 
 .profile-card,
 .settings-card {
-  background: white;
-  border-radius: 20px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .profile-card {
@@ -37,7 +38,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #d946ef;
   color: white;
   display: flex;
   align-items: center;
@@ -49,18 +50,18 @@
 
 .profile-card h2 {
   font-size: 1.8rem;
-  color: #1a202c;
+  color: white;
   margin-bottom: 10px;
 }
 
 .profile-id {
-  color: #718096;
+  color: #8b8b9f;
   font-family: monospace;
 }
 
 .settings-card h3 {
   font-size: 1.5rem;
-  color: #1a202c;
+  color: white;
   margin-bottom: 30px;
 }
 
@@ -73,33 +74,34 @@
 
 .setting-item label {
   font-weight: 600;
-  color: #2d3748;
+  color: white;
 }
 
 .setting-item input[type="email"] {
   flex: 1;
   max-width: 300px;
   padding: 10px 15px;
-  border: 2px solid #e2e8f0;
+  border: 1px solid #3a3a4e;
+  background: #12121f;
+  color: white;
   border-radius: 8px;
-  color: #000;
-  background: #f7fafc;
 }
 
 .change-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: white;
+  color: #0f0f23;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .change-btn:hover {
+  background: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .toggle {
@@ -122,7 +124,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #3a3a4e;
   transition: 0.4s;
   border-radius: 34px;
 }
@@ -140,7 +142,7 @@
 }
 
 .toggle input:checked + .toggle-slider {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #d946ef;
 }
 
 .toggle input:checked + .toggle-slider:before {
