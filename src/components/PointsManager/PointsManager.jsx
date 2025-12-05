@@ -28,6 +28,8 @@ export default function PointsManager() {
     image_url: '',
     available_units: ''
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const SE_CHANNEL_ID = import.meta.env.VITE_SE_CHANNEL_ID;
   const SE_JWT_TOKEN = import.meta.env.VITE_SE_JWT_TOKEN;
@@ -35,6 +37,33 @@ export default function PointsManager() {
   useEffect(() => {
     loadData();
   }, [activeTab]);
+
+  const uploadImage = async (file) => {
+    try {
+      setUploadingImage(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `redemption-images/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('public-assets')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('public-assets')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      setError('Failed to upload image: ' + err.message);
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const loadData = async () => {
     setLoading(true);
@@ -199,6 +228,16 @@ export default function PointsManager() {
     setSuccess('');
 
     try {
+      let imageUrl = itemForm.image_url;
+      
+      // Upload image if a new file was selected
+      if (imageFile) {
+        const uploadedUrl = await uploadImage(imageFile);
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        }
+      }
+
       const itemData = {
         name: itemForm.name,
         description: itemForm.description,
@@ -208,7 +247,7 @@ export default function PointsManager() {
           duration_days: parseInt(itemForm.duration_days),
           reward_type: itemForm.reward_type
         },
-        image_url: itemForm.image_url || null,
+        image_url: imageUrl || null,
         available_units: itemForm.available_units ? parseInt(itemForm.available_units) : null,
         is_active: true
       };
@@ -234,6 +273,7 @@ export default function PointsManager() {
 
       setShowItemModal(false);
       setEditingItem(null);
+      setImageFile(null);
       setItemForm({
         name: '',
         description: '',
@@ -409,6 +449,7 @@ export default function PointsManager() {
                 <button
                   onClick={() => {
                     setEditingItem(null);
+                    setImageFile(null);
                     setItemForm({
                       name: '',
                       description: '',
@@ -446,6 +487,7 @@ export default function PointsManager() {
                       <button
                         onClick={() => {
                           setEditingItem(item);
+                          setImageFile(null);
                           setItemForm({
                             name: item.name,
                             description: item.description,
@@ -565,15 +607,28 @@ export default function PointsManager() {
             </div>
 
             <div className="pm-form-group">
-              <label>Image URL (Optional)</label>
+              <label>Image (Optional)</label>
               <input
-                type="text"
-                value={itemForm.image_url}
-                onChange={(e) => setItemForm({ ...itemForm, image_url: e.target.value })}
-                placeholder="https://images.unsplash.com/photo-..."
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files[0])}
+                style={{ color: '#a0aec0' }}
               />
+              {imageFile && (
+                <small style={{ color: '#d4af37', marginTop: '5px', display: 'block' }}>
+                  Selected: {imageFile.name}
+                </small>
+              )}
+              {itemForm.image_url && !imageFile && (
+                <div style={{ marginTop: '10px' }}>
+                  <img src={itemForm.image_url} alt="Current" style={{ maxWidth: '100%', maxHeight: '150px', borderRadius: '8px' }} />
+                  <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
+                    Current image (upload a new file to replace)
+                  </small>
+                </div>
+              )}
               <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
-                Enter an image URL (e.g., from Unsplash) to display on the redemption card
+                Upload an image to display on the redemption card
               </small>
             </div>
 
@@ -594,10 +649,10 @@ export default function PointsManager() {
             <div className="pm-modal-actions">
               <button
                 onClick={handleSaveItem}
-                disabled={!itemForm.name || !itemForm.point_cost || loading}
+                disabled={!itemForm.name || !itemForm.point_cost || loading || uploadingImage}
                 className="pm-submit-btn"
               >
-                {loading ? 'Saving...' : editingItem ? 'Update Item' : 'Create Item'}
+                {uploadingImage ? 'Uploading Image...' : loading ? 'Saving...' : editingItem ? 'Update Item' : 'Create Item'}
               </button>
               <button
                 onClick={() => setShowItemModal(false)}
