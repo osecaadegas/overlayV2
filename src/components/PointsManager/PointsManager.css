@@ -1,26 +1,25 @@
 .points-manager {
-  padding: 40px 20px;
+  padding: 30px;
   max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #0f0f23;
+  background: #f7fafc;
 }
 
 .pm-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .pm-header h1 {
   font-size: 2.5rem;
-  color: white;
+  color: #1a202c;
   margin-bottom: 10px;
-  font-weight: 600;
 }
 
 .pm-header p {
-  color: #8b8b9f;
-  font-size: 1rem;
+  color: #718096;
+  font-size: 1.1rem;
 }
 
 /* Tabs */
@@ -28,10 +27,10 @@
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
-  background: #1a1a2e;
-  border: 1px solid #2a2a3e;
+  background: white;
   padding: 10px;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .pm-tab {
@@ -42,26 +41,25 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  color: #8b8b9f;
+  color: #718096;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .pm-tab:hover {
-  background: #2a2a3e;
-  color: white;
+  background: #f7fafc;
+  color: #2d3748;
 }
 
 .pm-tab.active {
-  background: white;
-  color: #0f0f23;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 /* Messages */
 .pm-error {
-  background: #2a1a1a;
-  color: #f87171;
-  border: 1px solid #4a2a2a;
+  background: #fed7d7;
+  color: #c53030;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -69,9 +67,8 @@
 }
 
 .pm-success {
-  background: #1a2a1a;
-  color: #4ade80;
-  border: 1px solid #2a4a2a;
+  background: #c6f6d5;
+  color: #2f855a;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -82,17 +79,17 @@
   text-align: center;
   padding: 60px;
   font-size: 1.2rem;
-  color: #8b8b9f;
+  color: #718096;
 }
 
 /* Users Section */
 .pm-users,
 .pm-redemptions,
 .pm-items {
-  background: #1a1a2e;
-  border: 1px solid #2a2a3e;
-  border-radius: 16px;
+  background: white;
+  border-radius: 15px;
   padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .pm-users-header,
@@ -105,27 +102,25 @@
 
 .pm-users-header h2,
 .pm-items-header h2 {
-  color: white;
+  color: #1a202c;
   margin: 0;
 }
 
 .pm-refresh-btn,
 .pm-add-btn {
   padding: 10px 20px;
-  background: white;
-  color: #0f0f23;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s;
 }
 
 .pm-refresh-btn:hover,
 .pm-add-btn:hover {
-  background: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 /* Table */
@@ -139,30 +134,30 @@
 }
 
 .pm-table thead {
-  background: #12121f;
+  background: #f7fafc;
 }
 
 .pm-table th {
   padding: 15px;
   text-align: left;
   font-weight: 600;
-  color: white;
-  border-bottom: 2px solid #2a2a3e;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .pm-table td {
   padding: 15px;
-  border-bottom: 1px solid #2a2a3e;
-  color: #b0b0c0;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
 }
 
 .pm-table tbody tr:hover {
-  background: #12121f;
+  background: #f7fafc;
 }
 
 .pm-points {
   font-weight: 700;
-  color: #d946ef;
+  color: #667eea;
   font-size: 1.1rem;
 }
 
@@ -170,41 +165,38 @@
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pm-status.processed {
-  background: #22c55e;
-  color: white;
+  background: #c6f6d5;
+  color: #2f855a;
 }
 
 .pm-status.pending {
-  background: #f59e0b;
-  color: white;
+  background: #feebc8;
+  color: #c05621;
 }
 
 .pm-action-btn {
   padding: 8px 16px;
-  background: white;
-  color: #0f0f23;
+  background: #667eea;
+  color: white;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
-  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s;
 }
 
 .pm-action-btn:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  background: #5568d3;
 }
 
 .pm-empty {
   text-align: center;
   padding: 60px;
-  color: #8b8b9f;
+  color: #718096;
   font-size: 1.1rem;
 }
 
@@ -217,20 +209,21 @@
 }
 
 .pm-item-card {
-  background: #12121f;
-  border: 1px solid #2a2a3e;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
   padding: 20px;
   transition: all 0.2s;
+  background: white;
 }
 
 .pm-item-card:hover {
-  border-color: #3a3a4e;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .pm-item-card.inactive {
   opacity: 0.6;
+  background: #f7fafc;
 }
 
 .pm-item-header {
@@ -241,25 +234,25 @@
 }
 
 .pm-item-header h3 {
-  color: white;
+  color: #1a202c;
   font-size: 1.1rem;
   margin: 0;
   flex: 1;
 }
 
 .pm-item-cost {
-  background: #d946ef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
   margin-left: 10px;
 }
 
 .pm-item-description {
-  color: #b0b0c0;
+  color: #718096;
   margin-bottom: 15px;
   line-height: 1.5;
 }
@@ -270,24 +263,24 @@
   align-items: center;
   margin-bottom: 15px;
   font-size: 0.9rem;
-  color: #8b8b9f;
+  color: #4a5568;
 }
 
 .pm-item-status {
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .pm-item-status.active {
-  background: #22c55e;
-  color: white;
+  background: #c6f6d5;
+  color: #2f855a;
 }
 
 .pm-item-status.inactive {
-  background: #f87171;
-  color: white;
+  background: #fed7d7;
+  color: #c53030;
 }
 
 .pm-item-actions {
@@ -303,41 +296,37 @@
   border: none;
   border-radius: 6px;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .pm-edit-btn {
-  background: white;
-  color: #0f0f23;
+  background: #667eea;
+  color: white;
 }
 
 .pm-edit-btn:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
+  background: #5568d3;
 }
 
 .pm-toggle-btn {
-  background: transparent;
-  color: #8b8b9f;
-  border: 1px solid #3a3a4e;
+  background: #e2e8f0;
+  color: #2d3748;
 }
 
 .pm-toggle-btn:hover {
-  background: #2a2a3e;
-  border-color: #4a4a5e;
-  color: white;
+  background: #cbd5e0;
 }
 
 .pm-delete-btn {
-  background: #f87171;
-  color: white;
+  background: #fed7d7;
+  color: #c53030;
 }
 
 .pm-delete-btn:hover {
-  background: #ef4444;
-  transform: translateY(-2px);
+  background: #fc8181;
+  color: white;
 }
 
 /* Modal */
@@ -347,7 +336,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -356,18 +345,17 @@
 }
 
 .pm-modal {
-  background: #1a1a2e;
-  border: 1px solid #2a2a3e;
-  border-radius: 16px;
+  background: white;
+  border-radius: 15px;
   padding: 30px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .pm-modal h2 {
   margin-bottom: 20px;
-  color: white;
+  color: #1a202c;
 }
 
 .pm-form-group {
@@ -378,16 +366,14 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: white;
+  color: #2d3748;
 }
 
 .pm-form-group input,
 .pm-form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #3a3a4e;
-  background: #12121f;
-  color: white;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
@@ -396,7 +382,7 @@
 .pm-form-group input:focus,
 .pm-form-group textarea:focus {
   outline: none;
-  border-color: #4a4a5e;
+  border-color: #667eea;
 }
 
 .pm-modal-actions {
@@ -408,19 +394,17 @@
 .pm-submit-btn {
   flex: 1;
   padding: 12px;
-  background: white;
-  color: #0f0f23;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s;
 }
 
 .pm-submit-btn:hover:not(:disabled) {
-  background: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .pm-submit-btn:disabled {
@@ -431,19 +415,17 @@
 .pm-cancel-btn {
   flex: 1;
   padding: 12px;
-  background: transparent;
-  color: #8b8b9f;
-  border: 1px solid #3a3a4e;
+  background: #e2e8f0;
+  color: #2d3748;
+  border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s;
 }
 
 .pm-cancel-btn:hover {
-  background: #2a2a3e;
-  border-color: #4a4a5e;
-  color: white;
+  background: #cbd5e0;
 }
 
 /* Responsive */

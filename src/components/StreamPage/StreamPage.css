@@ -1,7 +1,7 @@
 .stream-page {
   min-height: 100vh;
-  background: #0f0f23;
-  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 20px 40px;
 }
 
 .stream-container {
@@ -10,17 +10,16 @@
 }
 
 .stream-container h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: white;
   text-align: center;
   margin-bottom: 10px;
-  font-weight: 600;
 }
 
 .stream-subtitle {
   text-align: center;
-  color: #8b8b9f;
-  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
   margin-bottom: 50px;
 }
 
@@ -32,10 +31,10 @@
 
 .stream-embed,
 .stream-info {
-  background: #1a1a2e;
-  border: 1px solid #2a2a3e;
-  border-radius: 16px;
+  background: white;
+  border-radius: 20px;
   padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stream-embed {
@@ -57,38 +56,36 @@
 
 .stream-placeholder h3 {
   font-size: 1.8rem;
-  color: white;
+  color: #1a202c;
   margin-bottom: 15px;
 }
 
 .stream-placeholder p {
-  color: #b0b0c0;
+  color: #718096;
   margin-bottom: 30px;
   line-height: 1.6;
 }
 
 .connect-btn {
   padding: 15px 40px;
-  background: white;
-  color: #0f0f23;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 700;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  letter-spacing: 0.5px;
 }
 
 .connect-btn:hover {
-  background: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .stream-info h3 {
   font-size: 1.5rem;
-  color: white;
+  color: #1a202c;
   margin-bottom: 30px;
 }
 
@@ -97,7 +94,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 0;
-  border-bottom: 1px solid #2a2a3e;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .info-item:last-child {
@@ -106,24 +103,24 @@
 
 .info-label {
   font-weight: 600;
-  color: white;
+  color: #2d3748;
 }
 
 .status-badge {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .status-badge.offline {
-  background: #f87171;
-  color: white;
+  background: #fed7d7;
+  color: #c53030;
 }
 
 .status-badge.online {
-  background: #22c55e;
-  color: white;
+  background: #c6f6d5;
+  color: #2f855a;
 }
 
 @media (max-width: 1024px) {

@@ -1,6 +1,6 @@
 .landing-page {
   min-height: 100vh;
-  background: #0f0f23;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 /* Header */
@@ -9,8 +9,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background: #1a1a2e;
-  border-bottom: 1px solid #2a2a3e;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -20,7 +20,6 @@
   color: white;
   margin: 0;
   font-size: 1.5rem;
-  font-weight: 700;
 }
 
 .landing-auth-buttons {
@@ -30,12 +29,11 @@
 
 .login-button,
 .logout-button,
-.overlay-button,
-.admin-button {
+.overlay-button {
   padding: 10px 24px;
   border: none;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   font-size: 0.95rem;
@@ -43,54 +41,49 @@
 
 .login-button {
   background: white;
-  color: #0f0f23;
+  color: #667eea;
 }
 
 .login-button:hover {
-  background: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .admin-button {
-  background: #d946ef;
-  color: white;
+  background: #ffd700;
+  color: #2d3748;
   font-weight: 700;
 }
 
 .admin-button:hover {
-  background: #c735d6;
+  background: #ffed4e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(217, 70, 239, 0.4);
 }
 
 .overlay-button {
-  background: transparent;
-  color: #8b8b9f;
-  border: 1px solid #3a3a4e;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
 }
 
 .overlay-button:hover {
-  background: #2a2a3e;
-  border-color: #4a4a5e;
-  color: white;
+  background: white;
+  color: #667eea;
 }
 
 .logout-button {
-  background: transparent;
-  color: #8b8b9f;
-  border: 1px solid #3a3a4e;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .logout-button:hover {
-  background: #2a2a3e;
-  border-color: #4a4a5e;
-  color: white;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Hero Section */
 .hero-section {
-  padding: 120px 40px 80px;
+  padding: 100px 40px;
   text-align: center;
   color: white;
 }
@@ -102,90 +95,87 @@
 
 .hero-title {
   font-size: 3.5rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 20px;
   line-height: 1.2;
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: #b0b0c0;
+  font-size: 1.3rem;
+  opacity: 0.9;
   margin-bottom: 40px;
 }
 
 .cta-button {
   padding: 16px 40px;
   background: white;
-  color: #0f0f23;
+  color: #667eea;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Offers Section */
 .offers-section {
   padding: 80px 40px;
-  background: #0f0f23;
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .section-title {
   text-align: center;
   font-size: 2.5rem;
-  color: white;
+  color: #1a202c;
   margin-bottom: 60px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .offer-card {
-  background: #1a1a2e;
-  border: 1px solid #2a2a3e;
-  padding: 30px;
+  background: white;
+  padding: 40px 30px;
   border-radius: 16px;
-  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
   text-align: center;
 }
 
 .offer-card:hover {
-  border-color: #3a3a4e;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.05);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3);
 }
 
 .offer-icon {
   font-size: 3rem;
   margin-bottom: 20px;
-  filter: drop-shadow(0 0 10px rgba(217, 70, 239, 0.3));
 }
 
 .offer-card h3 {
-  font-size: 1.3rem;
-  color: white;
+  font-size: 1.4rem;
+  color: #2d3748;
   margin-bottom: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .offer-card p {
-  color: #b0b0c0;
+  color: #718096;
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* CTA Section */
@@ -193,45 +183,43 @@
   padding: 100px 40px;
   text-align: center;
   color: white;
-  background: #0f0f23;
 }
 
 .cta-section h2 {
   font-size: 2.5rem;
   margin-bottom: 40px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .cta-button-large {
   padding: 20px 50px;
   background: white;
-  color: #0f0f23;
+  color: #667eea;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button-large:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Footer */
 .landing-footer {
   padding: 40px;
   text-align: center;
-  background: #1a1a2e;
-  border-top: 1px solid #2a2a3e;
-  color: #8b8b9f;
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
 .landing-footer p {
   margin: 0;
+  opacity: 0.8;
 }
 
 /* Responsive */
