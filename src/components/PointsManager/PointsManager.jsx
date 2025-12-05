@@ -342,16 +342,25 @@ export default function PointsManager() {
 
   const handleApproveRedemption = async (redemptionId) => {
     try {
-      const { error } = await supabase
+      console.log('Approving redemption:', redemptionId);
+      const { data, error } = await supabase
         .from('point_redemptions')
         .update({ processed: true, status: 'approved' })
-        .eq('id', redemptionId);
+        .eq('id', redemptionId)
+        .select();
 
-      if (error) throw error;
+      console.log('Update result:', { data, error });
+      
+      if (error) {
+        console.error('Error approving:', error);
+        throw error;
+      }
+      
       setSuccess('Redemption approved');
       await loadRedemptions();
     } catch (err) {
-      setError(err.message);
+      console.error('Catch error:', err);
+      setError('Failed to approve: ' + err.message);
     }
   };
 
@@ -523,7 +532,7 @@ export default function PointsManager() {
                             const currentStatus = redemption.status || (redemption.processed ? 'approved' : 'pending');
                             return (
                               <span className={`pm-status-badge ${currentStatus}`}>
-                                {currentStatus === 'approved' && '✅ Approved'}
+                                {currentStatus === 'aproved' && '✅ Aproved'}
                                 {currentStatus === 'denied' && '❌ Denied'}
                                 {currentStatus === 'pending' && '⏳ Pending'}
                               </span>
