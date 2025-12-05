@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { BonusHuntProvider, useBonusHunt } from './context/BonusHuntContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
 import BonusHuntStats from './components/BonusHuntStats/BonusHuntStats';
@@ -437,9 +439,13 @@ function AppContent() {
 
 function App() {
   return (
-    <BonusHuntProvider>
-      <AppContent />
-    </BonusHuntProvider>
+    <AuthProvider>
+      <ProtectedRoute>
+        <BonusHuntProvider>
+          <AppContent />
+        </BonusHuntProvider>
+      </ProtectedRoute>
+    </AuthProvider>
   );
 }
 

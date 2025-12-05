@@ -1,9 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './CircularSidebar.css';
 
 const CircularSidebar = ({ onMenuSelect, isLocked, onLockToggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+    // Supabase will automatically redirect to login page through AuthContext
+  };
 
   const toggleMenu = () => {
     if (!isLocked) {
@@ -56,7 +63,7 @@ const CircularSidebar = ({ onMenuSelect, isLocked, onLockToggle }) => {
     { id: 'artAd', icon: '/art.png', label: 'Art/Ad', angle: 180 },
     { id: 'slotMachine', icon: '/777.png', label: 'Slot Machine', angle: 210 },
     { id: 'coinFlip', icon: '/coinflip.png', label: 'Coin Flip', angle: 240 },
-    { id: 'newButton3', icon: '/palet.png', label: 'New Button 3', angle: 270 },
+    { id: 'logout', icon: '/palet.png', label: 'Logout', angle: 270, special: true, action: 'logout' },
     { id: 'newButton4', icon: '/palet.png', label: 'New Button 4', angle: 300 },
     { id: 'lock', icon: isLocked ? '/lock.png' : '/unlock.png', label: 'Lock', angle: 330, special: true }
   ];
@@ -90,9 +97,17 @@ const CircularSidebar = ({ onMenuSelect, isLocked, onLockToggle }) => {
                 transitionDelay: (isOpen || isLocked) ? `${index * 0.05}s` : '0s',
                 opacity: (isOpen || isLocked) ? 1 : 0,
                 pointerEvents: (isOpen || isLocked) ? 'all' : 'none',
-                backgroundColor: item.special && isLocked ? '#00e1ff' : undefined
+                backgroundColor: item.special && isLocked && item.id === 'lock' ? '#00e1ff' : undefined
               }}
-              onClick={() => item.special ? handleLockToggle() : handleMenuClick(item.id)}
+              onClick={() => {
+                if (item.action === 'logout') {
+                  handleLogout();
+                } else if (item.id === 'lock') {
+                  handleLockToggle();
+                } else {
+                  handleMenuClick(item.id);
+                }
+              }}
               title={item.label}
             >
               <img src={item.icon} alt={item.label} className="sidebar-icon-img" />
