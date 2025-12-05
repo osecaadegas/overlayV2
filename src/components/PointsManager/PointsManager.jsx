@@ -342,25 +342,22 @@ export default function PointsManager() {
 
   const handleApproveRedemption = async (redemptionId) => {
     try {
-      console.log('Approving redemption:', redemptionId);
-      const { data, error } = await supabase
+      setLoading(true);
+      const { error } = await supabase
         .from('point_redemptions')
         .update({ processed: true, status: 'approved' })
-        .eq('id', redemptionId)
-        .select();
+        .eq('id', redemptionId);
 
-      console.log('Update result:', { data, error });
-      
-      if (error) {
-        console.error('Error approving:', error);
-        throw error;
-      }
+      if (error) throw error;
       
       setSuccess('Redemption approved');
+      // Force reload to get fresh data
+      setRedemptions([]);
       await loadRedemptions();
     } catch (err) {
-      console.error('Catch error:', err);
       setError('Failed to approve: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -368,6 +365,8 @@ export default function PointsManager() {
     if (!confirm('Are you sure you want to deny this redemption? Points will be refunded to the user.')) return;
 
     try {
+      setLoading(true);
+      
       // Refund points to user
       const { data: connections } = await supabase
         .from('streamelements_connections')
@@ -410,10 +409,15 @@ export default function PointsManager() {
         .eq('id', redemption.id);
 
       if (error) throw error;
+      
       setSuccess('Redemption denied and points refunded');
+      // Force reload to get fresh data
+      setRedemptions([]);
       await loadRedemptions();
     } catch (err) {
       setError('Failed to deny redemption: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
