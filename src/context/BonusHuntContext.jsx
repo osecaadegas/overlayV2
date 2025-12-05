@@ -127,9 +127,7 @@ export const BonusHuntProvider = ({ children }) => {
 
   // Clear all bonuses
   const clearAllBonuses = () => {
-    if (window.confirm('Are you sure you want to clear all bonuses?')) {
-      setBonuses([]);
-    }
+    setBonuses([]);
   };
 
   // Set custom image for slot
@@ -236,10 +234,9 @@ export const BonusHuntProvider = ({ children }) => {
         if (data.stopMoney !== undefined) setStopMoney(data.stopMoney);
         if (data.actualBalance !== undefined) setActualBalance(data.actualBalance);
         if (data.customSlotImages) setCustomSlotImages(data.customSlotImages);
-        alert('Bonus hunt imported successfully!');
       } catch (error) {
         console.error('Error importing bonus hunt:', error);
-        alert('Error importing file. Please check the file format.');
+        console.error('Error importing file. Please check the file format.');
       }
     };
     reader.readAsText(file);

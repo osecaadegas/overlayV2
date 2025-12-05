@@ -50,15 +50,13 @@ const GiveawayPanel = ({ onClose }) => {
   };
 
   const clearEntries = () => {
-    if (confirm('Clear all entries?')) {
-      setEntries([]);
-      setWinner(null);
-    }
+    setEntries([]);
+    setWinner(null);
   };
 
   const pickWinner = () => {
     if (entries.length === 0) {
-      alert('Add entries first!');
+      console.warn('Add entries first!');
       return;
     }
 

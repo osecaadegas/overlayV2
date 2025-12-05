@@ -33,9 +33,7 @@ const EditSlots = ({ onClose }) => {
   };
 
   const handleDelete = (bonusId) => {
-    if (window.confirm('Are you sure you want to delete this bonus?')) {
-      deleteBonus(bonusId);
-    }
+    deleteBonus(bonusId);
   };
 
   const handleToggleOpened = (bonus) => {

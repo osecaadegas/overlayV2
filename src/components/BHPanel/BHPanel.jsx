@@ -107,7 +107,6 @@ const BHPanel = ({ onClose, onOpenBonusOpening }) => {
     e?.preventDefault();
     
     if (!slotName.trim() || !betSize || parseFloat(betSize) <= 0) {
-      alert('Please enter valid slot name and bet size');
       return;
     }
 
@@ -158,9 +157,7 @@ const BHPanel = ({ onClose, onOpenBonusOpening }) => {
 
   // Handle deleting a bonus
   const handleDeleteBonus = (bonusId) => {
-    if (window.confirm('Are you sure you want to delete this bonus?')) {
-      deleteBonus(bonusId);
-    }
+    deleteBonus(bonusId);
   };
 
   // Focus slot name input on mount

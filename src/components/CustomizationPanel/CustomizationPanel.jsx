@@ -2216,11 +2216,38 @@ const CustomizationPanel = ({ onClose }) => {
     };
   });
 
-  // Apply saved theme on mount
+  // Apply saved theme and background on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('selectedTheme');
     if (savedTheme && THEMES[savedTheme]) {
       applyTheme(savedTheme);
+    }
+    
+    // Restore background
+    const savedSettings = localStorage.getItem('overlaySettings');
+    if (savedSettings) {
+      const parsed = JSON.parse(savedSettings);
+      if (parsed.backgroundStyle && parsed.backgroundStyle.startsWith('bg-video-')) {
+        // Restore video background
+        const existingVideo = document.getElementById('video-background');
+        if (existingVideo) existingVideo.remove();
+        const video = document.createElement('video');
+        video.id = 'video-background';
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;';
+        video.src = parsed.customBackgroundUrl;
+        document.body.insertBefore(video, document.body.firstChild);
+        document.body.style.background = 'transparent';
+      } else if (parsed.customBackgroundUrl && parsed.backgroundStyle && parsed.backgroundStyle.startsWith('bg-image-')) {
+        // Restore image background
+        document.body.style.background = `url(${parsed.customBackgroundUrl}) center/cover fixed`;
+        document.body.className = '';
+      } else if (parsed.backgroundStyle) {
+        // Restore other backgrounds
+        document.body.className = parsed.backgroundStyle;
+      }
     }
   }, []);
 
@@ -2232,10 +2259,8 @@ const CustomizationPanel = ({ onClose }) => {
   };
 
   const handleReset = () => {
-    if (confirm('Are you sure you want to reset all settings to default?')) {
-      localStorage.removeItem('overlaySettings');
-      window.location.reload();
-    }
+    localStorage.removeItem('overlaySettings');
+    window.location.reload();
   };
 
   const renderBrandingTab = () => (
@@ -2265,8 +2290,27 @@ const CustomizationPanel = ({ onClose }) => {
           <select 
             value={localStorage.getItem('defaultSlotImage') || 'zilhas.png'}
             onChange={(e) => {
-              localStorage.setItem('defaultSlotImage', e.target.value);
+              const selectedImage = e.target.value;
+              localStorage.setItem('defaultSlotImage', selectedImage);
               window.dispatchEvent(new CustomEvent('defaultSlotImageChanged'));
+              
+              // Auto-update streamer name based on profile
+              let streamerName = '';
+              if (selectedImage === 'zilhas.png') {
+                streamerName = 'zilhasrcz';
+              } else if (selectedImage === 'seca.png') {
+                streamerName = 'osecaadegas95';
+              } else if (selectedImage === 'TnT.png') {
+                streamerName = 'Torra_e_Tilta';
+              }
+              
+              if (streamerName) {
+                const newSettings = { ...settings, streamerName };
+                setSettings(newSettings);
+                localStorage.setItem('overlaySettings', JSON.stringify(newSettings));
+                localStorage.setItem('streamerName', streamerName);
+                window.dispatchEvent(new CustomEvent('streamerNameChanged', { detail: { name: streamerName } }));
+              }
             }}
           >
             <option value="zilhas.png">Zilhas</option>

@@ -155,7 +155,6 @@ const TournamentPanel = ({ onClose }) => {
     const validParticipants = participants.filter(p => p.player.trim() && p.slot.trim());
     
     if (validParticipants.length < 2) {
-      alert('❌ Need at least 2 participants!');
       return false;
     }
 
@@ -164,7 +163,6 @@ const TournamentPanel = ({ onClose }) => {
     const hasDuplicates = playerNames.some((name, index) => playerNames.indexOf(name) !== index);
     
     if (hasDuplicates) {
-      alert('❌ Duplicate player names detected!');
       return false;
     }
 

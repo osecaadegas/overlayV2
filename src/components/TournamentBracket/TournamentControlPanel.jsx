@@ -101,12 +101,10 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
     const payout2 = parseFloat(player2Payout);
 
     if (!bet1 || bet1 <= 0 || !bet2 || bet2 <= 0) {
-      alert('⚠️ Please enter valid bet sizes for both players!');
       return;
     }
 
     if (!payout1 || payout1 < 0 || !payout2 || payout2 < 0) {
-      alert('⚠️ Please enter valid payouts for both players!');
       return;
     }
 
@@ -126,7 +124,6 @@ const TournamentControlPanel = ({ matches, currentRound, onClose, onMatchComplet
       } else if (mult2 > mult1) {
         winner = currentMatch.player2;
       } else {
-        alert('⚠️ It\'s a tie! Please re-enter different values.');
         return;
       }
     }

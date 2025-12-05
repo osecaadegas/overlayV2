@@ -43,7 +43,7 @@ const RandomSlotPicker = ({ onClose }) => {
     const filteredSlots = getFilteredSlots();
     
     if (filteredSlots.length === 0) {
-      alert('No slots available with selected providers!');
+      console.warn('No slots available with selected providers!');
       return;
     }
 
