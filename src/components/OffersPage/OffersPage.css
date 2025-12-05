@@ -215,7 +215,7 @@
 
 .stat {
   background: #0f1318;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 6px 8px;
   display: flex;
   flex-direction: column;
