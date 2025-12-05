@@ -1,37 +1,37 @@
 .offers-page {
   min-height: 100vh;
-  background: #0a0e1a;
+  background: #0f1318;
   padding: 80px 20px 40px;
 }
 
 .offers-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .offers-container h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: white;
-  margin-bottom: 10px;
-  font-weight: 700;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .offers-subtitle {
-  color: #9ca3af;
-  font-size: 1rem;
+  color: #6b7280;
+  font-size: 0.95rem;
   margin-bottom: 40px;
 }
 
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 
 /* Card flip container */
 .offer-card-wrapper {
   perspective: 1000px;
-  height: 520px;
+  height: 420px;
 }
 
 .offer-card-inner {
@@ -53,152 +53,167 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.offer-card-front {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  background: #1a1f2e;
+  border: 1px solid #2a3142;
+  overflow: hidden;
 }
 
 .offer-card-back {
   transform: rotateY(180deg);
   justify-content: space-between;
+  padding: 20px;
 }
 
 /* Badge */
 .offer-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #ef4444;
+  top: 10px;
+  right: 10px;
+  background: rgba(239, 68, 68, 0.9);
   color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .offer-badge.hot {
-  background: #ef4444;
+  background: rgba(239, 68, 68, 0.9);
 }
 
 .offer-badge.new {
-  background: #a855f7;
+  background: rgba(99, 102, 241, 0.9);
 }
 
-/* Casino logo */
-.casino-logo {
-  font-size: 4rem;
-  text-align: center;
-  margin: 20px 0 10px;
+/* Casino image */
+.casino-image-container {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+}
+
+.casino-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.casino-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 16px 12px 12px;
 }
 
 .casino-name {
   color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .offer-title {
-  color: white;
-  font-size: 0.9rem;
-  text-align: center;
-  margin-bottom: 8px;
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  padding: 12px 16px 8px;
   line-height: 1.4;
   min-height: 48px;
 }
 
 .offer-terms {
-  text-align: center;
-  color: #9ca3af;
+  color: #6b7280;
   font-size: 0.7rem;
-  margin-bottom: 16px;
+  padding: 0 16px 12px;
 }
 
 /* Stats grid */
 .offer-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 8px;
+  padding: 0 16px 16px;
   flex: 1;
 }
 
 .stat {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  padding: 12px;
+  background: #0f1318;
+  border-radius: 8px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  border: 1px solid #2a3142;
 }
 
 .stat-icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
 }
 
 .stat-label {
-  color: #9ca3af;
-  font-size: 0.7rem;
+  color: #6b7280;
+  font-size: 0.65rem;
   text-align: center;
 }
 
 .stat-value {
-  color: white;
-  font-weight: 700;
-  font-size: 0.9rem;
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 0.85rem;
   text-align: center;
 }
 
 /* Action buttons */
 .card-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
+  padding: 0 16px 16px;
 }
 
 .info-btn,
 .claim-btn,
 .back-btn {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.85rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
-  letter-spacing: 0.5px;
 }
 
 .info-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #9ca3af;
+  border: 1px solid #374151;
 }
 
 .info-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  background: #1f2937;
+  color: #e5e7eb;
+  border-color: #4b5563;
 }
 
 .claim-btn {
-  background: rgba(255, 255, 255, 0.9);
-  color: #1a1d29;
+  background: #6366f1;
+  color: white;
 }
 
 .claim-btn:hover {
-  background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 /* Back of card */
@@ -209,27 +224,29 @@
 }
 
 .offer-details h4 {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
   color: white;
+  font-weight: 600;
 }
 
 .offer-details p {
-  color: rgba(255, 255, 255, 0.9);
+  color: #9ca3af;
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   white-space: pre-line;
 }
 
 .back-btn {
   width: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  color: #1a1d29;
+  background: #374151;
+  color: #e5e7eb;
+  margin-top: 16px;
 }
 
 .back-btn:hover {
-  background: white;
-  transform: translateY(-2px);
+  background: #4b5563;
+  transform: translateY(-1px);
 }
 
 /* Scrollbar for details */

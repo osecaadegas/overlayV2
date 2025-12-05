@@ -4,12 +4,11 @@ import './OffersPage.css';
 const casinoOffers = [
   {
     id: 1,
-    badge: '🔥 HOT',
+    badge: 'HOT',
     badgeClass: 'hot',
     casino: 'Ignibet',
     title: '665% Bonus & 750 FS up to €6250',
-    gradient: 'linear-gradient(135deg, #d946ef 0%, #9333ea 100%)',
-    image: '🎰',
+    image: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=400&h=300&fit=crop',
     minDeposit: '20€',
     cashback: '30%',
     bonusValue: '665%',
@@ -18,12 +17,11 @@ const casinoOffers = [
   },
   {
     id: 2,
-    badge: '🔥 HOT',
+    badge: 'HOT',
     badgeClass: 'hot',
     casino: 'Betfury',
     title: 'Special GODMOTA VIP Program',
-    gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    image: '🎲',
+    image: 'https://images.unsplash.com/photo-1518449965925-3439867d4d36?w=400&h=300&fit=crop',
     minDeposit: '20€',
     cashback: '20%',
     bonusValue: '100%',
@@ -32,12 +30,11 @@ const casinoOffers = [
   },
   {
     id: 3,
-    badge: '⭐ NEW',
+    badge: 'NEW',
     badgeClass: 'new',
     casino: 'Free Coins',
     title: '400% Bonus up to €2200 & 350FS',
-    gradient: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
-    image: '🃏',
+    image: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400&h=300&fit=crop',
     minDeposit: '25€',
     cashback: '35%',
     bonusValue: '400%',
@@ -50,8 +47,7 @@ const casinoOffers = [
     badgeClass: '',
     casino: 'Flagman',
     title: '125FS on signup & 100€ Free Bets',
-    gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-    image: '🎯',
+    image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=400&h=300&fit=crop',
     minDeposit: '10€',
     cashback: '',
     bonusValue: '150%',
@@ -65,8 +61,7 @@ const casinoOffers = [
     badgeClass: '',
     casino: 'Lootbox',
     title: '5% On Every Deposit & VIP Battle',
-    gradient: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)',
-    image: '📦',
+    image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop',
     minDeposit: '1€',
     cashback: '',
     bonusValue: '5%',
@@ -80,8 +75,7 @@ const casinoOffers = [
     badgeClass: '',
     casino: 'Crasher',
     title: '400% Bonus & 350FS up to €2200',
-    gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-    image: '💰',
+    image: 'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=400&h=300&fit=crop',
     minDeposit: '10€',
     cashback: '',
     bonusValue: '400%',
@@ -95,8 +89,7 @@ const casinoOffers = [
     badgeClass: '',
     casino: 'BC.GAME',
     title: '360% Bonus & Daily Wheel of Fortune',
-    gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
-    image: '🎡',
+    image: 'https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=400&h=300&fit=crop',
     minDeposit: '10€',
     cashback: '25%',
     bonusValue: '360%',
@@ -109,8 +102,7 @@ const casinoOffers = [
     badgeClass: '',
     casino: 'Ribace',
     title: '400% Bonus + 350FS up to €2000',
-    gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-    image: '🎊',
+    image: 'https://images.unsplash.com/photo-1571974599782-87624638275e?w=400&h=300&fit=crop',
     minDeposit: '25€',
     cashback: '35%',
     bonusValue: '450%',
@@ -140,12 +132,16 @@ export default function OffersPage() {
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''}`}>
               <div className="offer-card-inner">
                 {/* Front of card */}
-                <div className="offer-card-front" style={{ background: offer.gradient }}>
+                <div className="offer-card-front">
                   {offer.badge && (
                     <div className={`offer-badge ${offer.badgeClass}`}>{offer.badge}</div>
                   )}
-                  <div className="casino-logo">{offer.image}</div>
-                  <h3 className="casino-name">{offer.casino}</h3>
+                  <div className="casino-image-container">
+                    <img src={offer.image} alt={offer.casino} className="casino-image" />
+                    <div className="casino-overlay">
+                      <h3 className="casino-name">{offer.casino}</h3>
+                    </div>
+                  </div>
                   <p className="offer-title">{offer.title}</p>
                   <p className="offer-terms">+18 | T&C APPLY</p>
                   
@@ -192,7 +188,7 @@ export default function OffersPage() {
                 </div>
 
                 {/* Back of card */}
-                <div className="offer-card-back" style={{ background: offer.gradient }}>
+                <div className="offer-card-back">
                   <h3 className="casino-name">{offer.casino}</h3>
                   <div className="offer-details">
                     <h4>Terms & Conditions</h4>
