@@ -23,8 +23,8 @@ export default function PointsManager() {
     name: '',
     description: '',
     point_cost: '',
-    reward_type: 'premium_duration',
-    duration_days: '7',
+    reward_type: 'custom',
+    reward_details: '',
     image_url: '',
     available_units: ''
   });
@@ -244,7 +244,7 @@ export default function PointsManager() {
         point_cost: parseInt(itemForm.point_cost),
         reward_type: itemForm.reward_type,
         reward_value: {
-          duration_days: parseInt(itemForm.duration_days),
+          details: itemForm.reward_details,
           reward_type: itemForm.reward_type
         },
         image_url: imageUrl || null,
@@ -278,8 +278,8 @@ export default function PointsManager() {
         name: '',
         description: '',
         point_cost: '',
-        reward_type: 'premium_duration',
-        duration_days: '7',
+        reward_type: 'custom',
+        reward_details: '',
         image_url: '',
         available_units: ''
       });
@@ -454,8 +454,8 @@ export default function PointsManager() {
                       name: '',
                       description: '',
                       point_cost: '',
-                      reward_type: 'premium_duration',
-                      duration_days: '7',
+                      reward_type: 'custom',
+                      reward_details: '',
                       image_url: '',
                       available_units: ''
                     });
@@ -475,7 +475,7 @@ export default function PointsManager() {
                     </div>
                     <p className="pm-item-description">{item.description}</p>
                     <div className="pm-item-meta">
-                      <span>Duration: {item.reward_value?.duration_days || 0} days</span>
+                      <span>Type: {item.reward_type}</span>
                       {item.available_units !== null && (
                         <span>Stock: {item.available_units} units</span>
                       )}
@@ -492,8 +492,8 @@ export default function PointsManager() {
                             name: item.name,
                             description: item.description,
                             point_cost: item.point_cost.toString(),
-                            reward_type: item.reward_type,
-                            duration_days: (item.reward_value?.duration_days || 7).toString(),
+                            reward_type: item.reward_type || 'custom',
+                            reward_details: item.reward_value?.details || item.reward_value?.duration_days || '',
                             image_url: item.image_url || '',
                             available_units: item.available_units ? item.available_units.toString() : ''
                           });
@@ -597,13 +597,31 @@ export default function PointsManager() {
             </div>
 
             <div className="pm-form-group">
-              <label>Premium Duration (days)</label>
+              <label>Reward Type</label>
+              <select
+                value={itemForm.reward_type}
+                onChange={(e) => setItemForm({ ...itemForm, reward_type: e.target.value })}
+                style={{ width: '100%', padding: '12px', border: '2px solid #2a3142', borderRadius: '8px', background: '#0f1318', color: '#a0aec0', fontSize: '1rem' }}
+              >
+                <option value="custom">Custom Reward</option>
+                <option value="premium_access">Premium Access</option>
+                <option value="exclusive_role">Exclusive Role</option>
+                <option value="bonus_entry">Bonus Entry</option>
+                <option value="special_feature">Special Feature</option>
+              </select>
+            </div>
+
+            <div className="pm-form-group">
+              <label>Reward Details</label>
               <input
-                type="number"
-                value={itemForm.duration_days}
-                onChange={(e) => setItemForm({ ...itemForm, duration_days: e.target.value })}
-                placeholder="e.g., 30"
+                type="text"
+                value={itemForm.reward_details}
+                onChange={(e) => setItemForm({ ...itemForm, reward_details: e.target.value })}
+                placeholder="e.g., 30 days premium, VIP role, special badge, etc."
               />
+              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
+                Describe what the user receives (e.g., duration, features, perks)
+              </small>
             </div>
 
             <div className="pm-form-group">
