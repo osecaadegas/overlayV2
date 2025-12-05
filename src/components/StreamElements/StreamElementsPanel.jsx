@@ -26,10 +26,14 @@ export default function StreamElementsPanel() {
   const [linkError, setLinkError] = useState('');
   const [redemptionItems, setRedemptionItems] = useState([]);
   const [redeeming, setRedeeming] = useState(null);
+  const [userRedemptions, setUserRedemptions] = useState([]);
 
   useEffect(() => {
     loadRedemptionItems();
-  }, []);
+    if (isConnected && user) {
+      loadUserRedemptions();
+    }
+  }, [isConnected, user]);
 
   const loadRedemptionItems = async () => {
     try {
@@ -43,6 +47,29 @@ export default function StreamElementsPanel() {
       setRedemptionItems(data || []);
     } catch (err) {
       console.error('Error loading redemption items:', err);
+    }
+  };
+
+  const loadUserRedemptions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('point_redemptions')
+        .select(`
+          *,
+          redemption_items (
+            name,
+            point_cost,
+            image_url
+          )
+        `)
+        .eq('user_id', user.id)
+        .order('redeemed_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setUserRedemptions(data || []);
+    } catch (err) {
+      console.error('Error loading user redemptions:', err);
     }
   };
 
@@ -100,6 +127,7 @@ export default function StreamElementsPanel() {
       alert('Redemption successful! Your reward has been applied.');
       await refreshPoints();
       await loadRedemptionItems(); // Reload items to update stock count
+      await loadUserRedemptions(); // Reload user's redemption history
     } else {
       console.error('Redemption failed:', result.error);
       alert(`Redemption failed: ${result.error}\n\nPlease contact an admin if this issue persists.`);
@@ -273,6 +301,32 @@ export default function StreamElementsPanel() {
               </div>
             )}
           </div>
+
+          {userRedemptions.length > 0 && (
+            <div className="se-redemption-history">
+              <h3>📋 Your Redemption History</h3>
+              <div className="se-history-list">
+                {userRedemptions.map((redemption) => (
+                  <div key={redemption.id} className="se-history-item">
+                    <div className="se-history-icon">✅</div>
+                    <div className="se-history-details">
+                      <div className="se-history-name">
+                        {redemption.redemption_items?.name || 'Unknown Item'}
+                      </div>
+                      <div className="se-history-meta">
+                        <span>{redemption.points_spent.toLocaleString()} pts</span>
+                        <span>•</span>
+                        <span>{new Date(redemption.redeemed_at).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    {redemption.processed && (
+                      <div className="se-history-badge">Processed</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

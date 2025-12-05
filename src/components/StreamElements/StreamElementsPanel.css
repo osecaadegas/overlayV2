@@ -482,6 +482,72 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+/* Redemption History */
+.se-redemption-history {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid #2a3142;
+}
+
+.se-redemption-history h3 {
+  color: #d4af37;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.se-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.se-history-item {
+  background: #0f1318;
+  border: 1px solid #2a3142;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+}
+
+.se-history-item:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.se-history-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.se-history-details {
+  flex: 1;
+}
+
+.se-history-name {
+  color: #e5e7eb;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.se-history-meta {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 8px;
+}
+
+.se-history-badge {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .se-panel {
