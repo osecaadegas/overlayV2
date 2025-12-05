@@ -141,6 +141,7 @@ export default function PointsManager() {
   };
 
   const loadRedemptions = async () => {
+    // Add timestamp to prevent caching
     const { data: redemptionsData, error } = await supabase
       .from('point_redemptions')
       .select('*')
@@ -151,6 +152,8 @@ export default function PointsManager() {
       console.error('Error loading redemptions:', error);
       throw error;
     }
+
+    console.log('Loaded redemptions:', redemptionsData);
 
     // Get user emails
     const { data: allUsers } = await supabase.rpc('get_all_user_emails');
@@ -343,18 +346,27 @@ export default function PointsManager() {
   const handleApproveRedemption = async (redemptionId) => {
     try {
       setLoading(true);
-      const { error } = await supabase
+      setError('');
+      
+      const { data, error } = await supabase
         .from('point_redemptions')
         .update({ processed: true, status: 'approved' })
-        .eq('id', redemptionId);
+        .eq('id', redemptionId)
+        .select();
+
+      console.log('Approve result:', { data, error, redemptionId });
 
       if (error) throw error;
       
       setSuccess('Redemption approved');
-      // Force reload to get fresh data
-      setRedemptions([]);
+      
+      // Wait a moment for DB to commit
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Force complete reload
       await loadRedemptions();
     } catch (err) {
+      console.error('Approve error:', err);
       setError('Failed to approve: ' + err.message);
     } finally {
       setLoading(false);
