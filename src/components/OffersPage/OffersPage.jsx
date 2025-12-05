@@ -13,6 +13,7 @@ const casinoOffers = [
     cashback: '30%',
     bonusValue: '665%',
     freeSpins: 'Up to 750',
+    isPremium: true,
     details: '+18 | T&C APPLY\n\nNew players only. Min deposit €20. Max bonus €6250 + 750 Free Spins. Wagering 40x. Game weighting applies. T&Cs apply.'
   },
   {
@@ -26,6 +27,7 @@ const casinoOffers = [
     cashback: '20%',
     bonusValue: '100%',
     freeSpins: 'Up to 100',
+    isPremium: true,
     details: '+18 | T&C APPLY\n\nExclusive VIP program for GODMOTA viewers. Level up for better rewards. Cashback on every bet. T&Cs apply.'
   },
   {
@@ -39,6 +41,7 @@ const casinoOffers = [
     cashback: '35%',
     bonusValue: '400%',
     freeSpins: 'Up to 350',
+    isPremium: true,
     details: '+18 | T&C APPLY\n\nWelcome package spread across first 3 deposits. Min deposit €25. Wagering requirements apply. T&Cs apply.'
   },
   {
@@ -53,6 +56,7 @@ const casinoOffers = [
     bonusValue: '150%',
     freeSpins: 'Up to 125',
     code: 'GODMOTA',
+    isPremium: true,
     details: '+18 | T&C APPLY\n\nNo deposit required for signup spins. Use code GODMOTA for extra bonus. T&Cs apply.'
   },
   {
@@ -129,13 +133,14 @@ export default function OffersPage() {
         
         <div className="offers-grid">
           {casinoOffers.map(offer => (
-            <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''}`}>
+            <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>
               <div className="offer-card-inner">
                 {/* Front of card */}
                 <div className="offer-card-front">
                   {offer.badge && (
                     <div className={`offer-badge ${offer.badgeClass}`}>{offer.badge}</div>
                   )}
+                  {offer.isPremium && <div className="premium-shine"></div>}
                   <div className="casino-image-container">
                     <img src={offer.image} alt={offer.casino} className="casino-image" />
                     <div className="casino-overlay">
