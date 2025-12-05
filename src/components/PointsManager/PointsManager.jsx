@@ -531,30 +531,26 @@ export default function PointsManager() {
                           })()}
                         </td>
                         <td>
-                          {(() => {
-                            const hasStatus = redemption.status || redemption.processed;
-                            if (!hasStatus) {
-                              return (
-                                <div className="pm-redemption-actions">
-                                  <button
-                                    onClick={() => handleApproveRedemption(redemption.id)}
-                                    className="pm-approve-btn"
-                                    title="Approve redemption"
-                                  >
-                                    ✅ Approve
-                                  </button>
-                                  <button
-                                    onClick={() => handleDenyRedemption(redemption)}
-                                    className="pm-deny-btn"
-                                    title="Deny and refund"
-                                  >
-                                    ❌ Deny
-                                  </button>
-                                </div>
-                              );
-                            }
-                            return <span className="pm-no-action">—</span>;
-                          })()}
+                          {!redemption.status || redemption.status === 'pending' ? (
+                            <div className="pm-redemption-actions">
+                              <button
+                                onClick={() => handleApproveRedemption(redemption.id)}
+                                className="pm-approve-btn"
+                                title="Approve redemption"
+                              >
+                                ✅ Approve
+                              </button>
+                              <button
+                                onClick={() => handleDenyRedemption(redemption)}
+                                className="pm-deny-btn"
+                                title="Deny and refund"
+                              >
+                                ❌ Deny
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="pm-no-action">—</span>
+                          )}
                         </td>
                       </tr>
                     ))}
