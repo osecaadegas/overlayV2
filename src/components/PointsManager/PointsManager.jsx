@@ -33,6 +33,10 @@ export default function PointsManager() {
   const [imageFile, setImageFile] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
 
+  // Pagination for redemptions
+  const [redemptionPage, setRedemptionPage] = useState(1);
+  const redemptionsPerPage = 10;
+
   const SE_CHANNEL_ID = import.meta.env.VITE_SE_CHANNEL_ID;
   const SE_JWT_TOKEN = import.meta.env.VITE_SE_JWT_TOKEN;
 
@@ -561,7 +565,12 @@ export default function PointsManager() {
 
           {activeTab === 'redemptions' && (
             <div className="pm-redemptions">
-              <h2>Recent Redemptions</h2>
+              <div className="pm-redemptions-header">
+                <h2>Recent Redemptions</h2>
+                <div className="pm-redemptions-info">
+                  <span className="pm-total-count">Total: {redemptions.length}</span>
+                </div>
+              </div>
               <div className="pm-table-container">
                 <table className="pm-table">
                   <thead>
@@ -575,7 +584,12 @@ export default function PointsManager() {
                     </tr>
                   </thead>
                   <tbody>
-                    {redemptions.map((redemption) => (
+                    {redemptions
+                      .slice(
+                        (redemptionPage - 1) * redemptionsPerPage,
+                        redemptionPage * redemptionsPerPage
+                      )
+                      .map((redemption) => (
                       <tr key={redemption.id}>
                         <td>
                           <div className="pm-user-info">
@@ -628,6 +642,27 @@ export default function PointsManager() {
                   <div className="pm-empty">No redemptions yet</div>
                 )}
               </div>
+              {redemptions.length > redemptionsPerPage && (
+                <div className="pm-table-pagination">
+                  <button
+                    onClick={() => setRedemptionPage(prev => Math.max(1, prev - 1))}
+                    disabled={redemptionPage === 1}
+                    className="pm-pagination-btn"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="pm-pagination-info">
+                    Page {redemptionPage} of {Math.ceil(redemptions.length / redemptionsPerPage)}
+                  </span>
+                  <button
+                    onClick={() => setRedemptionPage(prev => Math.min(Math.ceil(redemptions.length / redemptionsPerPage), prev + 1))}
+                    disabled={redemptionPage >= Math.ceil(redemptions.length / redemptionsPerPage)}
+                    className="pm-pagination-btn"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
