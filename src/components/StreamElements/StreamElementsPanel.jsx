@@ -27,6 +27,8 @@ export default function StreamElementsPanel() {
   const [redemptionItems, setRedemptionItems] = useState([]);
   const [redeeming, setRedeeming] = useState(null);
   const [userRedemptions, setUserRedemptions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     loadRedemptionItems();
@@ -279,27 +281,51 @@ export default function StreamElementsPanel() {
           {userRedemptions.length > 0 && (
             <div className="se-redemption-history-floating">
               <div className="se-history-card">
-                <h3>📋 Redemption History</h3>
+                <div className="se-history-header">
+                  <h3>Redemption History</h3>
+                  <span className="se-history-count">({userRedemptions.length})</span>
+                </div>
                 <div className="se-history-list">
-                  {userRedemptions.map((redemption) => (
+                  {userRedemptions
+                    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                    .map((redemption) => (
                     <div key={redemption.id} className="se-history-item">
-                      <div className="se-history-icon">✅</div>
-                      <div className="se-history-details">
+                      <div className="se-history-content">
                         <div className="se-history-name">
                           {redemption.redemption_items?.name || 'Unknown Item'}
                         </div>
                         <div className="se-history-meta">
-                          <span>{redemption.points_spent.toLocaleString()} pts</span>
-                          <span>•</span>
-                          <span>{new Date(redemption.redeemed_at).toLocaleDateString()}</span>
+                          <span className="se-history-points">{redemption.points_spent.toLocaleString()} pts</span>
+                          <span className="se-history-date">{new Date(redemption.redeemed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                         </div>
                       </div>
-                      {redemption.processed && (
-                        <div className="se-history-badge">Processed</div>
-                      )}
+                      <div className="se-history-status">
+                        {redemption.processed ? '✓' : '○'}
+                      </div>
                     </div>
                   ))}
                 </div>
+                {userRedemptions.length > itemsPerPage && (
+                  <div className="se-history-pagination">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                      className="se-page-btn"
+                    >
+                      ‹
+                    </button>
+                    <span className="se-page-info">
+                      {currentPage} / {Math.ceil(userRedemptions.length / itemsPerPage)}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(Math.ceil(userRedemptions.length / itemsPerPage), prev + 1))}
+                      disabled={currentPage >= Math.ceil(userRedemptions.length / itemsPerPage)}
+                      className="se-page-btn"
+                    >
+                      ›
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )}
