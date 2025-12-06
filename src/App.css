@@ -6,6 +6,7 @@
 
 body {
   margin: 0;
+  margin-left: 200px;
   font-family: 'Inter', Arial, sans-serif;
   background: 
     radial-gradient(ellipse at top, #0c1445 0%, #1a1a2e 40%, #16213e 60%, #0f1b3c 100%),
@@ -15,6 +16,11 @@ body {
   min-height: 100vh;
   overflow: hidden;
   position: relative;
+  transition: margin-left 0.3s ease;
+}
+
+body.no-sidebar {
+  margin-left: 0;
 }
 
 /* Stars layer 1 - small stars (only for animated-stars background) */
