@@ -638,40 +638,42 @@
 
 /* Redesigned Modal */
 .pm-modal-redesigned {
-  background: linear-gradient(170deg, rgba(30, 35, 50, 0.95) 0%, rgba(15, 19, 24, 0.98) 100%);
+  background: linear-gradient(170deg, rgba(30, 35, 50, 0.98) 0%, rgba(15, 19, 24, 0.99) 100%);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border-radius: 20px;
-  max-width: 1200px;
-  width: 95%;
-  max-height: 90vh;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 85vh;
   overflow: hidden;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .pm-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 30px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .pm-modal-header h2 {
   margin: 0;
   color: #d4af37;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 .pm-modal-close {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: #a0aec0;
-  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -687,10 +689,10 @@
 
 .pm-modal-content-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  padding: 30px;
-  max-height: calc(90vh - 90px);
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  padding: 24px;
+  max-height: calc(85vh - 70px);
   overflow-y: auto;
 }
 
@@ -698,7 +700,7 @@
 .pm-form-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .pm-form-group-new {
@@ -710,20 +712,20 @@
 .pm-form-group-new label {
   font-weight: 600;
   color: #d4af37;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .pm-input,
 .pm-textarea,
 .pm-select {
   width: 100%;
-  padding: 14px 16px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  font-size: 1rem;
-  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
   color: #e5e7eb;
   transition: all 0.2s;
   font-family: inherit;
@@ -745,7 +747,7 @@
 
 .pm-textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 60px;
 }
 
 .pm-form-row {
@@ -764,13 +766,14 @@
 .pm-file-upload-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 2px dashed #d4af37;
-  border-radius: 10px;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px dashed rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
   color: #d4af37;
   font-weight: 600;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -791,20 +794,20 @@
 
 .pm-modal-actions-new {
   display: flex;
-  gap: 12px;
-  margin-top: 10px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .pm-btn-cancel,
 .pm-btn-create {
   flex: 1;
-  padding: 14px 24px;
+  padding: 11px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -837,13 +840,14 @@
 
 /* Preview Section */
 .pm-preview-section {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  padding: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+  align-items: center;
 }
 
 .pm-preview-header {
@@ -855,17 +859,18 @@
 .pm-preview-header h3 {
   margin: 0;
   color: #d4af37;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .pm-preview-badge {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(212, 175, 55, 0.15);
   color: #d4af37;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
   font-weight: 600;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.25);
 }
 
 .pm-preview-card {
@@ -876,6 +881,7 @@
   transition: all 0.3s;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
   height: 380px;
+  width: 220px;
   display: flex;
   flex-direction: column;
 }
