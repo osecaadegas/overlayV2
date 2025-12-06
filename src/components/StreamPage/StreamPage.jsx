@@ -10,15 +10,27 @@ export default function StreamPage() {
         <p className="stream-subtitle">Watch our live casino streaming sessions</p>
         
         <div className="stream-content">
-          <div className="stream-embed">
-            <iframe
-              src={`https://player.twitch.tv/?channel=${twitchChannel}&parent=${window.location.hostname}`}
-              height="600"
-              width="100%"
-              allowFullScreen
-              title="Twitch Stream"
-              style={{ border: 'none', borderRadius: '12px' }}
-            />
+          <div className="stream-main">
+            <div className="stream-embed">
+              <iframe
+                src={`https://player.twitch.tv/?channel=${twitchChannel}&parent=${window.location.hostname}`}
+                height="600"
+                width="100%"
+                allowFullScreen
+                title="Twitch Stream"
+                style={{ border: 'none', borderRadius: '12px' }}
+              />
+            </div>
+
+            <div className="chat-embed">
+              <iframe
+                src={`https://www.twitch.tv/embed/${twitchChannel}/chat?parent=${window.location.hostname}&darkpopout`}
+                height="600"
+                width="100%"
+                title="Twitch Chat"
+                style={{ border: 'none', borderRadius: '12px' }}
+              />
+            </div>
           </div>
 
           <div className="stream-info">

@@ -32,9 +32,25 @@
   gap: 30px;
 }
 
-.stream-embed {
+.stream-main {
   flex: 1;
   max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stream-embed {
+  min-height: 600px;
+  height: 600px;
+  overflow: hidden;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.chat-embed {
   min-height: 600px;
   height: 600px;
   overflow: hidden;
@@ -139,7 +155,11 @@
 
 @media (max-width: 1024px) {
   .stream-content {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  
+  .stream-info {
+    width: 100%;
   }
 }
 
@@ -148,7 +168,8 @@
     font-size: 2rem;
   }
   
-  .stream-embed {
+  .stream-embed,
+  .chat-embed {
     min-height: 400px;
   }
 }
