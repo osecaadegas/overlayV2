@@ -25,14 +25,14 @@
 
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
 }
 
 /* Card flip container */
 .offer-card-wrapper {
   perspective: 1000px;
-  height: 450px;
+  height: 380px;
 }
 
 .offer-card-wrapper.premium {
@@ -165,7 +165,7 @@
 .casino-image-container {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 160px;
   overflow: hidden;
 }
 
@@ -181,28 +181,28 @@
   left: 0;
   right: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-  padding: 14px 12px 8px;
+  padding: 10px 10px 6px;
 }
 
 .casino-name {
   color: #d4af37;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   margin: 0;
 }
 
 .offer-title {
   color: #d4af37;
-  font-size: 0.75rem;
-  padding: 8px 12px 6px;
+  font-size: 0.7rem;
+  padding: 6px 10px 4px;
   line-height: 1.3;
-  min-height: 36px;
+  min-height: 30px;
 }
 
 .offer-terms {
   color: #6b7280;
-  font-size: 0.6rem;
-  padding: 0 12px 8px;
+  font-size: 0.55rem;
+  padding: 0 10px 6px;
 }
 
 /* Stats grid */
@@ -210,46 +210,59 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
-  padding: 0 12px 12px;
+  padding: 0 10px 10px;
   flex: 1;
 }
 
 .stat {
-  background: #0f1318;
-  border-radius: 12px;
-  padding: 6px 8px;
+  background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(26, 31, 46, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  border: 1px solid #2a3142;
+  gap: 3px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.stat:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .stat-icon {
-  font-size: 1rem;
-  opacity: 0.8;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  color: #d4af37;
 }
 
 .stat-label {
-  color: #6b7280;
+  color: #9ca3af;
   font-size: 0.55rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  font-weight: 500;
 }
 
 .stat-value {
-  color: #d4af37;
-  font-weight: 600;
-  font-size: 0.75rem;
+  color: #e5c158;
+  font-weight: 700;
+  font-size: 0.8rem;
   text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Action buttons */
 .card-actions {
   display: flex;
-  gap: 8px;
-  padding: 0 12px 12px;
+  gap: 6px;
+  padding: 0 10px 10px;
 }
 
 .info-btn,
@@ -354,6 +367,6 @@
   }
 
   .offer-card-wrapper {
-    height: 480px;
+    height: 400px;
   }
 }
