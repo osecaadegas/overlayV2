@@ -1,6 +1,10 @@
 .se-panel {
   min-height: 100vh;
   padding: 40px 20px 40px;
+  background: 
+    radial-gradient(ellipse at top, #0c1445 0%, #1a1a2e 40%, #16213e 60%, #0f1b3c 100%),
+    linear-gradient(180deg, #0a0e27 0%, #16213e 30%, #1a1a2e 70%, #0f1b3c 100%);
+  background-attachment: fixed;
 }
 
 .se-header {
