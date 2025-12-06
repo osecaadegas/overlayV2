@@ -136,9 +136,6 @@ export default function AdminPanel() {
     <div className="admin-panel">
       <div className="admin-header">
         <h1>🛡️ Admin Panel</h1>
-        <button onClick={() => navigate('/')} className="btn-back">
-          ← Back to Home
-        </button>
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
