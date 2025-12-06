@@ -561,6 +561,7 @@ function App() {
                 <Route path="/stream" element={<StreamPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/points" element={<StreamElementsPanel />} />
+                <Route path="/streamelements" element={<StreamElementsPanel />} />
                 <Route path="/points-manager" element={<PointsManager />} />
                 <Route path="/overlay" element={<ProtectedOverlay />} />
                 <Route path="/admin" element={<AdminPanel />} />
