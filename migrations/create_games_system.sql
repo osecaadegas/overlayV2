@@ -1,15 +1,20 @@
 -- Games System Database Setup
+-- NOTE: All betting and payouts use StreamElements points
+-- Points are managed via StreamElements API, not stored in our database
 
 -- Table: game_sessions
--- Track individual game sessions
+-- Track individual game sessions (points are handled by StreamElements)
 CREATE TABLE IF NOT EXISTS game_sessions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  se_channel_id TEXT NOT NULL, -- StreamElements channel ID for point transactions
   game_type TEXT NOT NULL, -- 'coinflip', 'dice', 'roulette', 'slots'
-  bet_amount INTEGER NOT NULL,
+  bet_amount INTEGER NOT NULL, -- Points deducted from StreamElements
   result TEXT NOT NULL, -- game-specific result (e.g., 'win', 'loss', 'heads', 'tails', number)
-  payout INTEGER NOT NULL, -- 0 for loss, bet_amount * multiplier for win
+  payout INTEGER NOT NULL, -- 0 for loss, points added to StreamElements for win
   multiplier DECIMAL(10,2) DEFAULT 0,
+  points_before INTEGER, -- StreamElements points balance before game
+  points_after INTEGER, -- StreamElements points balance after game
   played_at TIMESTAMPTZ DEFAULT NOW(),
   session_data JSONB -- store game-specific details
 );
