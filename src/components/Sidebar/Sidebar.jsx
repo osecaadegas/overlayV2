@@ -10,6 +10,7 @@ import './Sidebar.css';
 export default function Sidebar() {
   const [hasOverlayAccess, setHasOverlayAccess] = useState(false);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
+  const [showGamesDropdown, setShowGamesDropdown] = useState(false);
   const { user, signOut } = useAuth();
   const { isAdmin, isModerator } = useAdmin();
   const { points, loading: pointsLoading } = useStreamElements();
@@ -167,12 +168,6 @@ export default function Sidebar() {
       show: true 
     },
     { 
-      icon: <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/></svg>, 
-      label: 'Games', 
-      path: '/games', 
-      show: true 
-    },
-    { 
       icon: <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>, 
       label: 'About Us', 
       path: '/about', 
@@ -255,6 +250,55 @@ export default function Sidebar() {
             </button>
           ) : null
         )}
+
+        {/* Games Dropdown */}
+        <div className="sidebar-dropdown">
+          <button
+            className={`sidebar-item ${location.pathname.startsWith('/games') ? 'active' : ''}`}
+            onClick={() => setShowGamesDropdown(!showGamesDropdown)}
+          >
+            <span className="sidebar-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/>
+              </svg>
+            </span>
+            <span className="sidebar-label">Games</span>
+            <span className={`dropdown-arrow ${showGamesDropdown ? 'open' : ''}`}>▼</span>
+          </button>
+          
+          {showGamesDropdown && (
+            <div className="sidebar-submenu">
+              <button
+                className={`sidebar-subitem ${isActive('/games/coinflip') ? 'active' : ''}`}
+                onClick={() => handleNavigation('/games/coinflip')}
+              >
+                <span className="subitem-icon">🪙</span>
+                <span className="subitem-label">Coin Flip</span>
+              </button>
+              <button
+                className={`sidebar-subitem ${isActive('/games/dice') ? 'active' : ''}`}
+                onClick={() => handleNavigation('/games/dice')}
+              >
+                <span className="subitem-icon">🎲</span>
+                <span className="subitem-label">Dice Roll</span>
+              </button>
+              <button
+                className={`sidebar-subitem ${isActive('/games/roulette') ? 'active' : ''}`}
+                onClick={() => handleNavigation('/games/roulette')}
+              >
+                <span className="subitem-icon">🎰</span>
+                <span className="subitem-label">Roulette</span>
+              </button>
+              <button
+                className={`sidebar-subitem ${isActive('/games/slots') ? 'active' : ''}`}
+                onClick={() => handleNavigation('/games/slots')}
+              >
+                <span className="subitem-icon">🎰</span>
+                <span className="subitem-label">Slot Machine</span>
+              </button>
+            </div>
+          )}
+        </div>
 
         {user && (
           <>

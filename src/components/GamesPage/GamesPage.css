@@ -54,89 +54,73 @@
   line-height: 1.6;
 }
 
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+.game-play-area {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.game-card {
+.game-info-card {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
-  padding: 30px;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  padding: 24px;
+  margin-bottom: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.game-card:hover {
-  border-color: rgba(212, 175, 55, 0.6);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
+.game-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.game-card.locked {
-  opacity: 0.6;
-  cursor: not-allowed;
+.game-info-row:last-child {
+  border-bottom: none;
 }
 
-.game-card.locked:hover {
-  transform: none;
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.game-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
-}
-
-.game-card h3 {
-  color: #d4af37;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.game-card p {
+.info-label {
   color: #9ca3af;
   font-size: 1rem;
-  margin-bottom: 20px;
-  line-height: 1.6;
+  font-weight: 500;
 }
 
-.game-meta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.min-bet {
-  background: rgba(212, 175, 55, 0.2);
+.info-value {
   color: #d4af37;
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
-.locked-badge {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+.coming-soon-container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.coming-soon-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+}
+
+.coming-soon-container h2 {
+  color: #d4af37;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.coming-soon-container p {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  line-height: 1.6;
 }
 
 /* Game Modal */

@@ -558,7 +558,10 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/offers" element={<OffersPage />} />
                 <Route path="/stream" element={<StreamPage />} />
-                <Route path="/games" element={<GamesPage />} />
+                <Route path="/games/coinflip" element={<GamesPage gameType="coinflip" />} />
+                <Route path="/games/dice" element={<GamesPage gameType="dice" />} />
+                <Route path="/games/roulette" element={<GamesPage gameType="roulette" />} />
+                <Route path="/games/slots" element={<GamesPage gameType="slots" />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/points" element={<StreamElementsPanel />} />
                 <Route path="/streamelements" element={<StreamElementsPanel />} />

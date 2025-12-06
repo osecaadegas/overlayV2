@@ -2,102 +2,72 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './GamesPage.css';
 
-export default function GamesPage() {
+export default function GamesPage({ gameType }) {
   const { user } = useAuth();
-  const [selectedGame, setSelectedGame] = useState(null);
 
-  const games = [
-    {
-      id: 'coinflip',
+  const gameInfo = {
+    coinflip: {
       title: '🪙 Coin Flip',
       description: 'Bet on heads or tails. Double or nothing!',
       minBet: 10,
-      icon: '🪙'
+      icon: '🪙',
+      multiplier: '2x'
     },
-    {
-      id: 'dice',
+    dice: {
       title: '🎲 Dice Roll',
       description: 'Roll the dice and predict the outcome!',
       minBet: 20,
-      icon: '🎲'
+      icon: '🎲',
+      multiplier: '6x'
     },
-    {
-      id: 'roulette',
+    roulette: {
       title: '🎰 Roulette',
       description: 'Spin the wheel and test your luck!',
       minBet: 50,
-      icon: '🎰'
+      icon: '🎰',
+      multiplier: 'up to 35x'
     },
-    {
-      id: 'slots',
+    slots: {
       title: '🎰 Slot Machine',
       description: 'Pull the lever and win big!',
       minBet: 25,
-      icon: '🎰'
+      icon: '🎰',
+      multiplier: 'up to 10x'
     }
-  ];
-
-  const handleGameSelect = (game) => {
-    if (!user) {
-      alert('Please log in with Twitch to play games!');
-      return;
-    }
-    setSelectedGame(game);
   };
+
+  const currentGame = gameInfo[gameType];
 
   return (
     <div className="games-page">
       <div className="games-container">
-        <h1>🎮 Games</h1>
-        <p className="games-subtitle">
-          {user 
-            ? 'Choose a game and test your luck!' 
-            : 'Log in with Twitch to play games and win points!'}
-        </p>
+        <h1>{currentGame.icon} {currentGame.title.replace(currentGame.icon + ' ', '')}</h1>
+        <p className="games-subtitle">{currentGame.description}</p>
 
-        {!user && (
+        {!user ? (
           <div className="games-login-notice">
             <div className="login-notice-icon">🔒</div>
             <h3>Twitch Login Required</h3>
-            <p>Please log in with your Twitch account to access and play games.</p>
+            <p>Please log in with your Twitch account to play this game.</p>
           </div>
-        )}
-
-        <div className="games-grid">
-          {games.map((game) => (
-            <div 
-              key={game.id}
-              className={`game-card ${!user ? 'locked' : ''}`}
-              onClick={() => handleGameSelect(game)}
-            >
-              <div className="game-icon">{game.icon}</div>
-              <h3>{game.title}</h3>
-              <p>{game.description}</p>
-              <div className="game-meta">
-                <span className="min-bet">Min Bet: {game.minBet} pts</span>
-                {!user && <span className="locked-badge">🔒 Locked</span>}
+        ) : (
+          <div className="game-play-area">
+            <div className="game-info-card">
+              <div className="game-info-row">
+                <span className="info-label">Min Bet:</span>
+                <span className="info-value">{currentGame.minBet} pts</span>
+              </div>
+              <div className="game-info-row">
+                <span className="info-label">Max Payout:</span>
+                <span className="info-value">{currentGame.multiplier}</span>
               </div>
             </div>
-          ))}
-        </div>
 
-        {selectedGame && user && (
-          <div className="game-modal-overlay" onClick={() => setSelectedGame(null)}>
-            <div className="game-modal" onClick={(e) => e.stopPropagation()}>
-              <div className="game-modal-header">
-                <h2>{selectedGame.title}</h2>
-                <button 
-                  className="close-btn"
-                  onClick={() => setSelectedGame(null)}
-                >
-                  ×
-                </button>
-              </div>
-              <div className="game-modal-content">
-                <p className="coming-soon">🚧 Coming Soon! 🚧</p>
-                <p>This game is currently under development.</p>
-                <p>Check back later for exciting gameplay!</p>
-              </div>
+            <div className="coming-soon-container">
+              <div className="coming-soon-icon">🚧</div>
+              <h2>Coming Soon!</h2>
+              <p>This game is currently under development.</p>
+              <p>Check back later for exciting gameplay!</p>
             </div>
           </div>
         )}
