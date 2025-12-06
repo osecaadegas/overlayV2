@@ -3,7 +3,8 @@
   max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #0f1318;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #3d4f5d 50%, #475766 75%, #34495e 100%);
+  background-attachment: fixed;
 }
 
 .pm-header {

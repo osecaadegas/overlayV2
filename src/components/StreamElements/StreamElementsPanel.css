@@ -1,9 +1,7 @@
 .se-panel {
   min-height: 100vh;
   padding: 40px 20px 40px;
-  background: 
-    radial-gradient(ellipse at top, #0c1445 0%, #1a1a2e 40%, #16213e 60%, #0f1b3c 100%),
-    linear-gradient(180deg, #0a0e27 0%, #16213e 30%, #1a1a2e 70%, #0f1b3c 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #3d4f5d 50%, #475766 75%, #34495e 100%);
   background-attachment: fixed;
 }
 
@@ -31,12 +29,15 @@
 }
 
 .se-info-box {
-  background: #1a1f2e;
-  border: 1px solid #2a3142;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: white;
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 16px;
   margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .se-info-box h3 {
@@ -86,10 +87,13 @@
 
 /* Link Form */
 .se-link-form {
-  background: #1a1f2e;
-  border: 1px solid #2a3142;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .se-link-form h3 {
@@ -302,18 +306,23 @@
 }
 
 .se-item {
-  background: #1a1f2e;
-  border: 1px solid #2a3142;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   min-height: 200px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .se-item:hover {
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
 }
 
 .se-item.disabled {
@@ -456,13 +465,13 @@
 }
 
 .se-history-card {
-  background: rgba(13, 17, 23, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
   padding: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -505,9 +514,11 @@
 }
 
 .se-history-item {
-  background: #161B22;
-  border: 1px solid #30363D;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
   padding: 8px 10px;
   display: flex;
   align-items: center;
@@ -517,8 +528,10 @@
 }
 
 .se-history-item:hover {
-  border-color: rgba(212, 175, 55, 0.3);
-  background: #1A1F24;
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .se-history-icon {
