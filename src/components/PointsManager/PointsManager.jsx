@@ -764,124 +764,189 @@ export default function PointsManager() {
         </div>
       )}
 
-      {/* Item Modal */}
+      {/* Item Modal - Redesigned with Preview */}
       {showItemModal && (
         <div className="pm-modal-overlay" onClick={() => setShowItemModal(false)}>
-          <div className="pm-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>{editingItem ? 'Edit' : 'Create'} Redemption Item</h2>
-
-            <div className="pm-form-group">
-              <label>Name</label>
-              <input
-                type="text"
-                value={itemForm.name}
-                onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
-                placeholder="e.g., Premium Access (30 Days)"
-              />
-            </div>
-
-            <div className="pm-form-group">
-              <label>Description</label>
-              <textarea
-                value={itemForm.description}
-                onChange={(e) => setItemForm({ ...itemForm, description: e.target.value })}
-                placeholder="Describe what the user gets"
-                rows="3"
-              />
-            </div>
-
-            <div className="pm-form-group">
-              <label>Point Cost</label>
-              <input
-                type="number"
-                value={itemForm.point_cost}
-                onChange={(e) => setItemForm({ ...itemForm, point_cost: e.target.value })}
-                placeholder="e.g., 15000"
-              />
-            </div>
-
-            <div className="pm-form-group">
-              <label>Reward Type</label>
-              <select
-                value={itemForm.reward_type}
-                onChange={(e) => setItemForm({ ...itemForm, reward_type: e.target.value })}
-                style={{ width: '100%', padding: '12px', border: '2px solid #2a3142', borderRadius: '8px', background: '#0f1318', color: '#a0aec0', fontSize: '1rem' }}
+          <div className="pm-modal-redesigned" onClick={(e) => e.stopPropagation()}>
+            <div className="pm-modal-header">
+              <h2>{editingItem ? 'Edit' : 'Create'} Redemption Item</h2>
+              <button 
+                onClick={() => setShowItemModal(false)} 
+                className="pm-modal-close"
               >
-                <option value="custom">Custom Reward</option>
-                <option value="premium_access">Premium Access</option>
-                <option value="exclusive_role">Exclusive Role</option>
-                <option value="bonus_entry">Bonus Entry</option>
-                <option value="special_feature">Special Feature</option>
-              </select>
+                ✕
+              </button>
             </div>
 
-            <div className="pm-form-group">
-              <label>Reward Details</label>
-              <input
-                type="text"
-                value={itemForm.reward_details}
-                onChange={(e) => setItemForm({ ...itemForm, reward_details: e.target.value })}
-                placeholder="e.g., 30 days premium, VIP role, special badge, etc."
-              />
-              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
-                Describe what the user receives (e.g., duration, features, perks)
-              </small>
-            </div>
-
-            <div className="pm-form-group">
-              <label>Image (Optional)</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files[0])}
-                style={{ color: '#a0aec0' }}
-              />
-              {imageFile && (
-                <small style={{ color: '#d4af37', marginTop: '5px', display: 'block' }}>
-                  Selected: {imageFile.name}
-                </small>
-              )}
-              {itemForm.image_url && !imageFile && (
-                <div style={{ marginTop: '10px' }}>
-                  <img src={itemForm.image_url} alt="Current" style={{ maxWidth: '100%', maxHeight: '150px', borderRadius: '8px' }} />
-                  <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
-                    Current image (upload a new file to replace)
-                  </small>
+            <div className="pm-modal-content-split">
+              {/* Left Side - Form */}
+              <div className="pm-form-section">
+                <div className="pm-form-group-new">
+                  <label>Item Name</label>
+                  <input
+                    type="text"
+                    value={itemForm.name}
+                    onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
+                    placeholder="e.g., Premium Access (30 Days)"
+                    className="pm-input"
+                  />
                 </div>
-              )}
-              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
-                Upload an image to display on the redemption card
-              </small>
-            </div>
 
-            <div className="pm-form-group">
-              <label>Available Units (Optional)</label>
-              <input
-                type="number"
-                value={itemForm.available_units}
-                onChange={(e) => setItemForm({ ...itemForm, available_units: e.target.value })}
-                placeholder="e.g., 10 (leave empty for unlimited)"
-                min="0"
-              />
-              <small style={{ color: '#a0aec0', marginTop: '5px', display: 'block' }}>
-                Number of units available for redemption. Leave empty for unlimited stock.
-              </small>
-            </div>
+                <div className="pm-form-group-new">
+                  <label>Description</label>
+                  <textarea
+                    value={itemForm.description}
+                    onChange={(e) => setItemForm({ ...itemForm, description: e.target.value })}
+                    placeholder="Describe what the user gets"
+                    rows="3"
+                    className="pm-textarea"
+                  />
+                </div>
 
-            <div className="pm-modal-actions">
-              <button
-                onClick={handleSaveItem}
-                disabled={!itemForm.name || !itemForm.point_cost || loading || uploadingImage}
-                className="pm-submit-btn"
-              >
-                {uploadingImage ? 'Uploading Image...' : loading ? 'Saving...' : editingItem ? 'Update Item' : 'Create Item'}
-              </button>
-              <button
-                onClick={() => setShowItemModal(false)}
-                className="pm-cancel-btn"
-              >
-                Cancel
-              </button>
+                <div className="pm-form-row">
+                  <div className="pm-form-group-new">
+                    <label>Point Cost</label>
+                    <input
+                      type="number"
+                      value={itemForm.point_cost}
+                      onChange={(e) => setItemForm({ ...itemForm, point_cost: e.target.value })}
+                      placeholder="15000"
+                      className="pm-input"
+                    />
+                  </div>
+
+                  <div className="pm-form-group-new">
+                    <label>Available Units</label>
+                    <input
+                      type="number"
+                      value={itemForm.available_units}
+                      onChange={(e) => setItemForm({ ...itemForm, available_units: e.target.value })}
+                      placeholder="∞ Unlimited"
+                      min="0"
+                      className="pm-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="pm-form-group-new">
+                  <label>Reward Type</label>
+                  <select
+                    value={itemForm.reward_type}
+                    onChange={(e) => setItemForm({ ...itemForm, reward_type: e.target.value })}
+                    className="pm-select"
+                  >
+                    <option value="custom">Custom Reward</option>
+                    <option value="premium_access">Premium Access</option>
+                    <option value="exclusive_role">Exclusive Role</option>
+                    <option value="bonus_entry">Bonus Entry</option>
+                    <option value="special_feature">Special Feature</option>
+                  </select>
+                </div>
+
+                <div className="pm-form-group-new">
+                  <label>Reward Details</label>
+                  <input
+                    type="text"
+                    value={itemForm.reward_details}
+                    onChange={(e) => setItemForm({ ...itemForm, reward_details: e.target.value })}
+                    placeholder="e.g., 30 days premium, VIP role, special badge"
+                    className="pm-input"
+                  />
+                </div>
+
+                <div className="pm-form-group-new">
+                  <label>Item Image</label>
+                  <div className="pm-file-upload">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setImageFile(e.target.files[0])}
+                      id="image-upload"
+                      style={{ display: 'none' }}
+                    />
+                    <label htmlFor="image-upload" className="pm-file-upload-btn">
+                      <span>📁</span> Choose Image
+                    </label>
+                    {imageFile && (
+                      <span className="pm-file-name">{imageFile.name}</span>
+                    )}
+                    {itemForm.image_url && !imageFile && (
+                      <span className="pm-file-name">Current: {itemForm.image_url.split('/').pop()}</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pm-modal-actions-new">
+                  <button
+                    onClick={() => setShowItemModal(false)}
+                    className="pm-btn-cancel"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveItem}
+                    disabled={!itemForm.name || !itemForm.point_cost || loading || uploadingImage}
+                    className="pm-btn-create"
+                  >
+                    {uploadingImage ? '⏳ Uploading...' : loading ? '💾 Saving...' : editingItem ? '✓ Update Item' : '✓ Create Item'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Side - Live Preview */}
+              <div className="pm-preview-section">
+                <div className="pm-preview-header">
+                  <h3>Live Preview</h3>
+                  <span className="pm-preview-badge">Points Store</span>
+                </div>
+                
+                <div className="pm-preview-card">
+                  {(itemForm.image_url || imageFile) && (
+                    <div className="pm-preview-image">
+                      <img 
+                        src={imageFile ? URL.createObjectURL(imageFile) : itemForm.image_url} 
+                        alt="Preview" 
+                      />
+                    </div>
+                  )}
+                  
+                  <div className="pm-preview-content">
+                    <div className="pm-preview-header-info">
+                      <h4>{itemForm.name || 'Item Name'}</h4>
+                      <div className="pm-preview-cost">
+                        {itemForm.point_cost || '0'} pts
+                      </div>
+                    </div>
+                    
+                    <p className="pm-preview-description">
+                      {itemForm.description || 'Item description will appear here...'}
+                    </p>
+                    
+                    {itemForm.reward_details && (
+                      <div className="pm-preview-details">
+                        <span className="pm-preview-icon">🎁</span>
+                        {itemForm.reward_details}
+                      </div>
+                    )}
+                    
+                    {itemForm.reward_type && (
+                      <div className="pm-preview-type">
+                        {itemForm.reward_type.replace('_', ' ').toUpperCase()}
+                      </div>
+                    )}
+                    
+                    {itemForm.available_units && (
+                      <div className="pm-preview-stock">
+                        📦 {itemForm.available_units} units available
+                      </div>
+                    )}
+                    
+                    <button className="pm-preview-redeem-btn">
+                      Redeem Now
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
