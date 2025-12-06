@@ -10,11 +10,13 @@ export default function PointsManager() {
   const [activeTab, setActiveTab] = useState('users'); // 'users', 'redemptions', 'items'
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [userRole, setUserRole] = useState('moderator'); // 'admin' or 'moderator'
 
   // For adding/removing points
   const [selectedUser, setSelectedUser] = useState(null);
   const [pointsAmount, setPointsAmount] = useState('');
   const [showPointsModal, setShowPointsModal] = useState(false);
+  const [pointsAction, setPointsAction] = useState('add'); // 'add' or 'remove'
 
   // For managing redemption items
   const [showItemModal, setShowItemModal] = useState(false);
@@ -36,7 +38,22 @@ export default function PointsManager() {
 
   useEffect(() => {
     loadData();
+    checkUserRole();
   }, [activeTab]);
+
+  const checkUserRole = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Check if user has admin role in a custom table or metadata
+        // For now, hardcode admin email or add logic to check roles table
+        const adminEmails = ['miguelmonsanto95aa@gmail.com']; // Add your admin email(s)
+        setUserRole(adminEmails.includes(user.email) ? 'admin' : 'moderator');
+      }
+    } catch (err) {
+      console.error('Error checking user role:', err);
+    }
+  };
 
   const uploadImage = async (file) => {
     try {
@@ -495,15 +512,41 @@ export default function PointsManager() {
                         <td className="pm-points">{user.current_points.toLocaleString()}</td>
                         <td>{new Date(user.connected_at).toLocaleDateString()}</td>
                         <td>
-                          <button
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setShowPointsModal(true);
-                            }}
-                            className="pm-action-btn"
-                          >
-                            ✏️ Edit Points
-                          </button>
+                          {userRole === 'admin' ? (
+                            <button
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setPointsAction('add');
+                                setShowPointsModal(true);
+                              }}
+                              className="pm-action-btn"
+                            >
+                              ✏️ Edit Points
+                            </button>
+                          ) : (
+                            <div className="pm-mod-actions">
+                              <button
+                                onClick={() => {
+                                  setSelectedUser(user);
+                                  setPointsAction('add');
+                                  setShowPointsModal(true);
+                                }}
+                                className="pm-add-points-btn"
+                              >
+                                ➕ Add Points
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedUser(user);
+                                  setPointsAction('remove');
+                                  setShowPointsModal(true);
+                                }}
+                                className="pm-remove-points-btn"
+                              >
+                                ➖ Remove Points
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -674,26 +717,41 @@ export default function PointsManager() {
       {showPointsModal && selectedUser && (
         <div className="pm-modal-overlay" onClick={() => setShowPointsModal(false)}>
           <div className="pm-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Edit Points for {selectedUser.se_username}</h2>
+            <h2>
+              {userRole === 'admin' ? 'Edit' : pointsAction === 'add' ? 'Add' : 'Remove'} Points for {selectedUser.se_username}
+            </h2>
             <p>Current Points: <strong>{selectedUser.current_points.toLocaleString()}</strong></p>
 
             <div className="pm-form-group">
-              <label>Points Amount (positive to add, negative to remove)</label>
+              <label>
+                {userRole === 'admin' 
+                  ? 'Points Amount (positive to add, negative to remove)' 
+                  : `Points to ${pointsAction === 'add' ? 'Add' : 'Remove'}`
+                }
+              </label>
               <input
                 type="number"
                 value={pointsAmount}
                 onChange={(e) => setPointsAmount(e.target.value)}
-                placeholder="e.g., 1000 or -500"
+                placeholder={userRole === 'admin' ? 'e.g., 1000 or -500' : 'e.g., 1000'}
+                min={userRole === 'moderator' ? '1' : undefined}
               />
             </div>
 
             <div className="pm-modal-actions">
               <button
-                onClick={() => handleAddPoints(parseInt(pointsAmount))}
+                onClick={() => {
+                  const amount = parseInt(pointsAmount);
+                  if (userRole === 'moderator' && pointsAction === 'remove') {
+                    handleAddPoints(-Math.abs(amount));
+                  } else {
+                    handleAddPoints(Math.abs(amount));
+                  }
+                }}
                 disabled={!pointsAmount || loading}
                 className="pm-submit-btn"
               >
-                {loading ? 'Updating...' : 'Update Points'}
+                {loading ? 'Updating...' : userRole === 'admin' ? 'Update Points' : `${pointsAction === 'add' ? 'Add' : 'Remove'} Points`}
               </button>
               <button
                 onClick={() => setShowPointsModal(false)}
