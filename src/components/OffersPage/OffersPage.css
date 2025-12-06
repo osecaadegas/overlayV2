@@ -23,22 +23,7 @@
   margin-bottom: 40px;
 }
 
-/* Premium Card */
-.premium-card-box {
-  width: 100%;
-  height: 450px;
-  border-radius: 12px;
-  background: linear-gradient(170deg, rgba(58, 56, 56, 0.623) 0%, rgb(31, 31, 31) 100%);
-  position: relative;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.55);
-  cursor: pointer;
-  transition: all .3s;
-}
-
-.premium-card-box:hover {
-  transform: scale(0.95);
-}
-
+/* Premium Card Ribbon */
 .premium-card-box span {
   position: absolute;
   overflow: hidden;
@@ -49,6 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .premium-card-box span::before {
