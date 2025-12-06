@@ -164,31 +164,21 @@ export default function Sidebar() {
       icon: <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>, 
       label: 'Stream', 
       path: '/stream', 
-            <div className="avatar-upload-section">
-              <label htmlFor="avatar-upload" className={`avatar-upload-btn ${uploadingAvatar ? 'uploading' : ''}`}>
-                {uploadingAvatar ? (
-                  <>
-                    <div className="spinner"></div>
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <svg viewBox="0 0 24 24" className="upload-icon" xmlns="http://www.w3.org/2000/svg">
-                      <path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
-                    </svg>
-                    Upload Custom Image
-                  </>
-                )}
-              </label>
-              <input
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-                disabled={uploadingAvatar}
-              />
-            </div>ssName="avatar-container" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
+      show: true 
+    },
+    { 
+      icon: <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>, 
+      label: 'About Us', 
+      path: '/about', 
+      show: true 
+    },
+  ];
+
+  return (
+    <aside className="sidebar">
+      {user && (
+        <div className="sidebar-avatar-section">
+          <div className="avatar-container" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
             <img src={selectedAvatar} alt="Avatar" className="avatar-image" />
           </div>
           <div className="points-display">
@@ -218,11 +208,20 @@ export default function Sidebar() {
               ))}
             </div>
             <div className="avatar-upload-section">
-              <label htmlFor="avatar-upload" className="avatar-upload-btn">
-                <svg viewBox="0 0 24 24" className="upload-icon" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
-                </svg>
-                Upload Custom Image
+              <label htmlFor="avatar-upload" className={`avatar-upload-btn ${uploadingAvatar ? 'uploading' : ''}`}>
+                {uploadingAvatar ? (
+                  <>
+                    <div className="spinner"></div>
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 24 24" className="upload-icon" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                    </svg>
+                    Upload Custom Image
+                  </>
+                )}
               </label>
               <input
                 id="avatar-upload"
@@ -230,6 +229,7 @@ export default function Sidebar() {
                 accept="image/*"
                 onChange={handleFileUpload}
                 style={{ display: 'none' }}
+                disabled={uploadingAvatar}
               />
             </div>
           </div>
