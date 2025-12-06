@@ -20,7 +20,88 @@
 .offers-subtitle {
   color: #6b7280;
   font-size: 0.95rem;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
+}
+
+/* Featured Offer Section */
+.featured-offer-section {
+  margin-bottom: 50px;
+}
+
+.featured-title {
+  font-size: 1.8rem;
+  color: #d4af37;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.offer-card-wrapper.featured {
+  max-width: 600px;
+  margin: 0 auto;
+  height: 480px;
+}
+
+.offer-card-wrapper.featured .casino-image-container {
+  height: 220px;
+}
+
+.offer-card-wrapper.featured .casino-name {
+  font-size: 1.3rem;
+}
+
+.offer-card-wrapper.featured .offer-title {
+  font-size: 0.9rem;
+  padding: 10px 16px 6px;
+  min-height: 40px;
+}
+
+.offer-card-wrapper.featured .offer-terms {
+  font-size: 0.65rem;
+  padding: 0 16px 10px;
+}
+
+.offer-card-wrapper.featured .offer-stats {
+  padding: 0 16px 16px;
+  gap: 10px;
+}
+
+.offer-card-wrapper.featured .stat {
+  padding: 12px;
+  gap: 4px;
+}
+
+.offer-card-wrapper.featured .stat-icon {
+  font-size: 1.2rem;
+}
+
+.offer-card-wrapper.featured .stat-label {
+  font-size: 0.65rem;
+}
+
+.offer-card-wrapper.featured .stat-value {
+  font-size: 0.95rem;
+}
+
+.offer-card-wrapper.featured .card-actions {
+  padding: 0 16px 16px;
+  gap: 10px;
+}
+
+.offer-card-wrapper.featured .info-btn,
+.offer-card-wrapper.featured .claim-btn {
+  padding: 12px;
+  font-size: 0.85rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .offers-grid {
