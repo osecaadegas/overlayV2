@@ -869,38 +869,44 @@
 }
 
 .pm-preview-card {
-  background: linear-gradient(170deg, rgba(58, 56, 56, 0.4) 0%, rgb(31, 31, 31) 100%);
-  border-radius: 12px;
+  background: linear-gradient(170deg, rgba(58, 56, 56, 0.623) 0%, rgb(31, 31, 31) 100%);
+  border-radius: 18px;
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+  height: 380px;
+  display: flex;
+  flex-direction: column;
 }
 
 .pm-preview-card:hover {
-  transform: translateY(-5px);
-  border-color: #d4af37;
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+  transform: scale(0.95);
+  border-color: rgba(212, 175, 55, 0.5);
 }
 
 .pm-preview-image {
+  position: relative;
   width: 100%;
   height: 180px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 16px 16px;
 }
 
 .pm-preview-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 0 0 16px 16px;
 }
 
 .pm-preview-content {
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
+  flex: 1;
 }
 
 .pm-preview-header-info {
@@ -913,37 +919,44 @@
 .pm-preview-header-info h4 {
   margin: 0;
   color: #d4af37;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   flex: 1;
   line-height: 1.3;
 }
 
 .pm-preview-cost {
-  background: #d4af37;
-  color: #0f1318;
-  padding: 8px 16px;
-  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+  color: #d4af37;
+  padding: 4px 10px;
+  border-radius: 6px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   white-space: nowrap;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .pm-preview-description {
-  color: #a0aec0;
-  line-height: 1.5;
-  font-size: 0.95rem;
+  color: #9ca3af;
+  line-height: 1.4;
+  font-size: 0.75rem;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .pm-preview-details {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(212, 175, 55, 0.15);
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
   color: #e5e7eb;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
@@ -965,27 +978,35 @@
 
 .pm-preview-stock {
   color: #48bb78;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  padding: 6px 10px;
+  background: rgba(72, 187, 120, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(72, 187, 120, 0.2);
+  text-align: center;
 }
 
 .pm-preview-redeem-btn {
   width: 100%;
-  padding: 14px;
+  padding: 10px;
   background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
   color: #0f1318;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.3s;
-  margin-top: 8px;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-top: auto;
 }
 
 .pm-preview-redeem-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 /* Responsive */
