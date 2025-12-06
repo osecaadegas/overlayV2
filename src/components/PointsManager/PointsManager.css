@@ -3,7 +3,7 @@
   max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #3d4f5d 50%, #475766 75%, #34495e 100%);
+  background: linear-gradient(135deg, #1a1f2e 0%, #252b3d 25%, #2d3748 50%, #374151 75%, #252b3d 100%);
   background-attachment: fixed;
 }
 
@@ -28,11 +28,13 @@
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
-  background: #1a1f2e;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 10px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid #2a3142;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .pm-tab {
@@ -88,11 +90,13 @@
 .pm-users,
 .pm-redemptions,
 .pm-items {
-  background: #1a1f2e;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 15px;
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid #2a3142;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .pm-users-header,
@@ -137,7 +141,7 @@
 }
 
 .pm-table thead {
-  background: #0f1318;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .pm-table th {
@@ -155,7 +159,7 @@
 }
 
 .pm-table tbody tr:hover {
-  background: #2a3142;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .pm-points {
@@ -338,11 +342,13 @@
 }
 
 .pm-item-card {
-  border: 2px solid #2a3142;
+  border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   padding: 20px;
   transition: all 0.2s;
-  background: #0f1318;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .pm-item-card:hover {
@@ -352,7 +358,7 @@
 
 .pm-item-card.inactive {
   opacity: 0.6;
-  background: #1a1f2e;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .pm-item-header {
@@ -440,12 +446,12 @@
 }
 
 .pm-toggle-btn {
-  background: #2a3142;
+  background: rgba(255, 255, 255, 0.1);
   color: #a0aec0;
 }
 
 .pm-toggle-btn:hover {
-  background: #3a4152;
+  background: rgba(255, 255, 255, 0.15);
   color: #d4af37;
 }
 
@@ -475,13 +481,15 @@
 }
 
 .pm-modal {
-  background: #1a1f2e;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   border-radius: 15px;
   padding: 30px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  border: 1px solid #2a3142;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .pm-modal h2 {
@@ -504,11 +512,11 @@
 .pm-form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 2px solid #2a3142;
+  border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   font-size: 1rem;
-  background: #0f1318;
-  color: #a0aec0;
+  background: rgba(0, 0, 0, 0.3);
+  color: #e5e7eb;
   transition: border-color 0.2s;
 }
 
@@ -553,17 +561,17 @@
 .pm-cancel-btn {
   flex: 1;
   padding: 12px;
-  background: #2a3142;
-  color: #a0aec0;
-  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .pm-cancel-btn:hover {
-  background: #3a4152;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Responsive */
