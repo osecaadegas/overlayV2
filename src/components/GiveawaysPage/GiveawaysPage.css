@@ -1,0 +1,35 @@
+.giveaways-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1f2e 0%, #252b3d 25%, #2d3748 50%, #374151 75%, #252b3d 100%);
+  background-attachment: fixed;
+  padding: 80px 20px 40px;
+}
+
+.giveaways-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.giveaways-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.giveaways-header h1 {
+  font-size: 2.5rem;
+  color: #d4af37;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.giveaways-subtitle {
+  color: #9ca3af;
+  font-size: 1.1rem;
+}
+
+.giveaways-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}

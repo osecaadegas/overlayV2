@@ -11,6 +11,7 @@ export default function Sidebar() {
   const [hasOverlayAccess, setHasOverlayAccess] = useState(false);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [showGamesDropdown, setShowGamesDropdown] = useState(false);
+  const [showStreamDropdown, setShowStreamDropdown] = useState(false);
   const { user, signOut } = useAuth();
   const { isAdmin, isModerator } = useAdmin();
   const { points, loading: pointsLoading } = useStreamElements();
@@ -300,11 +301,72 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Remaining menu items after Games */}
-        {menuItems.slice(3).map((item, index) => 
+        {/* Display items between Games and Stream (Overlay, Admin Panel) */}
+        {menuItems.slice(3, 5).map((item, index) => 
           item.show ? (
             <button
               key={index + 3}
+              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => handleNavigation(item.path)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              <span className="sidebar-label">{item.label}</span>
+            </button>
+          ) : null
+        )}
+
+        {/* Stream Dropdown */}
+        {menuItems[5].show && (
+          <div className="sidebar-dropdown">
+            <button
+              className={`sidebar-item ${location.pathname.startsWith('/stream') || location.pathname.startsWith('/tournaments') || location.pathname.startsWith('/guess-balance') || location.pathname.startsWith('/giveaways') ? 'active' : ''}`}
+              onClick={() => setShowStreamDropdown(!showStreamDropdown)}
+            >
+              <span className="sidebar-icon">{menuItems[5].icon}</span>
+              <span className="sidebar-label">{menuItems[5].label}</span>
+              <span className={`dropdown-arrow ${showStreamDropdown ? 'open' : ''}`}>▼</span>
+            </button>
+            
+            {showStreamDropdown && (
+              <div className="sidebar-submenu">
+                <button
+                  className={`sidebar-subitem ${isActive('/stream') ? 'active' : ''}`}
+                  onClick={() => handleNavigation('/stream')}
+                >
+                  <span className="subitem-icon">📺</span>
+                  <span className="subitem-label">Live Stream</span>
+                </button>
+                <button
+                  className={`sidebar-subitem ${isActive('/tournaments') ? 'active' : ''}`}
+                  onClick={() => handleNavigation('/tournaments')}
+                >
+                  <span className="subitem-icon">🏆</span>
+                  <span className="subitem-label">Tournaments</span>
+                </button>
+                <button
+                  className={`sidebar-subitem ${isActive('/guess-balance') ? 'active' : ''}`}
+                  onClick={() => handleNavigation('/guess-balance')}
+                >
+                  <span className="subitem-icon">💰</span>
+                  <span className="subitem-label">Guess the Balance</span>
+                </button>
+                <button
+                  className={`sidebar-subitem ${isActive('/giveaways') ? 'active' : ''}`}
+                  onClick={() => handleNavigation('/giveaways')}
+                >
+                  <span className="subitem-icon">🎁</span>
+                  <span className="subitem-label">Giveaways</span>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Remaining menu items after Stream (About Us) */}
+        {menuItems.slice(6).map((item, index) => 
+          item.show ? (
+            <button
+              key={index + 6}
               className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
               onClick={() => handleNavigation(item.path)}
             >

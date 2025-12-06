@@ -13,6 +13,9 @@ import OffersPage from './components/OffersPage/OffersPage';
 import StreamPage from './components/StreamPage/StreamPage';
 import AboutPage from './components/AboutPage/AboutPage';
 import GamesPage from './components/GamesPage/GamesPage';
+import TournamentsPage from './components/TournamentsPage/TournamentsPage';
+import GuessBalancePage from './components/GuessBalancePage/GuessBalancePage';
+import GiveawaysPage from './components/GiveawaysPage/GiveawaysPage';
 import { checkUserAccess } from './utils/adminUtils';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
@@ -558,6 +561,9 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/offers" element={<OffersPage />} />
                 <Route path="/stream" element={<StreamPage />} />
+                <Route path="/tournaments" element={<TournamentsPage />} />
+                <Route path="/guess-balance" element={<GuessBalancePage />} />
+                <Route path="/giveaways" element={<GiveawaysPage />} />
                 <Route path="/games/coinflip" element={<GamesPage gameType="coinflip" />} />
                 <Route path="/games/dice" element={<GamesPage gameType="dice" />} />
                 <Route path="/games/roulette" element={<GamesPage gameType="roulette" />} />
