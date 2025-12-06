@@ -42,7 +42,6 @@ export default function StreamElementsPanel() {
       const { data, error } = await supabase
         .from('redemption_items')
         .select('*')
-        .eq('is_active', true)
         .order('point_cost', { ascending: true });
 
       if (error) throw error;
@@ -235,6 +234,7 @@ export default function StreamElementsPanel() {
                   const canAfford = points >= item.point_cost;
                   const isRedeeming = redeeming === item.id;
                   const isOutOfStock = item.available_units !== null && item.available_units <= 0;
+                  const isDisabled = !item.is_active;
                   
                   // Use a default premium image if no image URL is provided
                   const imageUrl = item.image_url || 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=400&h=300&fit=crop';
@@ -242,11 +242,14 @@ export default function StreamElementsPanel() {
                   return (
                     <div 
                       key={item.id} 
-                      className={`se-item ${!canAfford || isOutOfStock ? 'disabled' : ''}`}
+                      className={`se-item ${isDisabled || !canAfford || isOutOfStock ? 'disabled' : ''}`}
                     >
                       <div className="se-item-image">
                         <img src={imageUrl} alt={item.name} />
-                        {isOutOfStock && (
+                        {isDisabled && (
+                          <div className="se-coming-soon-ribbon">COMING SOON</div>
+                        )}
+                        {!isDisabled && isOutOfStock && (
                           <div className="se-out-of-stock-badge">OUT OF STOCK</div>
                         )}
                       </div>
@@ -258,17 +261,17 @@ export default function StreamElementsPanel() {
                           </div>
                         </div>
                         <p className="se-item-description">{item.description}</p>
-                        {item.available_units !== null && (
+                        {item.available_units !== null && !isDisabled && (
                           <p className="se-item-stock">
                             Stock: <strong>{item.available_units}</strong> remaining
                           </p>
                         )}
                         <button
                           onClick={() => handleRedeem(item)}
-                          disabled={!canAfford || isRedeeming || loading || isOutOfStock}
+                          disabled={isDisabled || !canAfford || isRedeeming || loading || isOutOfStock}
                           className="se-redeem-btn"
                         >
-                          {isOutOfStock ? 'Out of Stock' : isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
+                          {isDisabled ? 'Coming Soon' : isOutOfStock ? 'Out of Stock' : isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
                         </button>
                       </div>
                     </div>

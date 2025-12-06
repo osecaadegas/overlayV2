@@ -362,6 +362,22 @@
   z-index: 10;
 }
 
+.se-coming-soon-ribbon {
+  position: absolute;
+  top: 12px;
+  left: -32px;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  color: white;
+  padding: 6px 40px;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  z-index: 10;
+  text-align: center;
+}
+
 .se-item-content {
   flex: 1;
   padding: 10px;
