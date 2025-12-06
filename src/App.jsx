@@ -10,7 +10,6 @@ import LandingPage from './components/LandingPage/LandingPage';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 import Sidebar from './components/Sidebar/Sidebar';
 import OffersPage from './components/OffersPage/OffersPage';
-import ProfilePage from './components/ProfilePage/ProfilePage';
 import StreamPage from './components/StreamPage/StreamPage';
 import AboutPage from './components/AboutPage/AboutPage';
 import { checkUserAccess } from './utils/adminUtils';
@@ -557,7 +556,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/offers" element={<OffersPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/stream" element={<StreamPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/points" element={<StreamElementsPanel />} />

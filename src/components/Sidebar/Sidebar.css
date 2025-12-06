@@ -15,6 +15,164 @@
   max-height: calc(100vh - 40px);
 }
 
+/* Avatar Section at Top */
+.sidebar-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 12px;
+  border-bottom: 1px solid #21262C;
+  margin-bottom: 12px;
+}
+
+.avatar-container {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.avatar-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #2F81F7;
+  transition: transform 0.2s, border-color 0.2s;
+  background: #21262C;
+}
+
+.avatar-image:hover {
+  transform: scale(1.05);
+  border-color: #58A6FF;
+}
+
+.points-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.points-icon {
+  width: 18px;
+  height: 18px;
+  color: #FFA500;
+  flex-shrink: 0;
+}
+
+.points-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Avatar Picker Modal */
+.avatar-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-picker-card {
+  background: #161B22;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  max-width: 320px;
+  border: 1px solid #30363D;
+}
+
+.avatar-picker-title {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.avatar-option {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s;
+  background: #21262C;
+}
+
+.avatar-option:hover {
+  border-color: #58A6FF;
+  transform: scale(1.05);
+}
+
+.avatar-option.selected {
+  border-color: #2F81F7;
+  box-shadow: 0 0 12px rgba(47, 129, 247, 0.5);
+}
+
+/* Avatar Upload Section */
+.avatar-upload-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #30363D;
+}
+
+.avatar-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #21262C;
+  border: 1px solid #30363D;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.avatar-upload-btn:hover {
+  background: #2D333B;
+  border-color: #58A6FF;
+}
+
+.upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.avatar-upload-btn.uploading {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #30363D;
+  border-top-color: #58A6FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .featured-card:hover::before {
   opacity: 1;
 }

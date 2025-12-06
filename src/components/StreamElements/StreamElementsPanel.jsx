@@ -221,32 +221,6 @@ export default function StreamElementsPanel() {
         </div>
       ) : (
         <div className="se-connected">
-          <div className="se-account-info">
-            <div className="se-profile-card">
-              <div className="se-user-info">
-                <div className="se-user-avatar">
-                  {user?.user_metadata?.avatar_url ? (
-                    <img src={user.user_metadata.avatar_url} alt="User Avatar" />
-                  ) : (
-                    <div className="se-avatar-placeholder">
-                      {(seAccount?.se_username || user?.email || 'U')[0].toUpperCase()}
-                    </div>
-                  )}
-                </div>
-                <div className="se-user-details">
-                  <p className="se-username">{seAccount?.se_username || user?.email || 'User'}</p>
-                  <p className="se-connected-label">Connected as: <span>{seAccount?.se_username || 'osecaadegas95'}</span></p>
-                </div>
-              </div>
-              <div className="se-points-inline">
-                <div className="se-points-value">
-                  {loading ? '...' : points.toLocaleString()}
-                </div>
-                <div className="se-points-label">Points</div>
-              </div>
-            </div>
-          </div>
-
           {error && <div className="se-error">{error}</div>}
 
           <div className="se-redemptions">
@@ -303,27 +277,29 @@ export default function StreamElementsPanel() {
           </div>
 
           {userRedemptions.length > 0 && (
-            <div className="se-redemption-history">
-              <h3>📋 Your Redemption History</h3>
-              <div className="se-history-list">
-                {userRedemptions.map((redemption) => (
-                  <div key={redemption.id} className="se-history-item">
-                    <div className="se-history-icon">✅</div>
-                    <div className="se-history-details">
-                      <div className="se-history-name">
-                        {redemption.redemption_items?.name || 'Unknown Item'}
+            <div className="se-redemption-history-floating">
+              <div className="se-history-card">
+                <h3>📋 Redemption History</h3>
+                <div className="se-history-list">
+                  {userRedemptions.map((redemption) => (
+                    <div key={redemption.id} className="se-history-item">
+                      <div className="se-history-icon">✅</div>
+                      <div className="se-history-details">
+                        <div className="se-history-name">
+                          {redemption.redemption_items?.name || 'Unknown Item'}
+                        </div>
+                        <div className="se-history-meta">
+                          <span>{redemption.points_spent.toLocaleString()} pts</span>
+                          <span>•</span>
+                          <span>{new Date(redemption.redeemed_at).toLocaleDateString()}</span>
+                        </div>
                       </div>
-                      <div className="se-history-meta">
-                        <span>{redemption.points_spent.toLocaleString()} pts</span>
-                        <span>•</span>
-                        <span>{new Date(redemption.redeemed_at).toLocaleDateString()}</span>
-                      </div>
+                      {redemption.processed && (
+                        <div className="se-history-badge">Processed</div>
+                      )}
                     </div>
-                    {redemption.processed && (
-                      <div className="se-history-badge">Processed</div>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}
