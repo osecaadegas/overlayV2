@@ -36,6 +36,7 @@ import SpotifyWidget from './components/SpotifyWidget/SpotifyWidget';
 import TwitchChat from './components/TwitchChat/TwitchChat';
 
 function AppContent() {
+  const location = useLocation();
   const { layoutMode, setLayoutMode } = useBonusHunt();
   const [showBHPanel, setShowBHPanel] = useState(false);
   const [showStatsPanel, setShowStatsPanel] = useState(false);
@@ -67,6 +68,15 @@ function AppContent() {
     }
     return { position: 'bottom-right', width: 350, height: 500 };
   });
+
+  // Toggle body class based on current route
+  useEffect(() => {
+    if (location.pathname === '/overlay') {
+      document.body.classList.add('no-sidebar');
+    } else {
+      document.body.classList.remove('no-sidebar');
+    }
+  }, [location.pathname]);
 
   // Apply saved theme on startup
   useEffect(() => {
