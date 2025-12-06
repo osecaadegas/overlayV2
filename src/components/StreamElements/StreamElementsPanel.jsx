@@ -64,7 +64,7 @@ export default function StreamElementsPanel() {
         `)
         .eq('user_id', user.id)
         .order('redeemed_at', { ascending: false })
-        .limit(10);
+        .limit(5);
 
       if (error) throw error;
       setUserRedemptions(data || []);
