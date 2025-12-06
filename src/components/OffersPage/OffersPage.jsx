@@ -134,8 +134,13 @@ export default function OffersPage() {
         <h1>Casinos & Offers</h1>
         <p className="offers-subtitle">Best offers and bonuses exclusive for you</p>
         
-        {/* Regular Offers Grid */}
-        <h2 className="section-title">All Offers</h2>
+        {/* Premium Card */}
+        <div className="premium-card-container">
+          <div className="premium-card-box">
+            <span />
+          </div>
+        </div>
+
         <div className="offers-grid">
           {regularOffers.map(offer => (
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>
