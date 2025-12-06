@@ -134,8 +134,9 @@ export default function OffersPage() {
         <h1>Casinos & Offers</h1>
         <p className="offers-subtitle">Best offers and bonuses exclusive for you</p>
         
-        {/* Featured Offer */}
+        {/* Offer of the Month */}
         <div className="featured-offer-section">
+          <h2 className="featured-title">🌟 Offer of the Month</h2>
           <div className={`offer-card-wrapper featured ${flippedCards[offerOfTheMonth.id] ? 'flipped' : ''} ${offerOfTheMonth.isPremium ? 'premium' : ''}`}>
             <div className="offer-card-inner">
               {/* Front of card */}
@@ -211,6 +212,7 @@ export default function OffersPage() {
         </div>
 
         {/* Regular Offers Grid */}
+        <h2 className="section-title">All Offers</h2>
         <div className="offers-grid">
           {regularOffers.map(offer => (
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>

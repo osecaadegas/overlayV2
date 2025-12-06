@@ -12,6 +12,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import OffersPage from './components/OffersPage/OffersPage';
 import StreamPage from './components/StreamPage/StreamPage';
 import AboutPage from './components/AboutPage/AboutPage';
+import GamesPage from './components/GamesPage/GamesPage';
 import { checkUserAccess } from './utils/adminUtils';
 import Navbar from './components/Navbar/Navbar';
 import BonusList from './components/BonusList/BonusList';
@@ -557,6 +558,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/offers" element={<OffersPage />} />
                 <Route path="/stream" element={<StreamPage />} />
+                <Route path="/games" element={<GamesPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/points" element={<StreamElementsPanel />} />
                 <Route path="/streamelements" element={<StreamElementsPanel />} />
