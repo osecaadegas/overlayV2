@@ -238,7 +238,7 @@ export default function Sidebar() {
       )}
 
       <nav className="sidebar-nav">
-        {menuItems.map((item, index) => 
+        {menuItems.slice(0, 3).map((item, index) => 
           item.show ? (
             <button
               key={index}
@@ -251,7 +251,7 @@ export default function Sidebar() {
           ) : null
         )}
 
-        {/* Games Dropdown */}
+        {/* Games Dropdown - Right after Points Store */}
         <div className="sidebar-dropdown">
           <button
             className={`sidebar-item ${location.pathname.startsWith('/games') ? 'active' : ''}`}
@@ -299,6 +299,20 @@ export default function Sidebar() {
             </div>
           )}
         </div>
+
+        {/* Remaining menu items after Games */}
+        {menuItems.slice(3).map((item, index) => 
+          item.show ? (
+            <button
+              key={index + 3}
+              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => handleNavigation(item.path)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              <span className="sidebar-label">{item.label}</span>
+            </button>
+          ) : null
+        )}
 
         {user && (
           <>
