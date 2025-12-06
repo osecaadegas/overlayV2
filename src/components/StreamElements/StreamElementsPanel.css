@@ -364,11 +364,11 @@
 
 .se-coming-soon-ribbon {
   position: absolute;
-  top: 12px;
-  left: -32px;
+  top: 20px;
+  left: -38px;
   background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
   color: white;
-  padding: 6px 40px;
+  padding: 6px 45px;
   font-weight: 700;
   font-size: 0.65rem;
   letter-spacing: 1px;
