@@ -3,8 +3,7 @@
   position: fixed;
   top: 20px;
   left: 20px;
-  bottom: 20px;
-  width: 220px;
+  width: 200px;
   background: #0D1117;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   z-index: 10000;
@@ -12,7 +11,8 @@
   flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
-  padding: 16px;
+  padding: 12px;
+  max-height: calc(100vh - 40px);
 }
 
 .featured-card:hover::before {
@@ -64,14 +64,14 @@
 .sidebar-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 8px;
+  padding: 8px 10px;
   background: none;
   border: none;
   width: 100%;
   cursor: pointer;
   color: #7D8590;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.2s;
   position: relative;
