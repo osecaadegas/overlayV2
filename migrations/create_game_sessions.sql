@@ -17,6 +17,11 @@ CREATE INDEX IF NOT EXISTS idx_game_sessions_created_at ON game_sessions(created
 -- Enable RLS
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view their own game sessions" ON game_sessions;
+DROP POLICY IF EXISTS "Users can insert their own game sessions" ON game_sessions;
+DROP POLICY IF EXISTS "Admins can view all game sessions" ON game_sessions;
+
 -- RLS Policies
 CREATE POLICY "Users can view their own game sessions"
   ON game_sessions FOR SELECT
