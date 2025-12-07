@@ -425,6 +425,26 @@
   -webkit-box-orient: vertical;
 }
 
+.se-item-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  color: #fbbf24;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 8px 0;
+  line-height: 1.3;
+}
+
+.se-details-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
 .se-item-stock {
   color: #48bb78;
   font-size: 0.75rem;

@@ -261,6 +261,12 @@ export default function StreamElementsPanel() {
                           </div>
                         </div>
                         <p className="se-item-description">{item.description}</p>
+                        {item.reward_details && (
+                          <div className="se-item-details">
+                            <span className="se-details-icon">🎁</span>
+                            {item.reward_details}
+                          </div>
+                        )}
                         {item.available_units !== null && !isDisabled && (
                           <p className="se-item-stock">
                             Stock: <strong>{item.available_units}</strong> remaining
