@@ -115,26 +115,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-container">
-          <div className="stat-item">
-            <div className="stat-value">1000+</div>
-            <div className="stat-label">Active Streamers</div>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">50K+</div>
-            <div className="stat-label">Viewer Interactions</div>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">24/7</div>
-            <div className="stat-label">Live Support</div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       {!user && (
         <section className="final-cta-section">
