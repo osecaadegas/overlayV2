@@ -7,126 +7,163 @@ import './LandingPage.css';
 
 export default function LandingPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { user, signOut } = useAuth();
-  const { isAdmin } = useAdmin();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleOverlayClick = () => {
-    navigate('/overlay');
-  };
+  const features = [
+    {
+      icon: '🎰',
+      title: 'Exclusive Casino Offers',
+      description: 'Access the best casino bonuses and promotions curated for streamers',
+      link: '/offers'
+    },
+    {
+      icon: '🎁',
+      title: 'Giveaways',
+      description: 'Run engaging giveaways with multiple winner selection modes for your viewers',
+      link: '/giveaways'
+    },
+    {
+      icon: '🎮',
+      title: 'Interactive Games',
+      description: 'Random slot picker, coin flip, and more interactive games for your stream',
+      link: '/games'
+    },
+    {
+      icon: '⭐',
+      title: 'Points Store',
+      description: 'Reward your loyal viewers with an integrated loyalty points redemption system',
+      link: '/points'
+    },
+    {
+      icon: '📺',
+      title: 'Live Stream Hub',
+      description: 'Tournaments, balance predictions, and real-time stream interactions',
+      link: '/stream'
+    },
+    {
+      icon: '✨',
+      title: 'Professional Overlay',
+      description: 'Bonus hunt tracker, customizable themes, and Twitch integration for premium streams',
+      link: user ? '/overlay' : null
+    }
+  ];
 
-  const handleAdminClick = () => {
-    navigate('/admin');
-  };
-
-  const handleLogout = async () => {
-    await signOut();
+  const handleFeatureClick = (link) => {
+    if (link) {
+      if (!user && link !== '/offers') {
+        setShowAuthModal(true);
+      } else {
+        navigate(link);
+      }
+    } else {
+      setShowAuthModal(true);
+    }
   };
 
   return (
     <div className="landing-page">
-      {/* Header with Login/Logout */}
-      <header className="landing-header">
-        <div className="landing-logo">
-          <h2>🎰 Stream Overlay</h2>
-        </div>
-        <div className="landing-auth-buttons">
-          {user ? (
-            <>
-              {isAdmin && (
-                <button onClick={handleAdminClick} className="admin-button">
-                  🛡️ Admin
-                </button>
-              )}
-              <button onClick={handleOverlayClick} className="overlay-button">
-                Go to Overlay
-              </button>
-              <button onClick={handleLogout} className="logout-button">
-                Logout
-              </button>
-            </>
-          ) : (
-            <button onClick={() => setShowAuthModal(true)} className="login-button">
-              Login / Sign Up
-            </button>
-          )}
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">Professional Streaming Overlay</h1>
+          <div className="hero-badge">🎰 Premium Streaming Tools</div>
+          <h1 className="hero-title">
+            Elevate Your Casino
+            <span className="hero-title-highlight"> Streaming Experience</span>
+          </h1>
           <p className="hero-subtitle">
-            Enhance your casino streaming experience with our feature-rich overlay system
+            Professional overlay system with exclusive casino offers, interactive games, 
+            loyalty rewards, and powerful streaming tools designed for content creators
           </p>
-          {user && (
-            <button onClick={handleOverlayClick} className="cta-button">
-              Launch Overlay →
-            </button>
+          {!user && (
+            <div className="hero-cta">
+              <button onClick={() => setShowAuthModal(true)} className="cta-button-primary">
+                Get Started Free
+              </button>
+              <button onClick={() => navigate('/offers')} className="cta-button-secondary">
+                View Offers
+              </button>
+            </div>
           )}
         </div>
       </section>
 
-      {/* Features/Offers Section */}
-      <section className="offers-section">
-        <h2 className="section-title">What's Included</h2>
-        <div className="offers-grid">
-          <div className="offer-card">
-            <div className="offer-icon">🎯</div>
-            <h3>Bonus Hunt Tracker</h3>
-            <p>Track your bonus hunts with beautiful cards and real-time statistics</p>
+      {/* Features Grid */}
+      <section className="features-section">
+        <div className="features-container">
+          <div className="features-header">
+            <h2 className="section-title">Everything You Need</h2>
+            <p className="section-subtitle">Comprehensive tools to engage your audience and grow your stream</p>
           </div>
-
-          <div className="offer-card">
-            <div className="offer-icon">🏆</div>
-            <h3>Tournament Brackets</h3>
-            <p>Create and manage slot tournaments with automated bracket systems</p>
+          
+          <div className="features-grid">
+            {features.map((feature, index) => (
+              <div 
+                key={index} 
+                className="feature-card"
+                onClick={() => handleFeatureClick(feature.link)}
+              >
+                <div className="feature-icon-wrapper">
+                  <div className="feature-icon">{feature.icon}</div>
+                </div>
+                <h3 className="feature-title">{feature.title}</h3>
+                <p className="feature-description">{feature.description}</p>
+                <div className="feature-arrow">→</div>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="offer-card">
-            <div className="offer-icon">🎁</div>
-            <h3>Giveaway Manager</h3>
-            <p>Run engaging giveaways with multiple winner selection modes</p>
+      {/* Stats Section */}
+      <section className="stats-section">
+        <div className="stats-container">
+          <div className="stat-item">
+            <div className="stat-value">1000+</div>
+            <div className="stat-label">Active Streamers</div>
           </div>
-
-          <div className="offer-card">
-            <div className="offer-icon">🎲</div>
-            <h3>Random Slot Picker</h3>
-            <p>Let your viewers decide what to play with our slot machine picker</p>
+          <div className="stat-divider"></div>
+          <div className="stat-item">
+            <div className="stat-value">50K+</div>
+            <div className="stat-label">Viewer Interactions</div>
           </div>
-
-          <div className="offer-card">
-            <div className="offer-icon">🎨</div>
-            <h3>Customizable Themes</h3>
-            <p>Multiple layouts and themes to match your stream's aesthetic</p>
-          </div>
-
-          <div className="offer-card">
-            <div className="offer-icon">💬</div>
-            <h3>Twitch Integration</h3>
-            <p>Integrated chat widget and Spotify controls for your stream</p>
+          <div className="stat-divider"></div>
+          <div className="stat-item">
+            <div className="stat-value">24/7</div>
+            <div className="stat-label">Live Support</div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section">
-        <h2>Ready to enhance your stream?</h2>
-        {user ? (
-          <button onClick={handleOverlayClick} className="cta-button-large">
-            Launch Overlay Now
-          </button>
-        ) : (
-          <button onClick={() => setShowAuthModal(true)} className="cta-button-large">
-            Get Started - It's Free
-          </button>
-        )}
-      </section>
+      {!user && (
+        <section className="final-cta-section">
+          <div className="final-cta-content">
+            <h2 className="final-cta-title">Ready to Transform Your Stream?</h2>
+            <p className="final-cta-subtitle">Join hundreds of streamers already using our platform</p>
+            <button onClick={() => setShowAuthModal(true)} className="cta-button-large">
+              Start Streaming Better
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="landing-footer">
-        <p>© 2025 Stream Overlay. All rights reserved.</p>
+        <div className="footer-content">
+          <div className="footer-brand">
+            <h3>🎰 Stream Overlay</h3>
+            <p>Professional streaming tools for casino content creators</p>
+          </div>
+          <div className="footer-links">
+            <a href="/about" onClick={(e) => { e.preventDefault(); navigate('/about'); }}>About</a>
+            <a href="/offers" onClick={(e) => { e.preventDefault(); navigate('/offers'); }}>Offers</a>
+            <a href="/stream" onClick={(e) => { e.preventDefault(); navigate('/stream'); }}>Streams</a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>© 2025 Stream Overlay. All rights reserved.</p>
+        </div>
       </footer>
 
       {/* Auth Modal */}
