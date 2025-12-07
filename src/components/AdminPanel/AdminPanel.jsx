@@ -32,6 +32,7 @@ export default function AdminPanel() {
     bonus_value: '',
     free_spins: '',
     deposit_methods: '',
+    vpn_friendly: false,
     is_premium: false,
     details: '',
     is_active: true,
@@ -201,6 +202,7 @@ export default function AdminPanel() {
       bonus_value: '',
       free_spins: '',
       deposit_methods: '',
+      vpn_friendly: false,
       is_premium: false,
       details: '',
       is_active: true,
@@ -735,6 +737,15 @@ export default function AdminPanel() {
                             onChange={(e) => handleOfferFormChange('is_premium', e.target.checked)}
                           />
                           Premium
+                        </label>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={offerFormData.vpn_friendly}
+                            onChange={(e) => handleOfferFormChange('vpn_friendly', e.target.checked)}
+                          />
+                          ✅ VPN Friendly
                         </label>
 
                         <label>

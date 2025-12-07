@@ -38,6 +38,7 @@ export default function OffersPage() {
           bonusValue: offer.bonus_value,
           freeSpins: offer.free_spins,
           depositMethods: offer.deposit_methods,
+          vpnFriendly: offer.vpn_friendly,
           isPremium: offer.is_premium,
           details: offer.details
         }));
@@ -107,7 +108,12 @@ export default function OffersPage() {
                     </div>
                   </div>
                   <p className="offer-title">{offerOfTheMonth.title}</p>
-                  <p className="offer-terms">+18 | T&C APPLY</p>
+                  <div className="offer-info-row">
+                    <p className="offer-terms">+18 | T&C APPLY</p>
+                    <span className="vpn-indicator" title={offerOfTheMonth.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
+                      {offerOfTheMonth.vpnFriendly ? '✅' : '❌'}
+                    </span>
+                  </div>
                   
                   <div className="offer-stats">
                     {offerOfTheMonth.minDeposit && (
@@ -197,7 +203,12 @@ export default function OffersPage() {
                     </div>
                   </div>
                   <p className="offer-title">{offer.title}</p>
-                  <p className="offer-terms">+18 | T&C APPLY</p>
+                  <div className="offer-info-row">
+                    <p className="offer-terms">+18 | T&C APPLY</p>
+                    <span className="vpn-indicator" title={offer.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
+                      {offer.vpnFriendly ? '✅' : '❌'}
+                    </span>
+                  </div>
                   
                   <div className="offer-stats">
                     <div className="stat">

@@ -310,10 +310,28 @@
   min-height: 36px;
 }
 
+.offer-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 8px;
+  gap: 8px;
+}
+
 .offer-terms {
   color: #6b7280;
   font-size: 0.6rem;
-  padding: 0 12px 8px;
+  margin: 0;
+}
+
+.vpn-indicator {
+  font-size: 0.9rem;
+  cursor: help;
+  transition: transform 0.2s ease;
+}
+
+.vpn-indicator:hover {
+  transform: scale(1.2);
 }
 
 /* Stats grid */
