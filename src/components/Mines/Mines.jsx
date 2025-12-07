@@ -63,7 +63,7 @@ export default function Mines() {
     setGameState('playing');
   };
 
-  const revealCell = (index) => {
+  const revealCell = async (index) => {
     if (gameState !== 'playing' || revealedCells.includes(index)) return;
 
     const newRevealed = [...revealedCells, index];
