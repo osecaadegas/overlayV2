@@ -178,7 +178,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="sidebar">
+    <aside className="sidebar">
         {user && (
           <div className="sidebar-avatar-section">
             <div className="avatar-container" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
