@@ -89,73 +89,82 @@ export default function OffersPage() {
         
         <div className="offers-grid">
           {/* Premium Card */}
-          <div className={`offer-card-wrapper premium ${flippedCards['premium'] ? 'flipped' : ''}`}>
-            <div className="offer-card-inner">
-              {/* Front of card */}
-              <div className="offer-card-front premium-card-box">
-                <span />
-                <div className="casino-image-container">
-                  <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400&h=300&fit=crop" alt="Premium Offer" className="casino-image" />
-                  <div className="casino-overlay">
-                    <h3 className="casino-name">Premium Exclusive</h3>
+          {offerOfTheMonth && (
+            <div className={`offer-card-wrapper premium ${flippedCards[offerOfTheMonth.id] ? 'flipped' : ''}`}>
+              <div className="offer-card-inner">
+                {/* Front of card */}
+                <div className="offer-card-front premium-card-box">
+                  {offerOfTheMonth.badge && (
+                    <div className={`offer-badge ${offerOfTheMonth.badgeClass}`}>{offerOfTheMonth.badge}</div>
+                  )}
+                  <span />
+                  <div className="casino-image-container">
+                    <img src={offerOfTheMonth.image} alt={offerOfTheMonth.casino} className="casino-image" />
+                    <div className="casino-overlay">
+                      <h3 className="casino-name">{offerOfTheMonth.casino}</h3>
+                    </div>
                   </div>
-                </div>
-                <p className="offer-title">🌟 VIP Exclusive Package</p>
-                <p className="offer-terms">+18 | T&C APPLY</p>
-                
-                <div className="offer-stats">
-                  <div className="stat">
-                    <div className="stat-icon">💳</div>
-                    <div className="stat-label">Min. deposit</div>
-                    <div className="stat-value">50€</div>
+                  <p className="offer-title">{offerOfTheMonth.title}</p>
+                  <p className="offer-terms">+18 | T&C APPLY</p>
+                  
+                  <div className="offer-stats">
+                    {offerOfTheMonth.minDeposit && (
+                      <div className="stat">
+                        <div className="stat-icon">💳</div>
+                        <div className="stat-label">Min. deposit</div>
+                        <div className="stat-value">{offerOfTheMonth.minDeposit}</div>
+                      </div>
+                    )}
+                    {offerOfTheMonth.cashback && (
+                      <div className="stat">
+                        <div className="stat-icon">💰</div>
+                        <div className="stat-label">Cashback</div>
+                        <div className="stat-value">{offerOfTheMonth.cashback}</div>
+                      </div>
+                    )}
+                    <div className="stat">
+                      <div className="stat-icon">🎁</div>
+                      <div className="stat-label">Bonus value</div>
+                      <div className="stat-value">{offerOfTheMonth.bonusValue}</div>
+                    </div>
+                    {offerOfTheMonth.freeSpins && (
+                      <div className="stat">
+                        <div className="stat-icon">🎰</div>
+                        <div className="stat-label">Free spins</div>
+                        <div className="stat-value">{offerOfTheMonth.freeSpins}</div>
+                      </div>
+                    )}
                   </div>
-                  <div className="stat">
-                    <div className="stat-icon">💰</div>
-                    <div className="stat-label">Cashback</div>
-                    <div className="stat-value">50%</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-icon">🎁</div>
-                    <div className="stat-label">Bonus value</div>
-                    <div className="stat-value">1000%</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-icon">🎰</div>
-                    <div className="stat-label">Free spins</div>
-                    <div className="stat-value">Up to 1000</div>
+
+                  <div className="card-actions">
+                    <button className="info-btn" onClick={() => toggleFlip(offerOfTheMonth.id)}>
+                      MORE INFO
+                    </button>
+                    <a 
+                      href={offerOfTheMonth.bonusLink || '#'} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="claim-btn"
+                    >
+                      CLAIM BONUS
+                    </a>
                   </div>
                 </div>
 
-                <div className="card-actions">
-                  <button className="info-btn" onClick={() => toggleFlip('premium')}>
-                    MORE INFO
+                {/* Back of card */}
+                <div className="offer-card-back">
+                  <h3 className="casino-name">{offerOfTheMonth.casino}</h3>
+                  <div className="offer-details">
+                    <h4>Terms & Conditions</h4>
+                    <p>{offerOfTheMonth.details}</p>
+                  </div>
+                  <button className="back-btn" onClick={() => toggleFlip(offerOfTheMonth.id)}>
+                    ← BACK
                   </button>
-                  <a 
-                    href={offerOfTheMonth?.bonusLink || '#'} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="claim-btn"
-                  >
-                    CLAIM BONUS
-                  </a>
                 </div>
-              </div>
-
-              {/* Back of card */}
-              <div className="offer-card-back">
-                <h3 className="casino-name">Premium Exclusive</h3>
-                <div className="offer-details">
-                  <h4>Terms & Conditions</h4>
-                  <p>+18 | T&C APPLY
-
-Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 + 1000 Free Spins. 50% cashback on all losses. Wagering 30x. Game weighting applies. T&Cs apply.</p>
-                </div>
-                <button className="back-btn" onClick={() => toggleFlip('premium')}>
-                  ← BACK
-                </button>
               </div>
             </div>
-          </div>
+          )}
 
           {regularOffers.map(offer => (
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>
