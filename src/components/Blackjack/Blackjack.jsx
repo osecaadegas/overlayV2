@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStreamElements } from '../../context/StreamElementsContext';
+import { supabase } from '../../config/supabaseClient';
 import './Blackjack.css';
 
 const CARD_VALUES = {
@@ -180,6 +181,9 @@ export default function Blackjack() {
       await updatePoints(winAmount);
     }
 
+    // Save game session to database
+    await saveGameSession(winAmount);
+
     setMessage(resultMessage);
     setGameState('finished');
   };
@@ -189,6 +193,30 @@ export default function Blackjack() {
       await updateUserPoints(amount);
     } catch (err) {
       console.error('Error updating points:', err);
+    }
+  };
+
+  const saveGameSession = async (resultAmount) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('game_sessions').insert({
+        user_id: user.id,
+        game_type: 'blackjack',
+        bet_amount: betAmount,
+        result_amount: resultAmount,
+        game_data: {
+          player_hand: playerHand,
+          dealer_hand: dealerHand,
+          side_bets: {
+            perfect_pairs: perfectPairsBet,
+            twenty_one_plus_three: twentyOnePlusThreeBet
+          }
+        }
+      });
+    } catch (err) {
+      console.error('Error saving game session:', err);
     }
   };
 

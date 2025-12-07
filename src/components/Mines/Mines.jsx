@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStreamElements } from '../../context/StreamElementsContext';
+import { supabase } from '../../config/supabaseClient';
 import './Mines.css';
 
 const GRID_SIZE = 25; // 5x5 grid
@@ -72,6 +73,8 @@ export default function Mines() {
       // Hit a mine - game over
       setGameState('lost');
       revealAllMines();
+      // Save losing game session
+      await saveGameSession(0);
     } else {
       // Safe cell - update multiplier
       const multiplier = getMultiplier(newRevealed.length, mineCount);
@@ -96,16 +99,41 @@ export default function Mines() {
     setBalance(newBalance);
     await updatePoints(winAmount);
 
-    revealAllMines();
-    setGameState('won');
-  };
+    // Save winning game session
+    await saveGameSession(winAmount);
 
+    revealAllMines();
   const updatePoints = async (amount) => {
     try {
       await updateUserPoints(amount);
     } catch (err) {
       console.error('Error updating points:', err);
     }
+  };
+
+  const saveGameSession = async (resultAmount) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('game_sessions').insert({
+        user_id: user.id,
+        game_type: 'mines',
+        bet_amount: betAmount,
+        result_amount: resultAmount,
+        game_data: {
+          mine_count: mineCount,
+          cells_revealed: revealedCells.length,
+          multiplier: currentMultiplier,
+          mine_positions: minePositions
+        }
+      });
+    } catch (err) {
+      console.error('Error saving game session:', err);
+    }
+  };
+
+  const resetGame = () => {
   };
 
   const resetGame = () => {
