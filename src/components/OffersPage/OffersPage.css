@@ -355,7 +355,7 @@
 }
 
 .stat-label {
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 0.55rem;
   text-align: center;
   text-transform: uppercase;
@@ -363,7 +363,7 @@
 }
 
 .stat-value {
-  color: #d4af37;
+  color: #d4af37 !important;
   font-weight: 600;
   font-size: 0.75rem;
   text-align: center;
