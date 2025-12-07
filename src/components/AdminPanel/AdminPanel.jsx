@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../hooks/useAdmin';
 import { getAllUsers, updateUserRole, revokeUserAccess, deleteUser, MODERATOR_PERMISSIONS } from '../../utils/adminUtils';
-import supabase from '../../config/supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
