@@ -145,6 +145,13 @@ export default function Sidebar() {
       show: user 
     },
     { 
+      icon: <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z"/></svg>, 
+      label: 'Games', 
+      path: '/games', 
+      show: true,
+      isDropdown: true
+    },
+    { 
       icon: <svg viewBox="0 0 24 25" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>, 
       label: 'Points Manager', 
       path: '/points-manager', 
@@ -242,10 +249,21 @@ export default function Sidebar() {
             </div>
           )}
 
-          {menuItems.slice(4, 6).map((item, index) =>
+          {/* Points Manager */}
+          {menuItems[4].show && (
+            <button
+              className={`sidebar-item ${isActive(menuItems[4].path) ? 'active' : ''}`}
+              onClick={() => handleNavigation(menuItems[4].path)}
+            >
+              <span className="sidebar-icon">{menuItems[4].icon}</span>
+              <span className="sidebar-label">{menuItems[4].label}</span>
+            </button>
+          )}
+
+          {menuItems.slice(5, 7).map((item, index) =>
             item.show ? (
               <button
-                key={index + 4}
+                key={index + 5}
                 className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                 onClick={() => handleNavigation(item.path)}
               >
@@ -256,14 +274,14 @@ export default function Sidebar() {
           )}
 
           {/* Stream dropdown */}
-          {menuItems[6].show && (
+          {menuItems[7].show && (
             <div className="sidebar-item-wrapper">
               <button
                 className={`sidebar-item ${showStreamDropdown ? 'active' : ''}`}
                 onClick={() => setShowStreamDropdown(!showStreamDropdown)}
               >
-                <span className="sidebar-icon">{menuItems[6].icon}</span>
-                <span className="sidebar-label">{menuItems[6].label}</span>
+                <span className="sidebar-icon">{menuItems[7].icon}</span>
+                <span className="sidebar-label">{menuItems[7].label}</span>
                 <span className={`dropdown-arrow ${showStreamDropdown ? 'open' : ''}`}>▼</span>
               </button>
 
@@ -303,13 +321,13 @@ export default function Sidebar() {
           )}
 
           {/* About Us item */}
-          {menuItems[7].show && (
+          {menuItems[8].show && (
             <button
-              className={`sidebar-item ${isActive(menuItems[7].path) ? 'active' : ''}`}
-              onClick={() => handleNavigation(menuItems[7].path)}
+              className={`sidebar-item ${isActive(menuItems[8].path) ? 'active' : ''}`}
+              onClick={() => handleNavigation(menuItems[8].path)}
             >
-              <span className="sidebar-icon">{menuItems[7].icon}</span>
-              <span className="sidebar-label">{menuItems[7].label}</span>
+              <span className="sidebar-icon">{menuItems[8].icon}</span>
+              <span className="sidebar-label">{menuItems[8].label}</span>
             </button>
           )}
 
