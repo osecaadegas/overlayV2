@@ -134,9 +134,6 @@ export default function Mines() {
   };
 
   const resetGame = () => {
-  };
-
-  const resetGame = () => {
     setGrid([]);
     setRevealedCells([]);
     setMinePositions([]);
@@ -304,3 +301,5 @@ export default function Mines() {
     </div>
   );
 }
+
+export default Mines;
