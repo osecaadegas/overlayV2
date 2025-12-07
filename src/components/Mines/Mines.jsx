@@ -103,6 +103,9 @@ export default function Mines() {
     await saveGameSession(winAmount);
 
     revealAllMines();
+    setGameState('won');
+  };
+
   const updatePoints = async (amount) => {
     try {
       await updateUserPoints(amount);
