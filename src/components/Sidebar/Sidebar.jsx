@@ -239,37 +239,17 @@ export default function Sidebar() {
       )}
 
       <nav className="sidebar-nav">
-        {/* Home */}
-        {menuItems[0].show && (
-          <button
-            className={`sidebar-item ${isActive(menuItems[0].path) ? 'active' : ''}`}
-            onClick={() => handleNavigation(menuItems[0].path)}
-          >
-            <span className="sidebar-icon">{menuItems[0].icon}</span>
-            <span className="sidebar-label">{menuItems[0].label}</span>
-          </button>
-        )}
-
-        {/* Casino Offers */}
-        {menuItems[1].show && (
-          <button
-            className={`sidebar-item ${isActive(menuItems[1].path) ? 'active' : ''}`}
-            onClick={() => handleNavigation(menuItems[1].path)}
-          >
-            <span className="sidebar-icon">{menuItems[1].icon}</span>
-            <span className="sidebar-label">{menuItems[1].label}</span>
-          </button>
-        )}
-
-        {/* Points Store */}
-        {menuItems[2].show && (
-          <button
-            className={`sidebar-item ${isActive(menuItems[2].path) ? 'active' : ''}`}
-            onClick={() => handleNavigation(menuItems[2].path)}
-          >
-            <span className="sidebar-icon">{menuItems[2].icon}</span>
-            <span className="sidebar-label">{menuItems[2].label}</span>
-          </button>
+        {menuItems.slice(0, 3).map((item, index) => 
+          item.show ? (
+            <button
+              key={index}
+              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => handleNavigation(item.path)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              <span className="sidebar-label">{item.label}</span>
+            </button>
+          ) : null
         )}
 
         {/* Games Dropdown - Right after Points Store */}

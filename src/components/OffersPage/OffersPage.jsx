@@ -2,126 +2,10 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../config/supabaseClient';
 import './OffersPage.css';
 
-const casinoOffersBackup = [
-  {
-    id: 1,
-    badge: 'HOT',
-    badgeClass: 'hot',
-    casino: 'Ignibet',
-    title: '665% Bonus & 750 FS up to €6250',
-    image: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=400&h=300&fit=crop',
-    minDeposit: '20€',
-    cashback: '30%',
-    bonusValue: '665%',
-    freeSpins: 'Up to 750',
-    isPremium: true,
-    details: '+18 | T&C APPLY\n\nNew players only. Min deposit €20. Max bonus €6250 + 750 Free Spins. Wagering 40x. Game weighting applies. T&Cs apply.'
-  },
-  {
-    id: 2,
-    badge: 'HOT',
-    badgeClass: 'hot',
-    casino: 'Betfury',
-    title: 'Special GODMOTA VIP Program',
-    image: 'https://images.unsplash.com/photo-1518449965925-3439867d4d36?w=400&h=300&fit=crop',
-    minDeposit: '20€',
-    cashback: '20%',
-    bonusValue: '100%',
-    freeSpins: 'Up to 100',
-    isPremium: true,
-    details: '+18 | T&C APPLY\n\nExclusive VIP program for GODMOTA viewers. Level up for better rewards. Cashback on every bet. T&Cs apply.'
-  },
-  {
-    id: 3,
-    badge: 'NEW',
-    badgeClass: 'new',
-    casino: 'Free Coins',
-    title: '400% Bonus up to €2200 & 350FS',
-    image: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400&h=300&fit=crop',
-    minDeposit: '25€',
-    cashback: '35%',
-    bonusValue: '400%',
-    freeSpins: 'Up to 350',
-    isPremium: true,
-    details: '+18 | T&C APPLY\n\nWelcome package spread across first 3 deposits. Min deposit €25. Wagering requirements apply. T&Cs apply.'
-  },
-  {
-    id: 4,
-    badge: '',
-    badgeClass: '',
-    casino: 'Flagman',
-    title: '125FS on signup & 100€ Free Bets',
-    image: 'https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=400&h=300&fit=crop',
-    minDeposit: '10€',
-    cashback: '',
-    bonusValue: '150%',
-    freeSpins: 'Up to 125',
-    code: 'GODMOTA',
-    isPremium: true,
-    details: '+18 | T&C APPLY\n\nNo deposit required for signup spins. Use code GODMOTA for extra bonus. T&Cs apply.'
-  },
-  {
-    id: 5,
-    badge: '',
-    badgeClass: '',
-    casino: 'Lootbox',
-    title: '5% On Every Deposit & VIP Battle',
-    image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop',
-    minDeposit: '1€',
-    cashback: '',
-    bonusValue: '5%',
-    freeSpins: '',
-    code: 'GODMOTA',
-    details: '+18 | T&C APPLY\n\nGet 5% extra on every deposit. Join exclusive VIP battles. Use code GODMOTA. T&Cs apply.'
-  },
-  {
-    id: 6,
-    badge: '',
-    badgeClass: '',
-    casino: 'Crasher',
-    title: '400% Bonus & 350FS up to €2200',
-    image: 'https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=400&h=300&fit=crop',
-    minDeposit: '10€',
-    cashback: '',
-    bonusValue: '400%',
-    freeSpins: 'Up to 350',
-    code: 'GODCB',
-    details: '+18 | T&C APPLY\n\nMassive welcome package. Min deposit €10. Use code GODCB. Wagering 35x. T&Cs apply.'
-  },
-  {
-    id: 7,
-    badge: '',
-    badgeClass: '',
-    casino: 'BC.GAME',
-    title: '360% Bonus & Daily Wheel of Fortune',
-    image: 'https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=400&h=300&fit=crop',
-    minDeposit: '10€',
-    cashback: '25%',
-    bonusValue: '360%',
-    freeSpins: '',
-    details: '+18 | T&C APPLY\n\nDaily wheel of fortune with guaranteed prizes. 25% cashback on losses. Min deposit €10. T&Cs apply.'
-  },
-  {
-    id: 8,
-    badge: '',
-    badgeClass: '',
-    casino: 'Ribace',
-    title: '400% Bonus + 350FS up to €2000',
-    image: 'https://images.unsplash.com/photo-1571974599782-87624638275e?w=400&h=300&fit=crop',
-    minDeposit: '25€',
-    cashback: '35%',
-    bonusValue: '450%',
-    freeSpins: 'Up to 350',
-    details: '+18 | T&C APPLY\n\nPremium welcome package. Min deposit €25. 35% weekly cashback. Wagering 40x. T&Cs apply.'
-  }
-];
-
 export default function OffersPage() {
   const [flippedCards, setFlippedCards] = useState({});
   const [casinoOffers, setCasinoOffers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const offersPerPage = 8;
 
   useEffect(() => {
     loadOffers();
@@ -137,7 +21,7 @@ export default function OffersPage() {
 
       if (error) {
         console.error('Error loading offers:', error);
-        setCasinoOffers(casinoOffersBackup);
+        setCasinoOffers([]);
       } else {
         // Transform data to match component format
         const transformedOffers = data.map(offer => ({
@@ -156,11 +40,11 @@ export default function OffersPage() {
           details: offer.details
         }));
         
-        setCasinoOffers(transformedOffers.length > 0 ? transformedOffers : casinoOffersBackup);
+        setCasinoOffers(transformedOffers || []);
       }
     } catch (err) {
       console.error('Error:', err);
-      setCasinoOffers(casinoOffersBackup);
+      setCasinoOffers([]);
     } finally {
       setLoading(false);
     }
@@ -177,6 +61,19 @@ export default function OffersPage() {
     return (
       <div className="offers-page">
         <div className="offers-loading">Loading offers...</div>
+      </div>
+    );
+  }
+
+  if (casinoOffers.length === 0) {
+    return (
+      <div className="offers-page">
+        <div className="offers-container">
+          <h1>Casinos & Offers</h1>
+          <div className="no-offers" style={{textAlign: 'center', padding: '60px 20px', color: 'white'}}>
+            <p>No casino offers available at the moment. Check back soon!</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -260,9 +157,7 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
             </div>
           </div>
 
-          {regularOffers
-            .slice((currentPage - 1) * offersPerPage, currentPage * offersPerPage)
-            .map(offer => (
+          {regularOffers.map(offer => (
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>
               <div className="offer-card-inner">
                 {/* Front of card */}
@@ -344,25 +239,6 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
             </div>
           ))}
         </div>
-
-        {/* Pagination Controls */}
-        {regularOffers.length >= offersPerPage && (
-          <div className="pagination">
-            <button 
-              onClick={() => setCurrentPage(prev => prev - 1)}
-              disabled={currentPage === 1}
-            >
-              ←
-            </button>
-            <span>Page {currentPage} of {Math.ceil(regularOffers.length / offersPerPage)}</span>
-            <button 
-              onClick={() => setCurrentPage(prev => prev + 1)}
-              disabled={currentPage === Math.ceil(regularOffers.length / offersPerPage)}
-            >
-              →
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
