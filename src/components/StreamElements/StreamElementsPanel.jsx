@@ -45,6 +45,12 @@ export default function StreamElementsPanel() {
         .order('point_cost', { ascending: true });
 
       if (error) throw error;
+      
+      console.log('Loaded redemption items:', data);
+      if (data && data.length > 0) {
+        console.log('First item reward_details:', data[0].reward_details);
+      }
+      
       setRedemptionItems(data || []);
     } catch (err) {
       console.error('Error loading redemption items:', err);
