@@ -862,6 +862,20 @@
   gap: 15px;
 }
 
+.form-row-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.form-row-4 .form-group label {
+  font-size: 0.75rem;
+}
+
+.form-row-4 .form-group input {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
 .checkbox-group {
   display: flex;
   flex-direction: row;

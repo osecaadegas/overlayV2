@@ -145,6 +145,7 @@ export default function OffersPage() {
           casino: offer.casino_name,
           title: offer.title,
           image: offer.image_url,
+          bonusLink: offer.bonus_link,
           minDeposit: offer.min_deposit,
           cashback: offer.cashback,
           bonusValue: offer.bonus_value,
@@ -230,7 +231,14 @@ export default function OffersPage() {
                   <button className="info-btn" onClick={() => toggleFlip('premium')}>
                     MORE INFO
                   </button>
-                  <button className="claim-btn">CLAIM BONUS</button>
+                  <a 
+                    href={offerOfTheMonth?.bonusLink || '#'} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="claim-btn"
+                  >
+                    CLAIM BONUS
+                  </a>
                 </div>
               </div>
 
@@ -306,7 +314,14 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
                     <button className="info-btn" onClick={() => toggleFlip(offer.id)}>
                       MORE INFO
                     </button>
-                    <button className="claim-btn">CLAIM BONUS</button>
+                    <a 
+                      href={offer.bonusLink || '#'} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="claim-btn"
+                    >
+                      CLAIM BONUS
+                    </a>
                   </div>
                 </div>
 

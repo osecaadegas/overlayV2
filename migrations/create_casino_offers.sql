@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS casino_offers (
   casino_name VARCHAR(255) NOT NULL,
   title TEXT NOT NULL,
   image_url TEXT NOT NULL,
+  bonus_link TEXT NOT NULL,
   badge VARCHAR(50),
   badge_class VARCHAR(50),
   min_deposit VARCHAR(50),

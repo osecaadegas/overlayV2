@@ -23,6 +23,7 @@ export default function AdminPanel() {
     casino_name: '',
     title: '',
     image_url: '',
+    bonus_link: '',
     badge: '',
     badge_class: '',
     min_deposit: '',
@@ -166,6 +167,7 @@ export default function AdminPanel() {
         casino_name: '',
         title: '',
         image_url: '',
+        bonus_link: '',
         badge: '',
         badge_class: '',
         min_deposit: '',
@@ -189,6 +191,7 @@ export default function AdminPanel() {
       casino_name: '',
       title: '',
       image_url: '',
+      bonus_link: '',
       badge: '',
       badge_class: '',
       min_deposit: '',
@@ -560,14 +563,26 @@ export default function AdminPanel() {
             <div className="modal-body offer-form">
               <div className="offer-form-split">
                 <div className="offer-form-fields">
-                  <div className="form-group">
-                    <label>Casino Name *</label>
-                    <input
-                      type="text"
-                      value={offerFormData.casino_name}
-                      onChange={(e) => handleOfferFormChange('casino_name', e.target.value)}
-                      placeholder="e.g., Ignibet"
-                    />
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Casino Name *</label>
+                      <input
+                        type="text"
+                        value={offerFormData.casino_name}
+                        onChange={(e) => handleOfferFormChange('casino_name', e.target.value)}
+                        placeholder="e.g., Ignibet"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Bonus Link *</label>
+                      <input
+                        type="text"
+                        value={offerFormData.bonus_link}
+                        onChange={(e) => handleOfferFormChange('bonus_link', e.target.value)}
+                        placeholder="https://..."
+                      />
+                    </div>
                   </div>
 
                   <div className="form-group">
@@ -615,7 +630,7 @@ export default function AdminPanel() {
                     </div>
                   </div>
 
-                  <div className="form-row">
+                  <div className="form-row form-row-4">
                     <div className="form-group">
                       <label>Min Deposit</label>
                       <input
@@ -635,9 +650,7 @@ export default function AdminPanel() {
                         placeholder="30%"
                       />
                     </div>
-                  </div>
 
-                  <div className="form-row">
                     <div className="form-group">
                       <label>Bonus Value</label>
                       <input
@@ -659,17 +672,17 @@ export default function AdminPanel() {
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <label>Details / Terms</label>
-                    <textarea
-                      value={offerFormData.details}
-                      onChange={(e) => handleOfferFormChange('details', e.target.value)}
-                      placeholder="+18 | T&C APPLY&#10;&#10;Enter full terms and conditions..."
-                      rows="4"
-                    />
-                  </div>
-
                   <div className="form-row">
+                    <div className="form-group">
+                      <label>Details / Terms</label>
+                      <textarea
+                        value={offerFormData.details}
+                        onChange={(e) => handleOfferFormChange('details', e.target.value)}
+                        placeholder="+18 | T&C APPLY&#10;&#10;Enter full terms and conditions..."
+                        rows="2"
+                      />
+                    </div>
+
                     <div className="form-group">
                       <label>Display Order</label>
                       <input
@@ -677,27 +690,27 @@ export default function AdminPanel() {
                         value={offerFormData.display_order}
                         onChange={(e) => handleOfferFormChange('display_order', parseInt(e.target.value))}
                         min="0"
+                        style={{marginBottom: '8px'}}
                       />
-                    </div>
+                      <div className="checkbox-group">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={offerFormData.is_premium}
+                            onChange={(e) => handleOfferFormChange('is_premium', e.target.checked)}
+                          />
+                          Premium
+                        </label>
 
-                    <div className="form-group checkbox-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={offerFormData.is_premium}
-                          onChange={(e) => handleOfferFormChange('is_premium', e.target.checked)}
-                        />
-                        Premium Offer
-                      </label>
-
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={offerFormData.is_active}
-                          onChange={(e) => handleOfferFormChange('is_active', e.target.checked)}
-                        />
-                        Active
-                      </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={offerFormData.is_active}
+                            onChange={(e) => handleOfferFormChange('is_active', e.target.checked)}
+                          />
+                          Active
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
