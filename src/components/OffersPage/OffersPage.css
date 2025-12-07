@@ -210,6 +210,9 @@
   transform: rotateY(180deg);
   justify-content: space-between;
   padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* Premium shine effect */
@@ -403,6 +406,9 @@
   flex: 1;
   color: white;
   overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 .offer-details h4 {
@@ -410,6 +416,8 @@
   margin-bottom: 12px;
   color: #d4af37;
   font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .offer-details p {
@@ -417,6 +425,9 @@
   line-height: 1.6;
   font-size: 0.85rem;
   white-space: pre-line;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .offer-details .deposit-methods {
@@ -424,17 +435,21 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-top: 8px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .deposit-method-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 8px;
   background: rgba(212, 175, 55, 0.1);
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 6px;
   transition: all 0.3s ease;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .deposit-method-item:hover {
@@ -451,11 +466,16 @@
 .deposit-method-item .method-label {
   color: #d4af37;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .back-btn {
-  width: auto;
+  width: 100%;
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.05);
   color: #d4af37;
   margin-top: 16px;
@@ -465,6 +485,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
+  box-sizing: border-box;
 }
 
 .back-btn:hover {
