@@ -58,18 +58,21 @@
 
 /* Betting Section */
 .betting-section {
-  background: rgba(26, 31, 46, 0.8);
-  padding: 40px;
+  background: linear-gradient(135deg, rgba(20, 25, 45, 0.95), rgba(30, 35, 60, 0.95));
+  padding: 50px 40px;
   border-radius: 20px;
   border: 1px solid rgba(212, 175, 55, 0.3);
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .betting-section h2 {
   color: #d4af37;
   margin-bottom: 30px;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .bet-controls {
@@ -77,7 +80,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .bet-controls button {
@@ -157,46 +160,72 @@
 
 /* Game Table */
 .game-table {
-  background: rgba(21, 128, 61, 0.3);
-  padding: 40px;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(101, 67, 33, 0.15));
+  padding: 60px 40px;
+  border-radius: 25px;
+  border: 3px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.game-table::before {
+  content: 'BLACKJACK PAYS 3 TO 2';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: white;
+  padding: 8px 30px;
   border-radius: 20px;
-  border: 2px solid rgba(212, 175, 55, 0.3);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.5);
 }
 
 .hand {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   text-align: center;
 }
 
 .hand h3 {
   color: #d4af37;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .cards {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: -30px;
   flex-wrap: wrap;
-  min-height: 180px;
+  min-height: 200px;
   align-items: center;
+  perspective: 1000px;
 }
 
 .card {
-  width: 120px;
-  height: 170px;
+  width: 140px;
+  height: 200px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 15px;
+  padding: 18px;
   position: relative;
   transition: all 0.3s;
-  animation: dealCard 0.3s ease-out;
+  animation: dealCard 0.4s ease-out;
+  margin: 0 -15px;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  z-index: 10;
 }
 
 @keyframes dealCard {
@@ -251,39 +280,41 @@
 .game-controls {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
+  gap: 25px;
+  margin-top: 40px;
 }
 
 .action-button {
-  padding: 18px 50px;
+  padding: 20px 60px;
   border: none;
-  border-radius: 12px;
-  font-size: 1.2rem;
+  border-radius: 15px;
+  font-size: 1.3rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .hit-button {
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
   color: white;
 }
 
 .hit-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(6, 182, 212, 0.6);
 }
 
 .stand-button {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-  color: #1a1f2e;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
 }
 
 .stand-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(239, 68, 68, 0.6);
 }
 
 /* Game Result */
