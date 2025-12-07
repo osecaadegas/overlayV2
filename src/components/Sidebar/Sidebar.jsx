@@ -301,29 +301,48 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Display items between Games and Stream (Overlay, Admin Panel) */}
-        {menuItems.slice(3, 5).map((item, index) => 
-          item.show ? (
-            <button
-              key={index + 3}
-              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-              onClick={() => handleNavigation(item.path)}
-            >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
-            </button>
-          ) : null
+        {/* Points Manager item */}
+        {menuItems[3].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[3].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[3].path)}
+          >
+            <span className="sidebar-icon">{menuItems[3].icon}</span>
+            <span className="sidebar-label">{menuItems[3].label}</span>
+          </button>
+        )}
+
+        {/* Overlay item */}
+        {menuItems[4].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[4].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[4].path)}
+          >
+            <span className="sidebar-icon">{menuItems[4].icon}</span>
+            <span className="sidebar-label">{menuItems[4].label}</span>
+          </button>
+        )}
+
+        {/* Admin Panel item */}
+        {menuItems[5].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[5].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[5].path)}
+          >
+            <span className="sidebar-icon">{menuItems[5].icon}</span>
+            <span className="sidebar-label">{menuItems[5].label}</span>
+          </button>
         )}
 
         {/* Stream Dropdown */}
-        {menuItems[5].show && (
+        {menuItems[6].show && (
           <div className="sidebar-dropdown">
             <button
               className={`sidebar-item ${location.pathname.startsWith('/stream') || location.pathname.startsWith('/tournaments') || location.pathname.startsWith('/guess-balance') || location.pathname.startsWith('/giveaways') ? 'active' : ''}`}
               onClick={() => setShowStreamDropdown(!showStreamDropdown)}
             >
-              <span className="sidebar-icon">{menuItems[5].icon}</span>
-              <span className="sidebar-label">{menuItems[5].label}</span>
+              <span className="sidebar-icon">{menuItems[6].icon}</span>
+              <span className="sidebar-label">{menuItems[6].label}</span>
               <span className={`dropdown-arrow ${showStreamDropdown ? 'open' : ''}`}>▼</span>
             </button>
             
@@ -362,18 +381,15 @@ export default function Sidebar() {
           </div>
         )}
 
-        {/* Remaining menu items after Stream (About Us) */}
-        {menuItems.slice(6).map((item, index) => 
-          item.show ? (
-            <button
-              key={index + 6}
-              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-              onClick={() => handleNavigation(item.path)}
-            >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
-            </button>
-          ) : null
+        {/* About Us item */}
+        {menuItems[7].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[7].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[7].path)}
+          >
+            <span className="sidebar-icon">{menuItems[7].icon}</span>
+            <span className="sidebar-label">{menuItems[7].label}</span>
+          </button>
         )}
 
         {user && (
