@@ -1068,3 +1068,104 @@
     gap: 20px;
   }
 }
+
+/* Game History Styles */
+.pm-games {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pm-games-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pm-games-header h2 {
+  font-size: 1.8rem;
+  color: #d4af37;
+}
+
+.pm-game-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #d4af37;
+}
+
+.pm-profit-loss {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.pm-profit-loss.win {
+  color: #10b981;
+}
+
+.pm-profit-loss.loss {
+  color: #ef4444;
+}
+
+.pm-profit-loss.push {
+  color: #a0aec0;
+}
+
+/* Stats Summary */
+.pm-stats-summary {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pm-stats-summary h3 {
+  font-size: 1.4rem;
+  color: #d4af37;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.pm-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.pm-stat-card {
+  background: rgba(26, 31, 46, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  text-align: center;
+}
+
+.pm-stat-label {
+  font-size: 0.9rem;
+  color: #a0aec0;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pm-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #d4af37;
+}
+
+.pm-stat-value.win {
+  color: #10b981;
+}
+
+.pm-stat-value.loss {
+  color: #ef4444;
+}

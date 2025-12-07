@@ -6,8 +6,9 @@ export default function PointsManager() {
   const [users, setUsers] = useState([]);
   const [redemptions, setRedemptions] = useState([]);
   const [redemptionItems, setRedemptionItems] = useState([]);
+  const [gameSessions, setGameSessions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('users'); // 'users', 'redemptions', 'items'
+  const [activeTab, setActiveTab] = useState('users'); // 'users', 'redemptions', 'items', 'games'
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [userRole, setUserRole] = useState('moderator'); // 'admin' or 'moderator'
@@ -95,6 +96,8 @@ export default function PointsManager() {
         await loadRedemptions();
       } else if (activeTab === 'items') {
         await loadRedemptionItems();
+      } else if (activeTab === 'games') {
+        await loadGameSessions();
       }
     } catch (err) {
       setError(err.message);
@@ -230,6 +233,33 @@ export default function PointsManager() {
 
     if (error) throw error;
     setRedemptionItems(data || []);
+  };
+
+  const loadGameSessions = async () => {
+    const { data: sessionsData, error } = await supabase
+      .from('game_sessions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (error) throw error;
+
+    // Get user emails
+    const { data: allUsers } = await supabase.rpc('get_all_user_emails');
+    const emailMap = {};
+    if (allUsers) {
+      allUsers.forEach(user => {
+        emailMap[user.user_id] = user.email;
+      });
+    }
+
+    // Enrich sessions with user data
+    const enrichedSessions = sessionsData.map(session => ({
+      ...session,
+      user_email: emailMap[session.user_id] || 'Unknown'
+    }));
+
+    setGameSessions(enrichedSessions);
   };
 
   const handleAddPoints = async (amount) => {
@@ -472,6 +502,12 @@ export default function PointsManager() {
           👥 Users ({users.length})
         </button>
         <button
+          className={`pm-tab ${activeTab === 'games' ? 'active' : ''}`}
+          onClick={() => setActiveTab('games')}
+        >
+          🎮 Game History ({gameSessions.length})
+        </button>
+        <button
           className={`pm-tab ${activeTab === 'redemptions' ? 'active' : ''}`}
           onClick={() => setActiveTab('redemptions')}
         >
@@ -560,6 +596,98 @@ export default function PointsManager() {
                   <div className="pm-empty">No users connected yet</div>
                 )}
               </div>
+            </div>
+          )}
+
+          {activeTab === 'games' && (
+            <div className="pm-games">
+              <div className="pm-games-header">
+                <h2>Game History</h2>
+                <button onClick={loadGameSessions} className="pm-refresh-btn">
+                  🔄 Refresh
+                </button>
+              </div>
+              <div className="pm-table-container">
+                <table className="pm-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Game</th>
+                      <th>Bet</th>
+                      <th>Result</th>
+                      <th>Profit/Loss</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gameSessions.map((session) => {
+                      const profitLoss = session.result_amount - session.bet_amount;
+                      const isWin = profitLoss > 0;
+                      const isPush = profitLoss === 0;
+                      
+                      return (
+                        <tr key={session.id}>
+                          <td>
+                            <div className="pm-email">{session.user_email}</div>
+                          </td>
+                          <td>
+                            <span className="pm-game-badge">
+                              {session.game_type === 'blackjack' && '🃏 Blackjack'}
+                              {session.game_type === 'mines' && '💣 Mines'}
+                              {session.game_type === 'coinflip' && '🪙 Coin Flip'}
+                            </span>
+                          </td>
+                          <td className="pm-points">{session.bet_amount.toLocaleString()} pts</td>
+                          <td className="pm-points">{session.result_amount.toLocaleString()} pts</td>
+                          <td>
+                            <span className={`pm-profit-loss ${isWin ? 'win' : isPush ? 'push' : 'loss'}`}>
+                              {isWin && '+'}
+                              {profitLoss.toLocaleString()} pts
+                            </span>
+                          </td>
+                          <td>{new Date(session.created_at).toLocaleString()}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                {gameSessions.length === 0 && (
+                  <div className="pm-empty">No game sessions yet</div>
+                )}
+              </div>
+
+              {/* Game Statistics Summary */}
+              {gameSessions.length > 0 && (
+                <div className="pm-stats-summary">
+                  <h3>Statistics</h3>
+                  <div className="pm-stats-grid">
+                    <div className="pm-stat-card">
+                      <div className="pm-stat-label">Total Games</div>
+                      <div className="pm-stat-value">{gameSessions.length}</div>
+                    </div>
+                    <div className="pm-stat-card">
+                      <div className="pm-stat-label">Total Wagered</div>
+                      <div className="pm-stat-value">
+                        {gameSessions.reduce((sum, s) => sum + s.bet_amount, 0).toLocaleString()} pts
+                      </div>
+                    </div>
+                    <div className="pm-stat-card">
+                      <div className="pm-stat-label">Net Profit/Loss</div>
+                      <div className={`pm-stat-value ${
+                        gameSessions.reduce((sum, s) => sum + (s.result_amount - s.bet_amount), 0) > 0 ? 'win' : 'loss'
+                      }`}>
+                        {gameSessions.reduce((sum, s) => sum + (s.result_amount - s.bet_amount), 0).toLocaleString()} pts
+                      </div>
+                    </div>
+                    <div className="pm-stat-card">
+                      <div className="pm-stat-label">Win Rate</div>
+                      <div className="pm-stat-value">
+                        {((gameSessions.filter(s => s.result_amount > s.bet_amount).length / gameSessions.length) * 100).toFixed(1)}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
