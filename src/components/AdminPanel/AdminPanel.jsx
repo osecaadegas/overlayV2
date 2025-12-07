@@ -30,6 +30,7 @@ export default function AdminPanel() {
     cashback: '',
     bonus_value: '',
     free_spins: '',
+    deposit_methods: '',
     is_premium: false,
     details: '',
     is_active: true,
@@ -198,6 +199,7 @@ export default function AdminPanel() {
       cashback: '',
       bonus_value: '',
       free_spins: '',
+      deposit_methods: '',
       is_premium: false,
       details: '',
       is_active: true,
@@ -214,7 +216,7 @@ export default function AdminPanel() {
     setSuccess('');
 
     if (!offerFormData.casino_name || !offerFormData.title || !offerFormData.image_url) {
-      setError('Please fill in all required fields (Casino Name, Title, Image URL)');
+      setError('Please fill in required fields: Casino Name, Title, and Image URL');
       return;
     }
 
@@ -683,6 +685,18 @@ export default function AdminPanel() {
                       />
                     </div>
 
+                    <div className="form-group">
+                      <label>Deposit Methods</label>
+                      <input
+                        type="text"
+                        value={offerFormData.deposit_methods}
+                        onChange={(e) => handleOfferFormChange('deposit_methods', e.target.value)}
+                        placeholder="Visa, Mastercard, Bitcoin, Skrill"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
                     <div className="form-group">
                       <label>Display Order</label>
                       <input

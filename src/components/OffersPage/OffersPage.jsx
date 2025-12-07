@@ -36,6 +36,7 @@ export default function OffersPage() {
           cashback: offer.cashback,
           bonusValue: offer.bonus_value,
           freeSpins: offer.free_spins,
+          depositMethods: offer.deposit_methods,
           isPremium: offer.is_premium,
           details: offer.details
         }));
@@ -157,6 +158,12 @@ export default function OffersPage() {
                   <div className="offer-details">
                     <h4>Terms & Conditions</h4>
                     <p>{offerOfTheMonth.details}</p>
+                    {offerOfTheMonth.depositMethods && (
+                      <>
+                        <h4 style={{marginTop: '16px'}}>Deposit Methods</h4>
+                        <p className="deposit-methods">💳 {offerOfTheMonth.depositMethods}</p>
+                      </>
+                    )}
                   </div>
                   <button className="back-btn" onClick={() => toggleFlip(offerOfTheMonth.id)}>
                     ← BACK
@@ -239,6 +246,12 @@ export default function OffersPage() {
                   <div className="offer-details">
                     <h4>Terms & Conditions</h4>
                     <p>{offer.details}</p>
+                    {offer.depositMethods && (
+                      <>
+                        <h4 style={{marginTop: '16px'}}>Deposit Methods</h4>
+                        <p className="deposit-methods">💳 {offer.depositMethods}</p>
+                      </>
+                    )}
                   </div>
                   <button className="back-btn" onClick={() => toggleFlip(offer.id)}>
                     ← BACK

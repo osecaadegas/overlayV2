@@ -419,6 +419,16 @@
   white-space: pre-line;
 }
 
+.offer-details p.deposit-methods {
+  color: #d4af37;
+  font-weight: 500;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  margin-top: 8px;
+}
+
 .back-btn {
   width: auto;
   background: rgba(255, 255, 255, 0.05);
