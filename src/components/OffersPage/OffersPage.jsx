@@ -120,6 +120,8 @@ export default function OffersPage() {
   const [flippedCards, setFlippedCards] = useState({});
   const [casinoOffers, setCasinoOffers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const offersPerPage = 8;
 
   useEffect(() => {
     loadOffers();
@@ -258,7 +260,9 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
             </div>
           </div>
 
-          {regularOffers.map(offer => (
+          {regularOffers
+            .slice((currentPage - 1) * offersPerPage, currentPage * offersPerPage)
+            .map(offer => (
             <div key={offer.id} className={`offer-card-wrapper ${flippedCards[offer.id] ? 'flipped' : ''} ${offer.isPremium ? 'premium' : ''}`}>
               <div className="offer-card-inner">
                 {/* Front of card */}
@@ -340,6 +344,25 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {regularOffers.length > offersPerPage && (
+          <div className="pagination">
+            <button 
+              onClick={() => setCurrentPage(prev => prev - 1)}
+              disabled={currentPage === 1}
+            >
+              ←
+            </button>
+            <span>Page {currentPage} of {Math.ceil(regularOffers.length / offersPerPage)}</span>
+            <button 
+              onClick={() => setCurrentPage(prev => prev + 1)}
+              disabled={currentPage === Math.ceil(regularOffers.length / offersPerPage)}
+            >
+              →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

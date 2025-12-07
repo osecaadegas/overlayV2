@@ -19,6 +19,8 @@ export default function AdminPanel() {
   const [offers, setOffers] = useState([]);
   const [editingOffer, setEditingOffer] = useState(null);
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const [currentOfferPage, setCurrentOfferPage] = useState(1);
+  const offersPerPage = 8;
   const [offerFormData, setOfferFormData] = useState({
     casino_name: '',
     title: '',
@@ -500,7 +502,7 @@ export default function AdminPanel() {
           </div>
 
           <div className="offers-grid">
-            {offers.map((offer) => (
+            {offers.slice((currentOfferPage - 1) * offersPerPage, currentOfferPage * offersPerPage).map((offer) => (
               <div key={offer.id} className={`offer-admin-card ${!offer.is_active ? 'inactive' : ''}`}>
                 <div className="offer-admin-image">
                   <img src={offer.image_url} alt={offer.casino_name} />
@@ -550,6 +552,28 @@ export default function AdminPanel() {
           {offers.length === 0 && (
             <div className="no-offers">
               <p>No casino offers yet. Create your first offer!</p>
+            </div>
+          )}
+
+          {offers.length > offersPerPage && (
+            <div className="pagination">
+              <button 
+                onClick={() => setCurrentOfferPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentOfferPage === 1}
+                className="pagination-btn"
+              >
+                ←
+              </button>
+              <span className="pagination-info">
+                Page {currentOfferPage} of {Math.ceil(offers.length / offersPerPage)}
+              </span>
+              <button 
+                onClick={() => setCurrentOfferPage(prev => Math.min(prev + 1, Math.ceil(offers.length / offersPerPage)))}
+                disabled={currentOfferPage === Math.ceil(offers.length / offersPerPage)}
+                className="pagination-btn"
+              >
+                →
+              </button>
             </div>
           )}
         </div>
