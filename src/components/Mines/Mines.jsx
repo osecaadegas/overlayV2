@@ -301,5 +301,3 @@ export default function Mines() {
     </div>
   );
 }
-
-export default Mines;
