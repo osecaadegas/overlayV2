@@ -321,6 +321,45 @@ export function StreamElementsProvider({ children }) {
     }
   };
 
+  const updateUserPoints = async (amount) => {
+    if (!seAccount) {
+      return { success: false, error: 'StreamElements account not connected' };
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const userId = seAccount.se_username || user.id;
+      
+      // Update points via StreamElements API
+      const response = await fetch(
+        `https://api.streamelements.com/kappa/v2/points/${seAccount.se_channel_id}/${userId}/${amount}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${seAccount.se_jwt_token}`,
+            'Accept': 'application/json'
+          }
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to update points');
+
+      // Update local points
+      setPoints(prev => Math.max(0, prev + amount));
+
+      return { success: true };
+    } catch (err) {
+      console.error('Update points error:', err);
+      const errorMessage = err.message || 'Failed to update points';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     seAccount,
     points,
@@ -330,6 +369,7 @@ export function StreamElementsProvider({ children }) {
     unlinkAccount,
     redeemPoints,
     refreshPoints,
+    updateUserPoints,
     isConnected: !!seAccount
   };
 

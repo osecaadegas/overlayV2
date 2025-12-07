@@ -231,6 +231,20 @@ export default function Sidebar() {
               {showGamesDropdown && (
                 <div className="sidebar-dropdown">
                   <button
+                    className={`sidebar-subitem ${isActive('/games/blackjack') ? 'active' : ''}`}
+                    onClick={() => handleNavigation('/games/blackjack')}
+                  >
+                    <span className="subitem-icon">🃏</span>
+                    <span className="subitem-label">Blackjack</span>
+                  </button>
+                  <button
+                    className={`sidebar-subitem ${isActive('/games/mines') ? 'active' : ''}`}
+                    onClick={() => handleNavigation('/games/mines')}
+                  >
+                    <span className="subitem-icon">💣</span>
+                    <span className="subitem-label">Mines</span>
+                  </button>
+                  <button
                     className={`sidebar-subitem ${isActive('/randomslot') ? 'active' : ''}`}
                     onClick={() => handleNavigation('/randomslot')}
                   >

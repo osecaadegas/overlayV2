@@ -37,6 +37,8 @@ import SlotMachine from './components/SlotMachine/SlotMachine';
 import CoinFlip from './components/CoinFlip/CoinFlip';
 import SpotifyWidget from './components/SpotifyWidget/SpotifyWidget';
 import TwitchChat from './components/TwitchChat/TwitchChat';
+import Blackjack from './components/Blackjack/Blackjack';
+import Mines from './components/Mines/Mines';
 
 function AppContent() {
   const location = useLocation();
@@ -568,6 +570,8 @@ function App() {
                 <Route path="/games/dice" element={<GamesPage gameType="dice" />} />
                 <Route path="/games/roulette" element={<GamesPage gameType="roulette" />} />
                 <Route path="/games/slots" element={<GamesPage gameType="slots" />} />
+                <Route path="/games/blackjack" element={<Blackjack />} />
+                <Route path="/games/mines" element={<Mines />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/points" element={<StreamElementsPanel />} />
                 <Route path="/streamelements" element={<StreamElementsPanel />} />
