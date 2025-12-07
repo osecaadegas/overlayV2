@@ -1,18 +1,21 @@
+-- Drop existing table and recreate
+DROP TABLE IF EXISTS game_sessions CASCADE;
+
 -- Create table to track game sessions and results
-CREATE TABLE IF NOT EXISTS game_sessions (
+CREATE TABLE game_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  game_type VARCHAR(50) NOT NULL, -- 'blackjack', 'mines', 'coinflip', etc.
+  game_type VARCHAR(50) NOT NULL,
   bet_amount INTEGER NOT NULL,
-  result_amount INTEGER NOT NULL, -- Win/loss amount (can be negative)
-  game_data JSONB, -- Store game-specific data (e.g., cards dealt, mine positions revealed, etc.)
+  result_amount INTEGER NOT NULL,
+  game_data JSONB,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Add indexes for better query performance
-CREATE INDEX IF NOT EXISTS idx_game_sessions_user_id ON game_sessions(user_id);
-CREATE INDEX IF NOT EXISTS idx_game_sessions_game_type ON game_sessions(game_type);
-CREATE INDEX IF NOT EXISTS idx_game_sessions_created_at ON game_sessions(created_at);
+CREATE INDEX idx_game_sessions_user_id ON game_sessions(user_id);
+CREATE INDEX idx_game_sessions_game_type ON game_sessions(game_type);
+CREATE INDEX idx_game_sessions_created_at ON game_sessions(created_at);
 
 -- Enable RLS
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
