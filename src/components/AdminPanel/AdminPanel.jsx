@@ -315,7 +315,7 @@ export default function AdminPanel() {
           className={`admin-tab ${activeTab === 'offers' ? 'active' : ''}`}
           onClick={() => setActiveTab('offers')}
         >
-          🎰 Casino Offers
+          ➕ ADD Offer!
         </button>
       </div>
 
@@ -495,7 +495,7 @@ export default function AdminPanel() {
       {activeTab === 'offers' && (
         <div className="offers-management">
           <div className="offers-header">
-            <h2>Casino Offer Cards</h2>
+            <h2>Existing Cards</h2>
             <button onClick={() => openOfferModal()} className="btn-create-offer">
               ➕ Create New Offer
             </button>
