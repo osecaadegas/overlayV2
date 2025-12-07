@@ -244,19 +244,22 @@ export default function PointsManager() {
 
     if (error) throw error;
 
-    // Get user emails
-    const { data: allUsers } = await supabase.rpc('get_all_user_emails');
-    const emailMap = {};
-    if (allUsers) {
-      allUsers.forEach(user => {
-        emailMap[user.user_id] = user.email;
+    // Get Twitch usernames from se_accounts table
+    const { data: seAccounts } = await supabase
+      .from('se_accounts')
+      .select('user_id, se_username');
+
+    const usernameMap = {};
+    if (seAccounts) {
+      seAccounts.forEach(account => {
+        usernameMap[account.user_id] = account.se_username;
       });
     }
 
     // Enrich sessions with user data
     const enrichedSessions = sessionsData.map(session => ({
       ...session,
-      user_email: emailMap[session.user_id] || 'Unknown'
+      user_username: usernameMap[session.user_id] || 'Unknown'
     }));
 
     setGameSessions(enrichedSessions);
@@ -628,7 +631,7 @@ export default function PointsManager() {
                       return (
                         <tr key={session.id}>
                           <td>
-                            <div className="pm-email">{session.user_email}</div>
+                            <div className="pm-email">{session.user_username}</div>
                           </td>
                           <td>
                             <span className="pm-game-badge">
