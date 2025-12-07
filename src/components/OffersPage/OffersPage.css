@@ -33,7 +33,7 @@
 }
 
 /* Premium Card Ribbon */
-.premium-card-box span {
+.premium-card-box > span {
   position: absolute;
   overflow: hidden;
   width: 100px;
@@ -50,7 +50,7 @@
   animation: flameGlow 1.5s ease-in-out infinite;
 }
 
-.premium-card-box span::before {
+.premium-card-box > span::before {
   content: 'Premium';
   position: absolute;
   width: 150%;
@@ -70,7 +70,7 @@
               0 0 25px rgba(255, 177, 68, 0.3);
 }
 
-.premium-card-box span::after {
+.premium-card-box > span::after {
   content: '';
   position: absolute;
   width: 10px;
