@@ -346,7 +346,7 @@ Exclusive VIP offer for premium members. Min deposit €50. Max bonus €10,000 
         </div>
 
         {/* Pagination Controls */}
-        {regularOffers.length > offersPerPage && (
+        {regularOffers.length >= offersPerPage && (
           <div className="pagination">
             <button 
               onClick={() => setCurrentPage(prev => prev - 1)}
