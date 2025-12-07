@@ -129,11 +129,13 @@ export default function OffersPage() {
                         <div className="stat-value">{offerOfTheMonth.cashback}</div>
                       </div>
                     )}
-                    <div className="stat">
-                      <div className="stat-icon">🎁</div>
-                      <div className="stat-label">Bonus value</div>
-                      <div className="stat-value">{offerOfTheMonth.bonusValue}</div>
-                    </div>
+                    {offerOfTheMonth.bonusValue && (
+                      <div className="stat">
+                        <div className="stat-icon">🎁</div>
+                        <div className="stat-label">Bonus value</div>
+                        <div className="stat-value">{offerOfTheMonth.bonusValue}</div>
+                      </div>
+                    )}
                     {offerOfTheMonth.freeSpins && (
                       <div className="stat">
                         <div className="stat-icon">🎰</div>
@@ -209,11 +211,13 @@ export default function OffersPage() {
                   </p>
                   
                   <div className="offer-stats">
-                    <div className="stat">
-                      <div className="stat-icon">💳</div>
-                      <div className="stat-label">Min. deposit</div>
-                      <div className="stat-value">{offer.minDeposit}</div>
-                    </div>
+                    {offer.minDeposit && (
+                      <div className="stat">
+                        <div className="stat-icon">💳</div>
+                        <div className="stat-label">Min. deposit</div>
+                        <div className="stat-value">{offer.minDeposit}</div>
+                      </div>
+                    )}
                     {offer.cashback && (
                       <div className="stat">
                         <div className="stat-icon">💰</div>
@@ -228,11 +232,13 @@ export default function OffersPage() {
                         <div className="stat-value">{offer.code}</div>
                       </div>
                     )}
-                    <div className="stat">
-                      <div className="stat-icon">🎁</div>
-                      <div className="stat-label">Bonus value</div>
-                      <div className="stat-value">{offer.bonusValue}</div>
-                    </div>
+                    {offer.bonusValue && (
+                      <div className="stat">
+                        <div className="stat-icon">🎁</div>
+                        <div className="stat-label">Bonus value</div>
+                        <div className="stat-value">{offer.bonusValue}</div>
+                      </div>
+                    )}
                     {offer.freeSpins && (
                       <div className="stat">
                         <div className="stat-icon">🎰</div>
