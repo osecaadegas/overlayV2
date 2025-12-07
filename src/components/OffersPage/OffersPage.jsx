@@ -108,12 +108,11 @@ export default function OffersPage() {
                     </div>
                   </div>
                   <p className="offer-title">{offerOfTheMonth.title}</p>
-                  <div className="offer-info-row">
-                    <p className="offer-terms">+18 | T&C APPLY</p>
-                    <span className="vpn-indicator" title={offerOfTheMonth.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
-                      {offerOfTheMonth.vpnFriendly ? '✅' : '❌'}
+                  <p className="offer-terms">
+                    +18 | T&C APPLY | <span className="vpn-indicator" title={offerOfTheMonth.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
+                      {offerOfTheMonth.vpnFriendly ? '✅ VPN OK' : '❌ NO VPN'}
                     </span>
-                  </div>
+                  </p>
                   
                   <div className="offer-stats">
                     {offerOfTheMonth.minDeposit && (
@@ -203,12 +202,11 @@ export default function OffersPage() {
                     </div>
                   </div>
                   <p className="offer-title">{offer.title}</p>
-                  <div className="offer-info-row">
-                    <p className="offer-terms">+18 | T&C APPLY</p>
-                    <span className="vpn-indicator" title={offer.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
-                      {offer.vpnFriendly ? '✅' : '❌'}
+                  <p className="offer-terms">
+                    +18 | T&C APPLY | <span className="vpn-indicator" title={offer.vpnFriendly ? 'VPN Friendly' : 'VPN Not Allowed'}>
+                      {offer.vpnFriendly ? '✅ VPN OK' : '❌ NO VPN'}
                     </span>
-                  </div>
+                  </p>
                   
                   <div className="offer-stats">
                     <div className="stat">
