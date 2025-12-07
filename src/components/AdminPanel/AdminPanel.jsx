@@ -357,6 +357,7 @@ export default function AdminPanel() {
           <thead>
             <tr>
               <th>Email</th>
+              <th>Provider</th>
               <th>Role</th>
               <th>Status</th>
               <th>Access Expires</th>
@@ -368,6 +369,16 @@ export default function AdminPanel() {
             {users.map(user => (
               <tr key={user.id} className={!user.is_active ? 'inactive-user' : ''}>
                 <td>{user.email}</td>
+                <td>
+                  <div className="provider-info">
+                    <span className={`provider-badge provider-${user.provider?.toLowerCase()}`}>
+                      {user.provider || 'Email'}
+                    </span>
+                    {user.provider_username && (
+                      <span className="provider-username">@{user.provider_username}</span>
+                    )}
+                  </div>
+                </td>
                 <td>
                   <span className={`role-badge role-${user.role}`}>
                     {user.role}

@@ -10,11 +10,34 @@ export const getAllUsers = async () => {
 
     if (rolesError) throw rolesError;
 
-    // Fetch emails for each user using the Postgres function
+    // Fetch emails and provider info for each user
     const usersWithEmails = await Promise.all(
       (rolesData || []).map(async (roleInfo) => {
         const { data: emailData } = await supabase
           .rpc('get_user_email', { user_id: roleInfo.user_id });
+
+        // Fetch user metadata to get provider info
+        const { data: userData } = await supabase
+          .rpc('get_user_metadata', { user_id: roleInfo.user_id });
+
+        let provider = 'Email';
+        let providerUsername = null;
+
+        if (userData) {
+          // Extract provider from app_metadata or identities
+          if (userData.app_metadata?.provider) {
+            provider = userData.app_metadata.provider;
+          } else if (userData.identities && userData.identities.length > 0) {
+            provider = userData.identities[0].provider;
+          }
+
+          // Get Twitch username if available
+          if (provider === 'twitch' && userData.user_metadata?.full_name) {
+            providerUsername = userData.user_metadata.full_name;
+          } else if (provider === 'twitch' && userData.user_metadata?.preferred_username) {
+            providerUsername = userData.user_metadata.preferred_username;
+          }
+        }
 
         return {
           id: roleInfo.user_id,
@@ -24,6 +47,8 @@ export const getAllUsers = async () => {
           access_expires_at: roleInfo.access_expires_at || null,
           is_active: roleInfo.is_active !== false,
           moderator_permissions: roleInfo.moderator_permissions || {},
+          provider: provider.charAt(0).toUpperCase() + provider.slice(1),
+          provider_username: providerUsername
         };
       })
     );
