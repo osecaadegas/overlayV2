@@ -12,6 +12,10 @@ export default function Sidebar() {
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [showGamesDropdown, setShowGamesDropdown] = useState(false);
   const [showStreamDropdown, setShowStreamDropdown] = useState(false);
+  const [showOffersDropdown, setShowOffersDropdown] = useState(false);
+  const [casinoOffers, setCasinoOffers] = useState([]);
+  const [offersPage, setOffersPage] = useState(1);
+  const offersPerPage = 3;
   const { user, signOut } = useAuth();
   const { isAdmin, isModerator } = useAdmin();
   const { points, loading: pointsLoading } = useStreamElements();
@@ -35,6 +39,27 @@ export default function Sidebar() {
     };
     checkAccess();
   }, [user]);
+
+  // Load casino offers
+  useEffect(() => {
+    loadCasinoOffers();
+  }, []);
+
+  const loadCasinoOffers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('casino_offers')
+        .select('id, casino_name, title, bonus_link, is_active')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (!error && data) {
+        setCasinoOffers(data);
+      }
+    } catch (err) {
+      console.error('Error loading offers:', err);
+    }
+  };
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -239,17 +264,95 @@ export default function Sidebar() {
       )}
 
       <nav className="sidebar-nav">
-        {menuItems.slice(0, 3).map((item, index) => 
-          item.show ? (
+        {/* Home */}
+        {menuItems[0].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[0].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[0].path)}
+          >
+            <span className="sidebar-icon">{menuItems[0].icon}</span>
+            <span className="sidebar-label">{menuItems[0].label}</span>
+          </button>
+        )}
+
+        {/* Casino Offers Dropdown */}
+        {menuItems[1].show && (
+          <div className="sidebar-dropdown">
             <button
-              key={index}
-              className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-              onClick={() => handleNavigation(item.path)}
+              className={`sidebar-item ${location.pathname === '/offers' ? 'active' : ''}`}
+              onClick={() => setShowOffersDropdown(!showOffersDropdown)}
             >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
+              <span className="sidebar-icon">{menuItems[1].icon}</span>
+              <span className="sidebar-label">{menuItems[1].label}</span>
+              <span className={`dropdown-arrow ${showOffersDropdown ? 'open' : ''}`}>▼</span>
             </button>
-          ) : null
+            
+            {showOffersDropdown && (
+              <div className="sidebar-submenu offers-submenu">
+                <button
+                  className={`sidebar-subitem view-all`}
+                  onClick={() => handleNavigation('/offers')}
+                >
+                  <span className="subitem-icon">🎰</span>
+                  <span className="subitem-label">View All Offers</span>
+                </button>
+                <div className="offers-divider"></div>
+                {casinoOffers
+                  .slice((offersPage - 1) * offersPerPage, offersPage * offersPerPage)
+                  .map((offer) => (
+                  <a
+                    key={offer.id}
+                    href={offer.bonus_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sidebar-subitem offer-item"
+                  >
+                    <span className="subitem-icon">🎁</span>
+                    <div className="offer-info">
+                      <span className="offer-casino">{offer.casino_name}</span>
+                      <span className="offer-title-mini">{offer.title}</span>
+                    </div>
+                  </a>
+                ))}
+                {casinoOffers.length > offersPerPage && (
+                  <div className="offers-pagination">
+                    <button
+                      className="page-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOffersPage(prev => prev - 1);
+                      }}
+                      disabled={offersPage === 1}
+                    >
+                      ←
+                    </button>
+                    <span className="page-info">{offersPage} / {Math.ceil(casinoOffers.length / offersPerPage)}</span>
+                    <button
+                      className="page-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOffersPage(prev => prev + 1);
+                      }}
+                      disabled={offersPage === Math.ceil(casinoOffers.length / offersPerPage)}
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Points Store */}
+        {menuItems[2].show && (
+          <button
+            className={`sidebar-item ${isActive(menuItems[2].path) ? 'active' : ''}`}
+            onClick={() => handleNavigation(menuItems[2].path)}
+          >
+            <span className="sidebar-icon">{menuItems[2].icon}</span>
+            <span className="sidebar-label">{menuItems[2].label}</span>
+          </button>
         )}
 
         {/* Games Dropdown - Right after Points Store */}
