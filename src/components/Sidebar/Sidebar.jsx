@@ -350,9 +350,6 @@ export default function Sidebar() {
             </svg>
           </a>
         </div>
-      </aside>
-
-      </div>
     </aside>
 
     {showAvatarPicker && (
