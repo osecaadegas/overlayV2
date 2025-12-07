@@ -15,7 +15,10 @@ export default function Blackjack() {
   const [deck, setDeck] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
-  const [betAmount, setBetAmount] = useState(100);
+  const [betAmount, setBetAmount] = useState(10);
+  const [sideBetAmount, setSideBetAmount] = useState(0);
+  const [perfectPairsBet, setPerfectPairsBet] = useState(0);
+  const [twentyOnePlusThreeBet, setTwentyOnePlusThreeBet] = useState(0);
   const [gameState, setGameState] = useState('betting'); // betting, playing, dealer, finished
   const [message, setMessage] = useState('');
   const [showDealerCard, setShowDealerCard] = useState(false);
@@ -218,37 +221,83 @@ export default function Blackjack() {
         </div>
       )}
 
-      {gameState === 'betting' && (
-        <div className="betting-section">
+      <div className="game-layout">
+        {/* Left Panel - Betting */}
+        <div className="betting-panel">
           <h2>Place Your Bet</h2>
-          <div className="bet-controls">
-            <button onClick={() => setBetAmount(Math.max(10, betAmount - 50))}>-50</button>
-            <button onClick={() => setBetAmount(Math.max(10, betAmount - 10))}>-10</button>
-            <input
-              type="number"
-              value={betAmount}
-              onChange={(e) => setBetAmount(Math.max(10, parseInt(e.target.value) || 10))}
-              min="10"
-              max={balance}
-            />
-            <button onClick={() => setBetAmount(Math.min(balance, betAmount + 10))}>+10</button>
-            <button onClick={() => setBetAmount(Math.min(balance, betAmount + 50))}>+50</button>
+          
+          {/* Main Bet */}
+          <div className="bet-section">
+            <label>Bet Amount (Max 150)</label>
+            <div className="bet-input-group">
+              <button onClick={() => setBetAmount(Math.max(10, betAmount - 10))}>-</button>
+              <input
+                type="number"
+                value={betAmount}
+                onChange={(e) => setBetAmount(Math.min(150, Math.max(10, parseInt(e.target.value) || 10)))}
+                min="10"
+                max="150"
+              />
+              <button onClick={() => setBetAmount(Math.min(150, betAmount + 10))}>+</button>
+            </div>
+            <div className="quick-bet-chips">
+              <button onClick={() => setBetAmount(10)}>10</button>
+              <button onClick={() => setBetAmount(25)}>25</button>
+              <button onClick={() => setBetAmount(50)}>50</button>
+              <button onClick={() => setBetAmount(100)}>100</button>
+              <button onClick={() => setBetAmount(150)}>150</button>
+            </div>
           </div>
-          <div className="quick-bets">
-            <button onClick={() => setBetAmount(50)}>50</button>
-            <button onClick={() => setBetAmount(100)}>100</button>
-            <button onClick={() => setBetAmount(250)}>250</button>
-            <button onClick={() => setBetAmount(500)}>500</button>
-            <button onClick={() => setBetAmount(Math.floor(balance / 2))}>Half</button>
-            <button onClick={() => setBetAmount(balance)}>All In</button>
-          </div>
-          <button className="deal-button" onClick={startGame} disabled={!isConnected}>
-            Deal Cards
-          </button>
-        </div>
-      )}
 
-      {gameState !== 'betting' && (
+          {/* Side Bets */}
+          <div className="side-bets-section">
+            <h3>Side Bets (Max 20 each)</h3>
+            
+            <div className="side-bet">
+              <label>Perfect Pairs</label>
+              <div className="bet-input-group">
+                <button onClick={() => setPerfectPairsBet(Math.max(0, perfectPairsBet - 5))}>-</button>
+                <input
+                  type="number"
+                  value={perfectPairsBet}
+                  onChange={(e) => setPerfectPairsBet(Math.min(20, Math.max(0, parseInt(e.target.value) || 0)))}
+                  min="0"
+                  max="20"
+                />
+                <button onClick={() => setPerfectPairsBet(Math.min(20, perfectPairsBet + 5))}>+</button>
+              </div>
+            </div>
+
+            <div className="side-bet">
+              <label>21+3</label>
+              <div className="bet-input-group">
+                <button onClick={() => setTwentyOnePlusThreeBet(Math.max(0, twentyOnePlusThreeBet - 5))}>-</button>
+                <input
+                  type="number"
+                  value={twentyOnePlusThreeBet}
+                  onChange={(e) => setTwentyOnePlusThreeBet(Math.min(20, Math.max(0, parseInt(e.target.value) || 0)))}
+                  min="0"
+                  max="20"
+                />
+                <button onClick={() => setTwentyOnePlusThreeBet(Math.min(20, twentyOnePlusThreeBet + 5))}>+</button>
+              </div>
+            </div>
+          </div>
+
+          {gameState === 'betting' && (
+            <button className="deal-button" onClick={startGame} disabled={!isConnected}>
+              Deal Cards
+            </button>
+          )}
+
+          {gameState === 'finished' && (
+            <button className="deal-button" onClick={resetGame}>
+              New Game
+            </button>
+          )}
+        </div>
+
+        {/* Right Panel - Game Table */}
         <div className="game-table">
           {/* Dealer Hand */}
           <div className="hand dealer-hand">
@@ -309,8 +358,14 @@ export default function Blackjack() {
           {message && gameState !== 'finished' && (
             <p className="game-message">{message}</p>
           )}
+
+          {gameState === 'betting' && (
+            <div className="waiting-message">
+              <p>Place your bet to start the game</p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
