@@ -473,3 +473,429 @@
     flex-direction: column;
   }
 }
+
+/* ===== TAB NAVIGATION ===== */
+.admin-tabs {
+  display: flex;
+  gap: 15px;
+  max-width: 1400px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+}
+
+.admin-tab {
+  flex: 1;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-tab:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.admin-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+/* ===== OFFERS MANAGEMENT ===== */
+.offers-management {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.offers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.offers-header h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.btn-create-offer {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-create-offer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.offer-admin-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.offer-admin-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.offer-admin-card.inactive {
+  opacity: 0.6;
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.offer-admin-image {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.offer-admin-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.offer-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.offer-badge.hot {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.offer-badge.new {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.offer-badge.exclusive {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.inactive-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.offer-admin-content {
+  padding: 20px;
+  color: white;
+}
+
+.offer-admin-content h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.offer-title {
+  margin: 0 0 15px 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.offer-stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+}
+
+.offer-stats span {
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.offer-admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-edit-offer,
+.btn-toggle-offer,
+.btn-delete-offer {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-edit-offer {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.btn-edit-offer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-toggle-offer {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-toggle-offer.active {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.btn-toggle-offer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-delete-offer {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  flex: 0 0 auto;
+}
+
+.btn-delete-offer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.no-offers {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+}
+
+/* ===== OFFER MODAL ===== */
+.offer-modal {
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.offer-form-split {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.offer-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.offer-preview {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.offer-preview h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.casino-card.preview {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.casino-card.preview .casino-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.casino-card.preview .casino-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 0 12px 12px;
+}
+
+.casino-card.preview .casino-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.casino-card.preview .casino-badge.hot {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.casino-card.preview .casino-badge.new {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.casino-card.preview .casino-badge.exclusive {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.casino-card.preview .casino-content {
+  padding: 20px;
+  color: white;
+}
+
+.casino-card.preview .casino-name {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.casino-card.preview .casino-offer {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.casino-card.preview .casino-details {
+  display: flex;
+  gap: 15px;
+}
+
+.casino-card.preview .detail-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.casino-card.preview .detail-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+.casino-card.preview .detail-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+  .offer-form-split {
+    grid-template-columns: 1fr;
+  }
+
+  .offer-preview {
+    position: static;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-tabs {
+    flex-direction: column;
+  }
+}

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import supabase from '../../config/supabaseClient';
 import './OffersPage.css';
 
-const casinoOffers = [
+const casinoOffersBackup = [
   {
     id: 1,
     badge: 'HOT',
@@ -117,6 +118,50 @@ const casinoOffers = [
 
 export default function OffersPage() {
   const [flippedCards, setFlippedCards] = useState({});
+  const [casinoOffers, setCasinoOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadOffers();
+  }, []);
+
+  const loadOffers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('casino_offers')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error loading offers:', error);
+        setCasinoOffers(casinoOffersBackup);
+      } else {
+        // Transform data to match component format
+        const transformedOffers = data.map(offer => ({
+          id: offer.id,
+          badge: offer.badge,
+          badgeClass: offer.badge_class,
+          casino: offer.casino_name,
+          title: offer.title,
+          image: offer.image_url,
+          minDeposit: offer.min_deposit,
+          cashback: offer.cashback,
+          bonusValue: offer.bonus_value,
+          freeSpins: offer.free_spins,
+          isPremium: offer.is_premium,
+          details: offer.details
+        }));
+        
+        setCasinoOffers(transformedOffers.length > 0 ? transformedOffers : casinoOffersBackup);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      setCasinoOffers(casinoOffersBackup);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleFlip = (id) => {
     setFlippedCards(prev => ({
@@ -124,6 +169,14 @@ export default function OffersPage() {
       [id]: !prev[id]
     }));
   };
+
+  if (loading) {
+    return (
+      <div className="offers-page">
+        <div className="offers-loading">Loading offers...</div>
+      </div>
+    );
+  }
 
   const offerOfTheMonth = casinoOffers[0]; // First offer is featured
   const regularOffers = casinoOffers.slice(1); // Rest of the offers

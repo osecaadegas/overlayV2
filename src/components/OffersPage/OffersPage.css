@@ -5,6 +5,15 @@
   padding: 80px 20px 40px;
 }
 
+.offers-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: white;
+  font-size: 1.2rem;
+}
+
 .offers-container {
   max-width: 1200px;
   margin: 0 auto;
