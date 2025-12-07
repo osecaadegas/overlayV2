@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../config/supabaseClient';
+import { getMethodIcons } from '../../utils/depositMethods';
 import './OffersPage.css';
 
 export default function OffersPage() {
@@ -161,7 +162,14 @@ export default function OffersPage() {
                     {offerOfTheMonth.depositMethods && (
                       <>
                         <h4 style={{marginTop: '16px'}}>Deposit Methods</h4>
-                        <p className="deposit-methods">💳 {offerOfTheMonth.depositMethods}</p>
+                        <div className="deposit-methods">
+                          {getMethodIcons(offerOfTheMonth.depositMethods).map((method, idx) => (
+                            <div key={idx} className="deposit-method-item" title={method.name}>
+                              <span className="method-icon">{method.icon}</span>
+                              <span className="method-label">{method.name}</span>
+                            </div>
+                          ))}
+                        </div>
                       </>
                     )}
                   </div>
@@ -249,7 +257,14 @@ export default function OffersPage() {
                     {offer.depositMethods && (
                       <>
                         <h4 style={{marginTop: '16px'}}>Deposit Methods</h4>
-                        <p className="deposit-methods">💳 {offer.depositMethods}</p>
+                        <div className="deposit-methods">
+                          {getMethodIcons(offer.depositMethods).map((method, idx) => (
+                            <div key={idx} className="deposit-method-item" title={method.name}>
+                              <span className="method-icon">{method.icon}</span>
+                              <span className="method-label">{method.name}</span>
+                            </div>
+                          ))}
+                        </div>
                       </>
                     )}
                   </div>

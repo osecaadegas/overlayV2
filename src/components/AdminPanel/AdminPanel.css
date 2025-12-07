@@ -907,6 +907,63 @@
   accent-color: #fbbf24;
 }
 
+/* Deposit Methods Grid */
+.deposit-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.deposit-method-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 0.85rem;
+}
+
+.deposit-method-checkbox:hover {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.deposit-method-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #fbbf24;
+}
+
+.deposit-method-checkbox input[type="checkbox"]:checked + .method-icon,
+.deposit-method-checkbox input[type="checkbox"]:checked ~ .method-name {
+  color: #fbbf24;
+}
+
+.deposit-method-checkbox .method-icon {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.deposit-method-checkbox .method-name {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.deposit-method-checkbox:has(input:checked) {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: #fbbf24;
+}
+
 .offer-preview {
   position: sticky;
   top: 20px;

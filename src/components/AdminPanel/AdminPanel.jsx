@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../hooks/useAdmin';
 import { getAllUsers, updateUserRole, revokeUserAccess, deleteUser, MODERATOR_PERMISSIONS } from '../../utils/adminUtils';
 import { supabase } from '../../config/supabaseClient';
+import { DEPOSIT_METHODS } from '../../utils/depositMethods';
 import './AdminPanel.css';
 
 export default function AdminPanel() {
@@ -687,12 +688,32 @@ export default function AdminPanel() {
 
                     <div className="form-group">
                       <label>Deposit Methods</label>
-                      <input
-                        type="text"
-                        value={offerFormData.deposit_methods}
-                        onChange={(e) => handleOfferFormChange('deposit_methods', e.target.value)}
-                        placeholder="Visa, Mastercard, Bitcoin, Skrill"
-                      />
+                      <div className="deposit-methods-grid">
+                        {DEPOSIT_METHODS.map(method => {
+                          const selectedMethods = offerFormData.deposit_methods ? offerFormData.deposit_methods.split(',').map(m => m.trim()) : [];
+                          const isSelected = selectedMethods.includes(method.id);
+                          
+                          return (
+                            <label key={method.id} className="deposit-method-checkbox">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={(e) => {
+                                  let methods = selectedMethods.filter(m => m);
+                                  if (e.target.checked) {
+                                    methods.push(method.id);
+                                  } else {
+                                    methods = methods.filter(m => m !== method.id);
+                                  }
+                                  handleOfferFormChange('deposit_methods', methods.join(','));
+                                }}
+                              />
+                              <span className="method-icon">{method.icon}</span>
+                              <span className="method-name">{method.name}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
 

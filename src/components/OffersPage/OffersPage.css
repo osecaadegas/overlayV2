@@ -419,14 +419,39 @@
   white-space: pre-line;
 }
 
-.offer-details p.deposit-methods {
+.offer-details .deposit-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.deposit-method-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.deposit-method-item:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.deposit-method-item .method-icon {
+  font-size: 1.2rem;
+  color: #d4af37;
+}
+
+.deposit-method-item .method-label {
   color: #d4af37;
   font-weight: 500;
-  background: rgba(212, 175, 55, 0.1);
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  margin-top: 8px;
+  font-size: 0.8rem;
 }
 
 .back-btn {
