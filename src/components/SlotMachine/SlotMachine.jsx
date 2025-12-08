@@ -361,7 +361,7 @@ function executeSpin(betAmount, volatility, targetRTP, rng) {
 // ==========================================
 // MAIN COMPONENT
 // ==========================================
-export default function SlotMachine({ onClose }) {
+export default function SlotMachine() {
   const { user } = useAuth();
   const { isConnected, points, refreshPoints } = useStreamElements();
   
@@ -767,14 +767,11 @@ export default function SlotMachine({ onClose }) {
   }
 
   return (
-    <div className={`slot-machine-page ${onClose ? 'slot-overlay-mode' : ''}`}>
+    <div className="slot-machine-page">
       <div className="slot-machine-wrapper">
         <div className="slot-machine-header">
           <h1>⚡ Divine Fortune ⚡</h1>
           <p className="slot-subtitle">Scatter Pay • Tumble Feature • Multipliers</p>
-          {onClose && (
-            <button className="slot-close-btn" onClick={onClose}>✕</button>
-          )}
         </div>
 
         <div className="slot-machine-layout">
