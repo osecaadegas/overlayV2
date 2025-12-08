@@ -34,6 +34,7 @@ import GiveawayPanel from './components/GiveawayPanel/GiveawayPanel';
 import RandomSlotPicker from './components/RandomSlotPicker/RandomSlotPicker';
 import ArtAdPanel from './components/ArtAdPanel/ArtAdPanel';
 import SlotMachine from './components/SlotMachine/SlotMachine';
+import SlotMachineOverlay from './components/SlotMachineOverlay/SlotMachineOverlay';
 import CoinFlip from './components/CoinFlip/CoinFlip';
 import SpotifyWidget from './components/SpotifyWidget/SpotifyWidget';
 import TwitchChat from './components/TwitchChat/TwitchChat';
@@ -424,17 +425,8 @@ function AppContent() {
       {showRandomSlot && <RandomSlotPicker onClose={() => setShowRandomSlot(false)} />}
       {showArtAd && <ArtAdPanel onClose={() => setShowArtAd(false)} />}
       
-      {/* Slot Machine */}
-      {console.log('Rendering SlotMachine check:', showSlotMachine)}
-      {showSlotMachine && (
-        <>
-          {console.log('RENDERING SLOT MACHINE NOW')}
-          <SlotMachine onClose={() => {
-            console.log('CLOSING SLOT MACHINE');
-            setShowSlotMachine(false);
-          }} />
-        </>
-      )}
+      {/* Slot Machine Overlay */}
+      {showSlotMachine && <SlotMachineOverlay onClose={() => setShowSlotMachine(false)} />}
       
       {/* Coin Flip */}
       {showCoinFlip && <CoinFlip onClose={() => setShowCoinFlip(false)} />}
