@@ -1,110 +1,287 @@
-.slot-machine-overlay {
+.slotmachine-overlay {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-  pointer-events: all;
+  left: 20px;
+  width: auto;
+  height: auto;
+  background: transparent;
+  z-index: 99999;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-.slot-machine-display {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  border: 3px solid #ffd700;
-  min-width: 350px;
+.slotmachine-panel {
+  width: auto;
+  max-height: 90vh;
+  overflow-y: visible;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  animation: slideUp 0.4s ease;
+}
+
+.slotmachine-header {
+  display: none;
+}
+
+.slotmachine-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.slotmachine-content {
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-machine-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  gap: 1rem;
+  position: relative;
 }
 
-.slot-reels {
+.reels-container {
   display: flex;
-  gap: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 15px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(35, 36, 58, 0.95) 0%, rgba(45, 46, 74, 0.95) 100%);
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 225, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 1px 0 0 rgba(0, 225, 255, 0.2) inset;
 }
 
-.slot-reel {
-  width: 80px;
-  height: 100px;
-  background: white;
-  border-radius: 10px;
+.reel {
+  width: 160px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(0, 225, 255, 0.4);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.1s ease;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.8),
+    inset 0 0 20px rgba(0, 225, 255, 0.05);
+  overflow: hidden;
+  position: relative;
 }
 
-.slot-reel.spinning {
-  animation: reelSpin 0.1s linear infinite;
+.symbol-image {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-@keyframes reelSpin {
+.reel.spinning .symbol-image {
+  animation: slideDown 0.05s linear infinite;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+}
+
+.symbol-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.lever-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.lever {
+  width: 60px;
+  height: 280px;
+  background: linear-gradient(135deg, rgba(35, 36, 58, 0.95) 0%, rgba(45, 46, 74, 0.95) 100%);
+  border: 2px solid rgba(0, 225, 255, 0.4);
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 1px 0 0 rgba(0, 225, 255, 0.2) inset,
+    inset 0 0 20px rgba(0, 225, 255, 0.05);
+}
+
+.lever:hover:not(:disabled) {
+  transform: scale(1.02);
+  border-color: rgba(0, 225, 255, 0.6);
+  box-shadow: 
+    0 8px 32px rgba(0, 225, 255, 0.3),
+    0 1px 0 0 rgba(0, 225, 255, 0.3) inset,
+    inset 0 0 20px rgba(0, 225, 255, 0.1);
+}
+
+.lever:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.lever.pulled {
+  animation: leverPull 0.5s ease;
+}
+
+.lever-handle {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 180px;
+  background: linear-gradient(135deg, rgba(25, 26, 48, 0.8) 0%, rgba(35, 36, 58, 0.8) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 225, 255, 0.2);
+  box-shadow: 
+    inset 0 0 10px rgba(0, 225, 255, 0.1);
+}
+
+.lever-ball {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, #00e1ff, #0099cc);
+  border-radius: 50%;
+  box-shadow: 
+    0 8px 20px rgba(0, 225, 255, 0.5),
+    0 0 20px rgba(0, 225, 255, 0.4),
+    inset -5px -5px 10px rgba(0, 0, 0, 0.3),
+    inset 5px 5px 10px rgba(0, 225, 255, 0.5);
+}
+
+@keyframes leverPull {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(80px); }
   100% { transform: translateY(0); }
 }
 
-.slot-symbol {
-  font-size: 48px;
-  user-select: none;
-}
-
-.slot-spin-btn {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  border: none;
-  color: #333;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 15px 40px;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.slot-spin-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
-}
-
-.slot-spin-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.slot-spin-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.slot-result {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ffd700;
+.result-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  font-weight: 800;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: resultPop 0.5s ease;
-  min-height: 32px;
+  padding: 2rem 3rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(26, 27, 46, 0.98) 0%, rgba(22, 33, 62, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(0, 225, 255, 0.5);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(0, 225, 255, 0.3),
+    inset 0 1px 0 rgba(0, 225, 255, 0.3);
+  animation: resultFadeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 100;
+  min-width: 350px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-@keyframes resultPop {
+@keyframes resultFadeIn {
   0% {
-    transform: scale(0);
     opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
+    transform: translate(-50%, -50%) scale(0.7);
   }
   100% {
-    transform: scale(1);
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
+}
+
+.result-message.win {
+  color: #00e1ff;
+  text-shadow: 
+    0 0 20px rgba(0, 225, 255, 0.8),
+    0 0 40px rgba(0, 225, 255, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  border-color: rgba(0, 225, 255, 0.7);
+  background: linear-gradient(135deg, rgba(26, 27, 46, 0.98) 0%, rgba(0, 225, 255, 0.15) 100%);
+}
+
+.result-message.lose {
+  color: #ff6b6b;
+  text-shadow: 
+    0 0 15px rgba(255, 107, 107, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 107, 107, 0.5);
+  background: linear-gradient(135deg, rgba(26, 27, 46, 0.98) 0%, rgba(255, 107, 107, 0.1) 100%);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
 }
