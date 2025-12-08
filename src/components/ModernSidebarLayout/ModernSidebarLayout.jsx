@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useBonusHunt } from '../../context/BonusHuntContext';
-import { slotDatabase } from '../../data/slotDatabase';
+import { findSlotByName } from '../../utils/slotUtils';
 import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernSidebarLayout.css';
 
@@ -10,6 +10,7 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId, showCards = tr
   const [nextBonusIndex, setNextBonusIndex] = useState(1);
   const [isFlipped, setIsFlipped] = useState(false);
   const [imageKey, setImageKey] = useState(0);
+  const [nextSlotData, setNextSlotData] = useState(null);
 
   // Find currently opening bonus - if selectedBonusId is provided, use it; otherwise use first unopened
   const openingBonus = showBonusOpening 
@@ -50,15 +51,17 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId, showCards = tr
       const img = new Image();
       img.src = getSlotImage(bonuses[upcomingIndex].slotName);
       
-      // Preload provider logo
-      const slot = slotDatabase.find(s => s.name.toLowerCase() === bonuses[upcomingIndex].slotName.toLowerCase());
-      if (slot) {
-        const logoUrl = getProviderLogo(slot.provider);
-        if (logoUrl) {
-          const logoImg = new Image();
-          logoImg.src = logoUrl;
+      // Preload provider logo and fetch slot data
+      findSlotByName(bonuses[upcomingIndex].slotName).then(slot => {
+        setNextSlotData(slot);
+        if (slot) {
+          const logoUrl = getProviderLogo(slot.provider);
+          if (logoUrl) {
+            const logoImg = new Image();
+            logoImg.src = logoUrl;
+          }
         }
-      }
+      });
       
       // Start flip after preloading
       const startFlip = () => {
@@ -196,7 +199,7 @@ const ModernSidebarLayout = ({ showBonusOpening, selectedBonusId, showCards = tr
                 <div className="card-provider-section">
                   <div className="provider-logo-wrapper">
                     {(() => {
-                      const slot = bonuses[nextBonusIndex]?.slotName ? slotDatabase.find(s => s.name.toLowerCase() === bonuses[nextBonusIndex].slotName.toLowerCase()) : null;
+                      const slot = nextSlotData;
                       const logoUrl = slot ? getProviderLogo(slot.provider) : null;
                       return slot && logoUrl ? (
                         <img src={logoUrl} alt={slot.provider} className="provider-logo-img" />

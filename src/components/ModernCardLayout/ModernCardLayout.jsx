@@ -1,10 +1,31 @@
+import { useState, useEffect } from 'react';
 import { useBonusHunt } from '../../context/BonusHuntContext';
-import { slotDatabase } from '../../data/slotDatabase';
+import { findSlotByName } from '../../utils/slotUtils';
 import { getProviderLogo } from '../../utils/providerLogos';
 import './ModernCardLayout.css';
 
 const ModernCardLayout = ({ showCards = true }) => {
   const { bonuses, getSlotImage } = useBonusHunt();
+  const [slotData, setSlotData] = useState({});
+
+  // Fetch slot data for all bonuses
+  useEffect(() => {
+    async function fetchSlotData() {
+      const data = {};
+      for (const bonus of bonuses) {
+        if (!data[bonus.slotName]) {
+          const slot = await findSlotByName(bonus.slotName);
+          if (slot) {
+            data[bonus.slotName] = slot;
+          }
+        }
+      }
+      setSlotData(data);
+    }
+    if (bonuses.length > 0) {
+      fetchSlotData();
+    }
+  }, [bonuses]);
 
   if (bonuses.length === 0) {
     return (
@@ -49,7 +70,7 @@ const ModernCardLayout = ({ showCards = true }) => {
         {bonuses.map((bonus) => {
           const payout = bonus.multiplier ? bonus.multiplier * bonus.betSize : 0;
           const profitLoss = payout - bonus.betSize;
-          const slot = slotDatabase.find(s => s.name.toLowerCase() === bonus.slotName.toLowerCase());
+          const slot = slotData[bonus.slotName];
           const image = getSlotImage(bonus.slotName);
           const provider = slot?.provider || 'Unknown Provider';
           const providerLogo = getProviderLogo(provider);

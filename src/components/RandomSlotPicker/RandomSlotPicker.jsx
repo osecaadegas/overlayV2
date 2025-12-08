@@ -1,17 +1,39 @@
 import { useState, useEffect } from 'react';
 import './RandomSlotPicker.css';
 import useDraggable from '../../hooks/useDraggable';
-import slotDatabase from '../../data/slotDatabase';
+import { getAllSlots, getAllProviders } from '../../utils/slotUtils';
 
 const RandomSlotPicker = ({ onClose }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [displaySlot, setDisplaySlot] = useState(null);
-  // Get unique providers from slot database
-  const allProviders = [...new Set(slotDatabase.map(slot => slot.provider))].sort();
+  const [slotDatabase, setSlotDatabase] = useState([]);
+  const [allProviders, setAllProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   // Initialize with all providers selected
-  const [selectedProviders, setSelectedProviders] = useState(allProviders);
+  const [selectedProviders, setSelectedProviders] = useState([]);
+
+  // Fetch slots and providers on mount
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const [slots, providers] = await Promise.all([
+          getAllSlots(),
+          getAllProviders()
+        ]);
+        setSlotDatabase(slots);
+        setAllProviders(providers);
+        setSelectedProviders(providers); // Select all by default
+      } catch (error) {
+        console.error('Error loading slots:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   const toggleProvider = (provider) => {
     setSelectedProviders(prev => 
@@ -74,6 +96,13 @@ const RandomSlotPicker = ({ onClose }) => {
         </div>
 
         <div className="random-slot-content">
+          {loading ? (
+            <div className="slot-placeholder">
+              <div className="placeholder-icon">⏳</div>
+              <div className="placeholder-text">Loading slots...</div>
+            </div>
+          ) : (
+          <>
           {/* Stats Row */}
           <div className="picker-info">
             <div className="info-stat">
@@ -169,6 +198,8 @@ const RandomSlotPicker = ({ onClose }) => {
               <span className="message-icon">⚠️</span>
               <span>Please select at least one provider!</span>
             </div>
+          )}
+          </>
           )}
         </div>
       </div>

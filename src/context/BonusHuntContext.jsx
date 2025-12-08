@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { calculateStats } from '../utils/calculations';
-import { slotDatabase, DEFAULT_SLOT_IMAGE } from '../data/slotDatabase';
+import { findSlotByName, DEFAULT_SLOT_IMAGE } from '../utils/slotUtils';
 
 const BonusHuntContext = createContext();
 
@@ -139,14 +139,14 @@ export const BonusHuntProvider = ({ children }) => {
   };
 
   // Get slot image
-  const getSlotImage = (slotName) => {
+  const getSlotImage = async (slotName) => {
     // Check custom images first
     if (customSlotImages[slotName.toLowerCase()]) {
       return customSlotImages[slotName.toLowerCase()];
     }
     
-    // Check slot database
-    const slot = slotDatabase.find(s => s.name.toLowerCase() === slotName.toLowerCase());
+    // Check slot database from Supabase
+    const slot = await findSlotByName(slotName);
     if (slot) return slot.image;
     
     // Use selected default image from localStorage or fall back to DEFAULT_SLOT_IMAGE

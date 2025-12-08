@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './TournamentPanel.css';
-import { slotDatabase } from '../../data/slotDatabase';
+import { getAllSlots, searchSlotsByName, getRandomSlots } from '../../utils/slotUtils';
 import TournamentBracketWidget from '../TournamentBracket/TournamentBracketWidget';
 import TournamentControlPanel from '../TournamentBracket/TournamentControlPanel';
 import { useBonusHunt } from '../../context/BonusHuntContext';
@@ -34,6 +34,16 @@ const TournamentPanel = ({ onClose }) => {
   // Slot suggestions state
   const [slotSuggestions, setSlotSuggestions] = useState({});
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(null);
+  const [slotDatabase, setSlotDatabase] = useState([]);
+
+  // Load slots from Supabase
+  useEffect(() => {
+    async function loadSlots() {
+      const slots = await getAllSlots();
+      setSlotDatabase(slots);
+    }
+    loadSlots();
+  }, []);
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -85,7 +95,7 @@ const TournamentPanel = ({ onClose }) => {
     }
   }, [tournamentSize]);
 
-  const fillRandomSlots = () => {
+  const fillRandomSlots = async () => {
     const randomNames = [
       'ProGamer', 'SlotMaster', 'LuckyStreamer', 'BigWinner', 'CasinoKing', 'SpinLord',
       'BonusHunter', 'RollMaster', 'WildCard', 'MegaSpin', 'JackpotJoe', 'LuckyLuke',
@@ -93,12 +103,12 @@ const TournamentPanel = ({ onClose }) => {
     ];
 
     const shuffledNames = [...randomNames].sort(() => 0.5 - Math.random());
-    const shuffledSlots = [...slotDatabase].sort(() => 0.5 - Math.random());
+    const randomSlots = await getRandomSlots(tournamentSize);
 
     setParticipants(prev => prev.map((p, i) => ({
       ...p,
       player: shuffledNames[i] || `Player ${i + 1}`,
-      slot: shuffledSlots[i]?.name || 'Random Slot'
+      slot: randomSlots[i]?.name || 'Random Slot'
     })));
   };
 
@@ -107,22 +117,21 @@ const TournamentPanel = ({ onClose }) => {
   };
 
   // Handle slot input change with suggestions
-  const handleSlotInputChange = (index, value) => {
+  const handleSlotInputChange = async (index, value) => {
     const newParticipants = [...participants];
     newParticipants[index].slot = value;
     setParticipants(newParticipants);
 
     if (value.length >= 3) {
-      const matches = slotDatabase
-        .filter(slot => slot.name.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 8);
+      const matches = await searchSlotsByName(value);
+      const limitedMatches = matches.slice(0, 8);
       
       setSlotSuggestions(prev => ({
         ...prev,
-        [index]: matches
+        [index]: limitedMatches
       }));
       
-      if (matches.length > 0) {
+      if (limitedMatches.length > 0) {
         setActiveSuggestionIndex(index);
       }
     } else {
