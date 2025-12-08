@@ -7,15 +7,11 @@ const RandomSlotPicker = ({ onClose }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [displaySlot, setDisplaySlot] = useState(null);
-  const [selectedProviders, setSelectedProviders] = useState([]);
-
   // Get unique providers from slot database
   const allProviders = [...new Set(slotDatabase.map(slot => slot.provider))].sort();
-
+  
   // Initialize with all providers selected
-  useEffect(() => {
-    setSelectedProviders(allProviders);
-  }, []);
+  const [selectedProviders, setSelectedProviders] = useState(allProviders);
 
   const toggleProvider = (provider) => {
     setSelectedProviders(prev => 
