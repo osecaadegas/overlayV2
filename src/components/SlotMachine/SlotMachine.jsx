@@ -37,10 +37,10 @@ const CONFIG = {
   RETRIGGER_SPINS: 5,
   BONUS_BUY_MULTIPLIER: 100,
   MIN_BET: 10,
-  MAX_BET: 1000,
+  MAX_BET: 100,
   BET_STEP: 10,
-  targetRTP: 0.96,
-  volatility: 'high',
+  targetRTP: 0.94,
+  volatility: 'medium',
   
   multiplierWeights: {
     low: { 2: 50, 3: 25, 4: 15, 5: 8, 10: 2 },
@@ -385,9 +385,8 @@ export default function SlotMachine() {
   const [bigWinAmount, setBigWinAmount] = useState(0);
   const [bigWinTitle, setBigWinTitle] = useState('BIG WIN!');
   
-  const [rtp, setRtp] = useState(0.96);
-  const [volatility, setVolatility] = useState('high');
-  const [seed, setSeed] = useState('');
+  const [rtp] = useState(0.94);
+  const [volatility] = useState('medium');
   const rngRef = useRef(Math.random);
   
   const [stats, setStats] = useState({
@@ -417,22 +416,6 @@ export default function SlotMachine() {
   const adjustBet = (delta) => {
     const newBet = Math.max(CONFIG.MIN_BET, Math.min(CONFIG.MAX_BET, bet + delta));
     setBet(newBet);
-  };
-
-  const updateConfig = (newRtp, newVolatility) => {
-    setRtp(newRtp);
-    setVolatility(newVolatility);
-  };
-
-  const applySeed = () => {
-    if (seed) {
-      const numericSeed = hashString(seed);
-      rngRef.current = mulberry32(numericSeed);
-      console.log('Applied seed:', seed, '-> numeric:', numericSeed);
-    } else {
-      rngRef.current = Math.random;
-      console.log('Using random RNG');
-    }
   };
 
   const resetStats = () => {
@@ -924,38 +907,6 @@ export default function SlotMachine() {
                 <div className="control-label">LAST WIN</div>
                 <div className="control-value win-value">{lastWin.toFixed(0)}</div>
               </div>
-            </div>
-
-            {/* Settings */}
-            <div className="slot-settings">
-              <label className="setting-item">
-                <span>RTP:</span>
-                <select value={rtp} onChange={(e) => updateConfig(parseFloat(e.target.value), volatility)}>
-                  <option value="0.90">90%</option>
-                  <option value="0.94">94%</option>
-                  <option value="0.96">96%</option>
-                  <option value="0.98">98%</option>
-                </select>
-              </label>
-              <label className="setting-item">
-                <span>Volatility:</span>
-                <select value={volatility} onChange={(e) => updateConfig(rtp, e.target.value)}>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="extreme">Extreme</option>
-                </select>
-              </label>
-              <label className="setting-item">
-                <span>Seed:</span>
-                <input 
-                  type="text" 
-                  value={seed} 
-                  onChange={(e) => setSeed(e.target.value)} 
-                  placeholder="Random" 
-                />
-              </label>
-              <button onClick={applySeed} className="btn-apply-seed">Apply Seed</button>
             </div>
           </div>
 
