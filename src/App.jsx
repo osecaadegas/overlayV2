@@ -566,10 +566,9 @@ function App() {
                 <Route path="/tournaments" element={<TournamentsPage />} />
                 <Route path="/guess-balance" element={<GuessBalancePage />} />
                 <Route path="/giveaways" element={<GiveawaysPage />} />
-                <Route path="/games/coinflip" element={<GamesPage gameType="coinflip" />} />
                 <Route path="/games/dice" element={<GamesPage gameType="dice" />} />
                 <Route path="/games/roulette" element={<GamesPage gameType="roulette" />} />
-                <Route path="/games/slots" element={<GamesPage gameType="slots" />} />
+                <Route path="/games/slots" element={<SlotMachine />} />
                 <Route path="/games/blackjack" element={<Blackjack />} />
                 <Route path="/games/mines" element={<Mines />} />
                 <Route path="/about" element={<AboutPage />} />
