@@ -245,18 +245,11 @@ export default function Sidebar() {
                     <span className="subitem-label">Mines</span>
                   </button>
                   <button
-                    className={`sidebar-subitem ${isActive('/randomslot') ? 'active' : ''}`}
-                    onClick={() => handleNavigation('/randomslot')}
+                    className={`sidebar-subitem ${isActive('/games/slots') ? 'active' : ''}`}
+                    onClick={() => handleNavigation('/games/slots')}
                   >
-                    <span className="subitem-icon">🎰</span>
-                    <span className="subitem-label">Random Slot</span>
-                  </button>
-                  <button
-                    className={`sidebar-subitem ${isActive('/coinflip') ? 'active' : ''}`}
-                    onClick={() => handleNavigation('/coinflip')}
-                  >
-                    <span className="subitem-icon">🪙</span>
-                    <span className="subitem-label">Coin Flip</span>
+                    <span className="subitem-icon">⚡</span>
+                    <span className="subitem-label">Divine Fortune</span>
                   </button>
                 </div>
               )}

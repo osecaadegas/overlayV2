@@ -61,11 +61,9 @@ const CircularSidebar = ({ onMenuSelect, isLocked, onLockToggle }) => {
     { id: 'tournament', icon: '/tornament.png', label: 'Tournament', angle: 120 },
     { id: 'giveaway', icon: '/giveaway.png', label: 'Giveaway', angle: 150 },
     { id: 'artAd', icon: '/art.png', label: 'Art/Ad', angle: 180 },
-    { id: 'slotMachine', icon: '/777.png', label: 'Slot Machine', angle: 210 },
-    { id: 'coinFlip', icon: '/coinflip.png', label: 'Coin Flip', angle: 240 },
-    { id: 'logout', icon: '/palet.png', label: 'Logout', angle: 270, special: true, action: 'logout' },
-    { id: 'newButton4', icon: '/palet.png', label: 'New Button 4', angle: 300 },
-    { id: 'lock', icon: isLocked ? '/lock.png' : '/unlock.png', label: 'Lock', angle: 330, special: true }
+    { id: 'logout', icon: '/palet.png', label: 'Logout', angle: 210, special: true, action: 'logout' },
+    { id: 'newButton4', icon: '/palet.png', label: 'New Button 4', angle: 240 },
+    { id: 'lock', icon: isLocked ? '/lock.png' : '/unlock.png', label: 'Lock', angle: 270, special: true }
   ];
 
   return (
