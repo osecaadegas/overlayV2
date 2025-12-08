@@ -244,9 +244,9 @@ export default function PointsManager() {
 
     if (error) throw error;
 
-    // Get Twitch usernames from se_accounts table
+    // Get Twitch usernames from streamelements_connections table
     const { data: seAccounts } = await supabase
-      .from('se_accounts')
+      .from('streamelements_connections')
       .select('user_id, se_username');
 
     const usernameMap = {};
