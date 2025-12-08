@@ -170,7 +170,7 @@ export default function Mines() {
 
       {!isConnected && (
         <div className="connection-warning">
-          <p>⚠️ Connect your StreamElements account to play</p>
+          <p>⚠️ Connect with Twitch to access the games</p>
         </div>
       )}
 

@@ -148,28 +148,9 @@ export default function StreamElementsPanel() {
         <p>Link your StreamElements account to redeem loyalty points for rewards</p>
       </div>
 
-      {!isConnected ? (
+      {showLinkForm && !isConnected ? (
         <div className="se-not-connected">
-          {!showLinkForm ? (
-            <>
-              <div className="se-info-box">
-                <h3>Why Link Your Account?</h3>
-                <ul>
-                  <li>View your loyalty points balance</li>
-                  <li>Redeem points for premium access</li>
-                  <li>Unlock exclusive features</li>
-                  <li>Support the stream!</li>
-                </ul>
-              </div>
-              <button 
-                onClick={() => setShowLinkForm(true)}
-                className="se-connect-btn"
-              >
-                Connect StreamElements
-              </button>
-            </>
-          ) : (
-            <form onSubmit={handleLinkAccount} className="se-link-form">
+          <form onSubmit={handleLinkAccount} className="se-link-form">
               <h3>Link StreamElements Account</h3>
               
               <div className="form-group">
@@ -224,20 +205,34 @@ export default function StreamElementsPanel() {
                 </button>
               </div>
             </form>
-          )}
         </div>
-      ) : (
-        <div className="se-connected">
-          {error && <div className="se-error">{error}</div>}
+      ) : null}
 
-          <div className="se-redemptions">
+      {/* Show redemption items to everyone */}
+      <div className="se-connected">
+        {!isConnected && (
+          <div className="se-info-box" style={{ marginBottom: '20px' }}>
+            <h3>🔒 Connect to Redeem</h3>
+            <p>Link your StreamElements account to view your points balance and redeem rewards!</p>
+            <button 
+              onClick={() => setShowLinkForm(true)}
+              className="se-connect-btn"
+            >
+              Connect StreamElements
+            </button>
+          </div>
+        )}
+        
+        {error && <div className="se-error">{error}</div>}
+
+        <div className="se-redemptions">
             <h3>Available Redemptions</h3>
             {redemptionItems.length === 0 ? (
               <p className="se-no-items">No redemption items available</p>
             ) : (
               <div className="se-items-grid">
                 {redemptionItems.map(item => {
-                  const canAfford = points >= item.point_cost;
+                  const canAfford = isConnected && points >= item.point_cost;
                   const isRedeeming = redeeming === item.id;
                   const isOutOfStock = item.available_units !== null && item.available_units <= 0;
                   const isDisabled = !item.is_active;
@@ -248,7 +243,7 @@ export default function StreamElementsPanel() {
                   return (
                     <div 
                       key={item.id} 
-                      className={`se-item ${isDisabled || !canAfford || isOutOfStock ? 'disabled' : ''}`}
+                      className={`se-item ${isDisabled || !canAfford || isOutOfStock || !isConnected ? 'disabled' : ''}`}
                     >
                       <div className="se-item-image">
                         <img src={imageUrl} alt={item.name} />
@@ -280,10 +275,10 @@ export default function StreamElementsPanel() {
                         )}
                         <button
                           onClick={() => handleRedeem(item)}
-                          disabled={isDisabled || !canAfford || isRedeeming || loading || isOutOfStock}
+                          disabled={!isConnected || isDisabled || !canAfford || isRedeeming || loading || isOutOfStock}
                           className="se-redeem-btn"
                         >
-                          {isDisabled ? 'Coming Soon' : isOutOfStock ? 'Out of Stock' : isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
+                          {!isConnected ? 'Connect to Redeem' : isDisabled ? 'Coming Soon' : isOutOfStock ? 'Out of Stock' : isRedeeming ? 'Redeeming...' : canAfford ? 'Redeem' : 'Not Enough Points'}
                         </button>
                       </div>
                     </div>
@@ -293,7 +288,7 @@ export default function StreamElementsPanel() {
             )}
           </div>
 
-          {userRedemptions.length > 0 && (
+          {isConnected && userRedemptions.length > 0 && (
             <div className="se-redemption-history-floating">
               <div className="se-history-card">
                 <div className="se-history-header">
@@ -345,7 +340,6 @@ export default function StreamElementsPanel() {
             </div>
           )}
         </div>
-      )}
     </div>
   );
 }

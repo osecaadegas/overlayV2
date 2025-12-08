@@ -244,22 +244,32 @@ export default function PointsManager() {
 
     if (error) throw error;
 
-    // Get Twitch usernames from streamelements_connections table
+    // Get user emails (Twitch usernames)
+    const { data: allUsers } = await supabase.rpc('get_all_user_emails');
+    const emailMap = {};
+    if (allUsers) {
+      allUsers.forEach(user => {
+        emailMap[user.user_id] = user.email;
+      });
+    }
+
+    // Get SE usernames from streamelements_connections table
     const { data: seAccounts } = await supabase
       .from('streamelements_connections')
       .select('user_id, se_username');
 
-    const usernameMap = {};
+    const seUsernameMap = {};
     if (seAccounts) {
       seAccounts.forEach(account => {
-        usernameMap[account.user_id] = account.se_username;
+        seUsernameMap[account.user_id] = account.se_username;
       });
     }
 
     // Enrich sessions with user data
     const enrichedSessions = sessionsData.map(session => ({
       ...session,
-      user_username: usernameMap[session.user_id] || 'Unknown'
+      user_email: emailMap[session.user_id] || 'Unknown',
+      se_username: seUsernameMap[session.user_id] || 'Not Connected'
     }));
 
     setGameSessions(enrichedSessions);
@@ -631,7 +641,10 @@ export default function PointsManager() {
                       return (
                         <tr key={session.id}>
                           <td>
-                            <div className="pm-email">{session.user_username}</div>
+                            <div className="pm-user-info">
+                              <div className="pm-username">{session.se_username}</div>
+                              <div className="pm-email">{session.user_email}</div>
+                            </div>
                           </td>
                           <td>
                             <span className="pm-game-badge">

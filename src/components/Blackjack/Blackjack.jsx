@@ -245,7 +245,7 @@ export default function Blackjack() {
 
       {!isConnected && (
         <div className="connection-warning">
-          <p>⚠️ Connect your StreamElements account to play</p>
+          <p>⚠️ Connect with Twitch to access the games</p>
         </div>
       )}
 
