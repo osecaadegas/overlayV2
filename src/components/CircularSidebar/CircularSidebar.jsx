@@ -58,7 +58,7 @@ const CircularSidebar = ({ onMenuSelect, isLocked, onLockToggle }) => {
     { id: 'bonusHunt', icon: '/crossair.png', label: 'Bonus Hunt', angle: 30 },
     { id: 'tutorial', icon: '/info.png', label: 'Tutorial', angle: 60 },
     { id: 'randomSlot', icon: '/randomslot.png', label: 'Random Slot', angle: 90 },
-    { id: 'slotMachine', icon: '/slot.png', label: 'Slot Machine', angle: 120 },
+    { id: 'slotMachine', icon: '/777.png', label: 'Slot Machine', angle: 120 },
     { id: 'coinFlip', icon: '/coinflip.png', label: 'Coin Flip', angle: 150 },
     { id: 'tournament', icon: '/tornament.png', label: 'Tournament', angle: 180 },
     { id: 'giveaway', icon: '/giveaway.png', label: 'Giveaway', angle: 210 },

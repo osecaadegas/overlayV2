@@ -14,6 +14,24 @@
   animation: gradientShift 15s ease infinite;
 }
 
+/* Overlay Mode - Floating Panel */
+.slot-machine-page.slot-overlay-mode {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95vw;
+  height: 90vh;
+  max-width: 1400px;
+  max-height: 900px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -28,6 +46,7 @@
 .slot-machine-header {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
 }
 
 .slot-machine-header h1 {
@@ -39,6 +58,30 @@
   background-clip: text;
   text-shadow: 0 2px 10px rgba(241, 196, 15, 0.3);
   margin-bottom: 0.5rem;
+}
+
+.slot-close-btn {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background: rgba(231, 76, 60, 0.8);
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.slot-close-btn:hover {
+  background: rgba(231, 76, 60, 1);
+  transform: scale(1.1);
 }
 
 .slot-subtitle {
